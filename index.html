@@ -128,6 +128,24 @@
                 <strong id="quest-progress">1 / 25</strong>
               </div>
             </div>
+            <div class="quest-brief-grid">
+              <article class="quest-brief-card">
+                <span>Тип узла</span>
+                <strong id="quest-node-type">Исследование</strong>
+              </article>
+              <article class="quest-brief-card">
+                <span>Задача</span>
+                <strong id="quest-objective">Пройти вестибюль и найти путь к мосту.</strong>
+              </article>
+              <article class="quest-brief-card">
+                <span>Награда</span>
+                <strong id="quest-reward">Люмен, архивный след, прогресс главы.</strong>
+              </article>
+              <article class="quest-brief-card">
+                <span>Рекомендация</span>
+                <strong id="quest-recommendation">Лиора + Риан для безопасного входа.</strong>
+              </article>
+            </div>
             <div class="quest-foot">
               <span id="quest-cost">AP 0</span>
               <div class="quest-actions">
@@ -252,7 +270,10 @@
                 <div class="portrait-head"></div>
                 <div class="portrait-hair"></div>
                 <div class="portrait-cloak"></div>
+                <div class="portrait-arm portrait-arm-left"></div>
+                <div class="portrait-arm portrait-arm-right"></div>
                 <div class="portrait-body"></div>
+                <div class="portrait-legs"></div>
                 <div class="portrait-weapon"></div>
               </div>
             </div>
@@ -325,8 +346,8 @@
           </section>
 
           <aside class="journal-side ornate-panel">
-            <p class="eyebrow">Активная глава</p>
-            <h3>Сад немого стража</h3>
+            <p class="eyebrow" id="journal-side-kicker">Архивная карточка</p>
+            <h3 id="journal-side-title">Источник записи</h3>
             <div class="journal-highlight-list" id="journal-highlights"></div>
           </aside>
         </div>
@@ -388,6 +409,12 @@
                 <button class="toggle-button" id="toggle-contrast">Повысить контраст</button>
               </div>
             </div>
+            <div class="setting-block">
+              <span class="design-label">Руководство</span>
+              <div class="toggle-list">
+                <button class="secondary-button menu-guide-button" id="open-guide" data-screen-target="guide">Открыть руководство</button>
+              </div>
+            </div>
           </section>
 
           <section class="menu-system ornate-panel">
@@ -399,6 +426,40 @@
             <p class="eyebrow">Журнал сессии</p>
             <div class="menu-log-list" id="menu-log-list"></div>
           </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="guide">
+        <div class="screen-scape guide-scape" aria-hidden="true">
+          <div class="guide-arch"></div>
+          <div class="guide-glow"></div>
+        </div>
+
+        <div class="guide-layout">
+          <aside class="guide-nav ornate-panel">
+            <p class="eyebrow">Руководство</p>
+            <div class="guide-section-list" id="guide-section-list"></div>
+          </aside>
+
+          <section class="guide-book ornate-panel">
+            <div class="guide-page">
+              <p class="eyebrow" id="guide-kicker">Введение</p>
+              <h2 id="guide-title">Последняя Ступень</h2>
+              <p id="guide-summary">
+                Steam-first tactical party-RPG о походах через заросшие руины и боях со стражами живой архитектуры.
+              </p>
+            </div>
+            <div class="guide-page guide-page-secondary">
+              <p class="eyebrow">Ключевые правила</p>
+              <div class="guide-point-list" id="guide-point-list"></div>
+            </div>
+          </section>
+
+          <aside class="guide-side ornate-panel">
+            <p class="eyebrow">Статус среза</p>
+            <h3 id="guide-status-title">Vertical Slice</h3>
+            <div class="guide-status-list" id="guide-status-list"></div>
+          </aside>
         </div>
       </section>
     </main>

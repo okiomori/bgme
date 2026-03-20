@@ -542,6 +542,112 @@
     { id: "cinematic", label: "110%", value: 1.1 },
   ];
 
+  const questBlueprints = {
+    story: {
+      objective: "Найти путь через собор листвы и выйти к мосту памяти.",
+      recommendation: "Лиора + Риан для спокойного входа и контроля фронта.",
+      reward: "Люмен, архивные записи, доступ к боевой сцене главы.",
+      threat: "Исследование",
+    },
+    raid: {
+      objective: "Пройти низкие своды и подготовиться к тяжёлому хранителю.",
+      recommendation: "Риан + Ноэль для устойчивости и контроля очереди.",
+      reward: "Тяжёлые материалы и высокий люменный доход.",
+      threat: "Тяжёлый рейд",
+    },
+    gathering: {
+      objective: "Собрать редкие материалы и не дать мелкой нечисти сорвать маршрут.",
+      recommendation: "Лиора + Сайя для безопасного сбора и быстрой зачистки.",
+      reward: "Катализаторы, мох, редкие фрагменты для лавки.",
+      threat: "Сбор ресурсов",
+    },
+    trial: {
+      objective: "Проверить связки ролей и отточить темп перед реальным боем.",
+      recommendation: "Весь отряд, чтобы увидеть ротацию навыков.",
+      reward: "Тренировочный прогресс и ритм для следующей encounter-сцены.",
+      threat: "Тренировка",
+    },
+    event: {
+      objective: "Пресечь аномалию хора и дойти до события-босса.",
+      recommendation: "Сайя + Ноэль для темпа, контроля и мрачных encounter’ов.",
+      reward: "Редкая пыльца, временные реликвии, записи события.",
+      threat: "Временная глава",
+    },
+  };
+
+  const guideSections = [
+    {
+      id: "overview",
+      kicker: "Позиционирование",
+      title: "Что это за игра",
+      summary: "Steam-first tactical party-RPG о походах через заросшие руины, архивировании памяти мира и боях со стражами живой архитектуры.",
+      points: [
+        "Главный цикл: хаб → квест → бой → награда → усиление → новый выход.",
+        "Визуальный язык: moss-gothic, прозрачное стекло, крупные формы и соборный масштаб.",
+        "Интерфейс строится под ПК и 16:9, а не под мобильную сетку.",
+      ],
+    },
+    {
+      id: "screens",
+      kicker: "Структура",
+      title: "Роли экранов",
+      summary: "Каждый экран отвечает только за свою функцию, чтобы логика не смешивалась.",
+      points: [
+        "Квесты: задача, опасность, награды, маршрут и вход в бой.",
+        "Дневник: архив, атлас, бестиарий и лор без mission-шума.",
+        "Бой: очередь, цель, навыки, лог и состояние отряда.",
+      ],
+    },
+    {
+      id: "controls",
+      kicker: "Управление",
+      title: "Клавиши ПК",
+      summary: "Навигация под десктоп строится вокруг быстрых переходов и короткого боевого цикла.",
+      points: [
+        "1–6 переключают основные экраны, 7 открывает encounter.",
+        "Стрелки в составе листают героев без лишних кликов.",
+        "В бою игрок выбирает цель, выбирает навык и завершает ход одной основной кнопкой.",
+      ],
+    },
+    {
+      id: "steam",
+      kicker: "Steam Slice",
+      title: "Текущий срез",
+      summary: "Минимальный vertical slice должен уже выглядеть как игра для витрины Steam, а не набор UI-панелей.",
+      points: [
+        "Нужны рабочие победа/поражение, награды, сохранение и понятный возврат в прогрессию.",
+        "Портреты и враги должны читаться как иллюстративные силуэты даже на дальнем плане.",
+        "Босс главы должен иметь сильный кадр для capsule art и трейлерного кадра.",
+      ],
+    },
+  ];
+
+  const journalUnlockRules = {
+    vestibule: { questId: "story", minNode: 0 },
+    architect: { questId: "story", minNode: 1 },
+    blank-page: { questId: "event", minNode: 3 },
+    bridge-map: { questId: "story", minNode: 1 },
+    greenhouse-map: { questId: "gathering", minNode: 1 },
+    burial-map: { questId: "raid", minNode: 1 },
+    root-eaters: { questId: "story", minNode: 2 },
+    silkwing: { questId: "event", minNode: 2 },
+    colossus: { questId: "story", minNode: 4 },
+  };
+
+  const journalEntryContext = {
+    vestibule: { source: "Хроника руин · Вход", related: ["Верхний мост", "Слепые корнееды"] },
+    architect: { source: "Хроника руин · Лор", related: ["Оранжерея тумана", "Верхний мост"] },
+    blank-page: { source: "Хор мольб · Лор", related: ["Шёлкокрылы", "Немой колосс"] },
+    "bridge-map": { source: "Атлас святилища", related: ["Разломанный вестибюль", "Погреб стражей"] },
+    "greenhouse-map": { source: "Атлас ресурсов", related: ["Дневник архитектора", "Тихие оранжереи"] },
+    "burial-map": { source: "Нижние маршруты", related: ["Погреб стражей", "Немой колосс"] },
+    "root-eaters": { source: "Полевой бестиарий", related: ["Разломанный вестибюль", "Хор корней"] },
+    silkwing: { source: "Событийный бестиарий", related: ["Страница без чернил", "Пепел моли"] },
+    colossus: { source: "Архив стражей", related: ["Хроника руин", "Корень памяти"] },
+  };
+
+  const STORAGE_KEY = "bgme-state-v3";
+
   const battleSkillSets = {
     liora: [
       {
@@ -753,6 +859,10 @@
   const questStatus = document.getElementById("quest-status");
   const questProgress = document.getElementById("quest-progress");
   const questCost = document.getElementById("quest-cost");
+  const questNodeType = document.getElementById("quest-node-type");
+  const questObjective = document.getElementById("quest-objective");
+  const questReward = document.getElementById("quest-reward");
+  const questRecommendation = document.getElementById("quest-recommendation");
   const routeMap = document.getElementById("route-map");
   const routeLog = document.getElementById("route-log");
   const routeAdvanceButton = document.getElementById("route-advance");
@@ -781,6 +891,8 @@
   const journalMeta = document.getElementById("journal-meta");
   const journalStamps = document.getElementById("journal-stamps");
   const journalHighlights = document.getElementById("journal-highlights");
+  const journalSideKicker = document.getElementById("journal-side-kicker");
+  const journalSideTitle = document.getElementById("journal-side-title");
   const shopGrid = document.getElementById("shop-grid");
   const shopItemName = document.getElementById("shop-item-name");
   const shopItemDesc = document.getElementById("shop-item-desc");
@@ -789,8 +901,16 @@
   const uiScaleOptionsContainer = document.getElementById("ui-scale-options");
   const toggleMotion = document.getElementById("toggle-motion");
   const toggleContrast = document.getElementById("toggle-contrast");
+  const openGuideButton = document.getElementById("open-guide");
   const menuCheckList = document.getElementById("menu-check-list");
   const menuLogList = document.getElementById("menu-log-list");
+  const guideSectionList = document.getElementById("guide-section-list");
+  const guideKicker = document.getElementById("guide-kicker");
+  const guideTitle = document.getElementById("guide-title");
+  const guideSummary = document.getElementById("guide-summary");
+  const guidePointList = document.getElementById("guide-point-list");
+  const guideStatusTitle = document.getElementById("guide-status-title");
+  const guideStatusList = document.getElementById("guide-status-list");
   const battleTitle = document.getElementById("battle-title");
   const battleSubtitle = document.getElementById("battle-subtitle");
   const battleObjective = document.getElementById("battle-objective");
@@ -819,6 +939,7 @@
     activeJournalTab: journalTabs[0].id,
     activeJournalEntryId: journalTabs[0].entries[0].id,
     activeShopItemId: shopItems[0].id,
+    activeGuideSectionId: guideSections[0].id,
     resources: {
       ap: "15 / 15",
       fragments: 3,
@@ -843,6 +964,8 @@
     ],
     clockMs: 0,
     battle: createBattleState(),
+    resolvedBattles: {},
+    claimedNodeRewards: {},
     routeProgress: Object.fromEntries(questCards.map((quest) => [quest.id, 0])),
   };
 
@@ -865,6 +988,82 @@
 
   function getActiveShopItem() {
     return shopItems.find((item) => item.id === state.activeShopItemId) ?? shopItems[0];
+  }
+
+  function getActiveGuideSection() {
+    return guideSections.find((section) => section.id === state.activeGuideSectionId) ?? guideSections[0];
+  }
+
+  function getNodeKey(questId, nodeIndex) {
+    return `${questId}:${nodeIndex}`;
+  }
+
+  function isCombatNode(node) {
+    return ["Стычка", "Угроза", "Boss"].includes(node.label);
+  }
+
+  function isJournalEntryUnlocked(entryId) {
+    const rule = journalUnlockRules[entryId];
+    if (!rule) {
+      return true;
+    }
+
+    const progress = state.routeProgress[rule.questId] ?? 0;
+    return progress >= rule.minNode;
+  }
+
+  function saveState() {
+    if (typeof window === "undefined" || !window.localStorage) {
+      return;
+    }
+
+    const payload = {
+      activeQuestId: state.activeQuestId,
+      activeHeroId: state.activeHeroId,
+      activeJournalTab: state.activeJournalTab,
+      activeJournalEntryId: state.activeJournalEntryId,
+      activeShopItemId: state.activeShopItemId,
+      activeGuideSectionId: state.activeGuideSectionId,
+      resources: state.resources,
+      settings: state.settings,
+      sessionLog: state.sessionLog,
+      routeProgress: state.routeProgress,
+      resolvedBattles: state.resolvedBattles,
+      claimedNodeRewards: state.claimedNodeRewards,
+    };
+
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  }
+
+  function loadState() {
+    if (typeof window === "undefined" || !window.localStorage) {
+      return;
+    }
+
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed.activeQuestId) state.activeQuestId = parsed.activeQuestId;
+      if (parsed.activeHeroId) state.activeHeroId = parsed.activeHeroId;
+      if (parsed.activeJournalTab) state.activeJournalTab = parsed.activeJournalTab;
+      if (parsed.activeJournalEntryId) state.activeJournalEntryId = parsed.activeJournalEntryId;
+      if (parsed.activeShopItemId) state.activeShopItemId = parsed.activeShopItemId;
+      if (parsed.activeGuideSectionId) state.activeGuideSectionId = parsed.activeGuideSectionId;
+      if (parsed.resources) state.resources = { ...state.resources, ...parsed.resources };
+      if (parsed.settings) state.settings = { ...state.settings, ...parsed.settings };
+      if (parsed.routeProgress) state.routeProgress = { ...state.routeProgress, ...parsed.routeProgress };
+      if (parsed.resolvedBattles) state.resolvedBattles = { ...parsed.resolvedBattles };
+      if (parsed.claimedNodeRewards) state.claimedNodeRewards = { ...parsed.claimedNodeRewards };
+      if (Array.isArray(parsed.sessionLog) && parsed.sessionLog.length) {
+        state.sessionLog = parsed.sessionLog.slice(0, 6);
+      }
+    } catch {
+      window.localStorage.removeItem(STORAGE_KEY);
+    }
   }
 
   function getNodeReward(quest, nodeIndex) {
@@ -963,6 +1162,10 @@
     questCost.textContent = activeQuest.cost;
     routeAdvanceButton.disabled = isCompleted;
     routeAdvanceButton.textContent = isCompleted ? "Маршрут завершён" : currentNodeIndex === 0 ? "Войти в маршрут" : "К следующему узлу";
+    openBattleButton.textContent =
+      currentNode.label === "Boss" || currentNode.label === "Стычка" || currentNode.label === "Угроза"
+        ? "Открыть бой"
+        : "Тактический экран";
 
     routeMap.innerHTML = activeQuest.route
       .map((node, index) => {
@@ -1316,7 +1519,405 @@
       .join("");
   }
 
+  function getBattleSkillSet(heroId) {
+    return battleSkillSets[heroId] ?? [];
+  }
+
+  function getBattleAlly(id) {
+    return state.battle.allies.find((ally) => ally.id === id);
+  }
+
+  function getBattleEnemy(id) {
+    return state.battle.enemies.find((enemy) => enemy.id === id);
+  }
+
+  function getBattleTarget() {
+    return (
+      getBattleEnemy(state.battle.selectedTargetId) ??
+      state.battle.enemies[0] ?? {
+        id: "cleared",
+        name: "Арена очищена",
+        description: "Все цели подавлены. Можно возвращаться к маршруту или продолжать полировать encounter-сцену.",
+      }
+    );
+  }
+
+  function getBattleActingHero() {
+    return getBattleAlly(state.battle.actingHeroId) ?? state.battle.allies[0];
+  }
+
+  function getUnitStyle(form) {
+    const palette = battleUnitPalette[form] ?? battleUnitPalette.guide;
+    return [
+      `--unit-1:${palette.unit1}`,
+      `--unit-2:${palette.unit2}`,
+      `--unit-3:${palette.unit3}`,
+      `--skin-1:${palette.skin1}`,
+      `--skin-2:${palette.skin2}`,
+      `--weapon-1:${palette.weapon1}`,
+      `--weapon-rot:${palette.weaponRot}`,
+    ].join(";");
+  }
+
+  function getEncounterObjective(node) {
+    if (node.label === "Boss") {
+      return "Сорвите телеграф босса, сломайте узлы резонанса и удержите переднюю линию под давлением арки.";
+    }
+    if (node.label === "Стычка" || node.label === "Угроза") {
+      return "Быстро подавите волну врагов, не дав им стянуть корни вокруг задней линии.";
+    }
+    return "Используйте экран как тактический превью боя: выберите цель, проверьте ритм навыков и взаимодействие ролей.";
+  }
+
+  function prepareBattleFromQuest() {
+    const activeQuest = getActiveQuest();
+    const currentNodeIndex = state.routeProgress[activeQuest.id] ?? 0;
+    const currentNode = activeQuest.route[currentNodeIndex];
+    const nextBattle = createBattleState();
+
+    nextBattle.title = currentNode.title;
+    nextBattle.subtitle = `${activeQuest.title} · ${currentNode.label}`;
+    nextBattle.objective = getEncounterObjective(currentNode);
+    nextBattle.phase = currentNode.label === "Boss" ? "Фаза I · Подъём колосса" : "Фаза I · Контакт в руинах";
+    nextBattle.sourceQuestId = activeQuest.id;
+    nextBattle.sourceNodeIndex = currentNodeIndex;
+
+    if (currentNode.label === "Boss") {
+      nextBattle.enemies = [
+        {
+          id: "colossus",
+          name: "Немой колосс",
+          role: "Босс главы",
+          hp: 4680,
+          maxHp: 4680,
+          armor: 3,
+          intent: "Удар аркой через два такта",
+          description: "Монументальный страж, медленно наращивающий давление по передней линии.",
+          form: "colossus",
+          marked: false,
+          vulnerable: false,
+        },
+        {
+          id: "cantor",
+          name: "Хор корней",
+          role: "Поддержка",
+          hp: 1240,
+          maxHp: 1240,
+          armor: 1,
+          intent: "Сцепление корней",
+          description: "Поддерживает босса и стягивает поле узкими коридорами.",
+          form: "cantor",
+          marked: false,
+          vulnerable: false,
+        },
+      ];
+      nextBattle.queue = ["liora", "noel", "colossus", "saya", "cantor", "rian"];
+    } else {
+      nextBattle.enemies = [
+        {
+          id: "cantor",
+          name: "Хор корней",
+          role: "Элитная поддержка",
+          hp: 1680,
+          maxHp: 1680,
+          armor: 1,
+          intent: "Сцепление корней",
+          description: "Стягивает поле узким ритмом и мешает развороту задней линии.",
+          form: "cantor",
+          marked: false,
+          vulnerable: false,
+        },
+        {
+          id: "rootling",
+          name: "Корнеед",
+          role: "Налётчик",
+          hp: 980,
+          maxHp: 980,
+          armor: 0,
+          intent: "Бросок в заднюю линию",
+          description: "Мелкая нечисть, которая быстро ломает мягкие построения.",
+          form: "cantor",
+          marked: false,
+          vulnerable: false,
+        },
+      ];
+      nextBattle.queue = ["liora", "rootling", "saya", "cantor", "rian", "noel"];
+    }
+
+    nextBattle.selectedTargetId = nextBattle.enemies[0].id;
+    nextBattle.log = [
+      {
+        title: "Точка входа",
+        body: `${activeQuest.title}: ${currentNode.title}. Отряд входит в сцену боя и берёт ритм под контроль.`,
+      },
+      {
+        title: "Прицел установлен",
+        body: "Тактический экран готов: можно выбрать цель, посмотреть очередь и проверить связки ролей.",
+      },
+    ];
+
+    state.battle = nextBattle;
+    renderBattle();
+  }
+
+  function renderBattleParty() {
+    battleParty.innerHTML = state.battle.allies
+      .map((ally) => {
+        const hp = Math.max(0, Math.round((ally.hp / ally.maxHp) * 100));
+        return `
+          <article class="battle-party-card">
+            <strong>${ally.name}</strong>
+            <p>${ally.role} · Щит ${ally.guard}</p>
+            <div class="battle-unit-bar"><span style="width:${hp}%"></span></div>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  function renderBattleUnits() {
+    battleAllies.innerHTML = state.battle.allies
+      .map((ally) => {
+        const hp = Math.max(0, Math.round((ally.hp / ally.maxHp) * 100));
+        return `
+          <button class="battle-unit" type="button" data-side="ally" data-form="${ally.form}" style="${getUnitStyle(ally.form)}">
+            <div class="battle-unit-frame">
+              <div class="battle-unit-core"></div>
+              <div class="battle-unit-weapon"></div>
+            </div>
+            <strong class="battle-unit-label">${ally.name}</strong>
+            <div class="battle-unit-bar"><span style="width:${hp}%"></span></div>
+            <div class="battle-unit-meta">HP ${ally.hp} / ${ally.maxHp}</div>
+          </button>
+        `;
+      })
+      .join("");
+
+    battleEnemies.innerHTML = state.battle.enemies
+      .map((enemy) => {
+        const hp = Math.max(0, Math.round((enemy.hp / enemy.maxHp) * 100));
+        const selectedClass = enemy.id === state.battle.selectedTargetId ? "is-selected" : "";
+        const statusCopy = [enemy.marked ? "Метка" : "", enemy.vulnerable ? "Слабость" : ""].filter(Boolean).join(" · ");
+
+        return `
+          <button class="battle-unit ${selectedClass}" type="button" data-battle-target="${enemy.id}" data-side="enemy" data-form="${enemy.form}" style="${getUnitStyle(enemy.form)}">
+            <div class="battle-unit-frame">
+              <div class="battle-unit-core"></div>
+              <div class="battle-unit-weapon"></div>
+            </div>
+            <strong class="battle-unit-label">${enemy.name}</strong>
+            <div class="battle-unit-bar"><span style="width:${hp}%"></span></div>
+            <div class="battle-unit-meta">HP ${enemy.hp} / ${enemy.maxHp}${statusCopy ? ` · ${statusCopy}` : ""}</div>
+          </button>
+        `;
+      })
+      .join("");
+
+    battleEnemies.querySelectorAll("[data-battle-target]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.battle.selectedTargetId = button.dataset.battleTarget;
+        renderBattle();
+      });
+    });
+  }
+
+  function renderBattleIntents() {
+    battleIntents.innerHTML = state.battle.enemies
+      .map(
+        (enemy) => `
+          <article class="battle-intent-card">
+            <strong>${enemy.name}</strong>
+            <p>${enemy.intent}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function renderBattleQueue() {
+    battleQueue.innerHTML = state.battle.queue
+      .slice(0, 6)
+      .map((actorId, index) => {
+        const actor = getBattleAlly(actorId) ?? getBattleEnemy(actorId);
+        return `<div class="battle-queue-chip ${index === 0 ? "is-active" : ""}">${actor?.name ?? actorId}</div>`;
+      })
+      .join("");
+  }
+
+  function renderBattleSkills() {
+    const actingHero = getBattleActingHero();
+    const skills = getBattleSkillSet(actingHero.id);
+
+    battleSkillGrid.innerHTML = skills
+      .map(
+        (skill) => `
+          <button class="battle-skill ${skill.id === state.battle.selectedSkillId ? "is-selected" : ""}" type="button" data-battle-skill="${skill.id}">
+            <span>${skill.cost}</span>
+            <strong>${skill.name}</strong>
+            <p>${skill.description}</p>
+          </button>
+        `,
+      )
+      .join("");
+
+    battleSkillGrid.querySelectorAll("[data-battle-skill]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.battle.selectedSkillId = button.dataset.battleSkill;
+        renderBattleSkills();
+      });
+    });
+  }
+
+  function renderBattleLog() {
+    battleLog.innerHTML = state.battle.log
+      .map(
+        (entry) => `
+          <article class="battle-log-item">
+            <strong>${entry.title}</strong>
+            <p>${entry.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function renderBattle() {
+    const actingHero = getBattleActingHero();
+    const target = getBattleTarget();
+
+    battleTitle.textContent = state.battle.title;
+    battleSubtitle.textContent = state.battle.subtitle;
+    battleObjective.textContent = state.battle.objective;
+    battlePhase.textContent = state.battle.phase;
+    battleTurn.textContent = String(state.battle.turn);
+    battleActingName.textContent = actingHero.name;
+    battleActingRole.textContent = actingHero.role;
+    battleTargetName.textContent = target.name;
+    battleTargetDesc.textContent = target.description;
+    battleResonanceValue.textContent = `${state.battle.resonance}%`;
+    battleResonanceBar.style.width = `${Math.min(100, state.battle.resonance)}%`;
+
+    renderBattleParty();
+    renderBattleUnits();
+    renderBattleIntents();
+    renderBattleQueue();
+    renderBattleSkills();
+    renderBattleLog();
+  }
+
+  function rotateBattleQueue() {
+    const nextQueue = [...state.battle.queue];
+    const first = nextQueue.shift();
+    if (first) {
+      nextQueue.push(first);
+    }
+    state.battle.queue = nextQueue;
+  }
+
+  function resolveEnemyTurn() {
+    const enemy = getBattleEnemy(state.battle.queue[0]);
+    if (!enemy) {
+      return;
+    }
+
+    const targetAlly = [...state.battle.allies].sort((left, right) => left.hp - right.hp)[0];
+    const rawDamage = enemy.id === "colossus" ? 220 : 140;
+    const mitigatedDamage = Math.max(80, rawDamage - targetAlly.guard);
+    targetAlly.hp = Math.max(0, targetAlly.hp - mitigatedDamage);
+    targetAlly.guard = Math.max(0, targetAlly.guard - 6);
+
+    state.battle.log.unshift({
+      title: `${enemy.name} атакует`,
+      body: `${enemy.intent}. ${targetAlly.name} получает ${mitigatedDamage} урона.`,
+    });
+    state.battle.log = state.battle.log.slice(0, 6);
+
+    rotateBattleQueue();
+    const nextHero = state.battle.queue.find((actorId) => Boolean(getBattleAlly(actorId)));
+    if (nextHero) {
+      state.battle.actingHeroId = nextHero;
+      state.battle.selectedSkillId = getBattleSkillSet(nextHero)[0]?.id ?? state.battle.selectedSkillId;
+    }
+  }
+
+  function commitBattleAction() {
+    const actingHero = getBattleActingHero();
+    const target = getBattleTarget();
+    const skill = getBattleSkillSet(actingHero.id).find((item) => item.id === state.battle.selectedSkillId);
+    if (!target || !skill) {
+      return;
+    }
+
+    let damage = skill.damage;
+    if (skill.effect === "shatter" && target.marked) {
+      damage += 120;
+      target.marked = false;
+    }
+    if (skill.effect === "reap" && target.vulnerable) {
+      damage += 90;
+      target.vulnerable = false;
+    }
+
+    target.hp = Math.max(0, target.hp - damage);
+    state.battle.resonance = Math.min(100, state.battle.resonance + skill.resonance);
+
+    if (skill.effect === "mark") {
+      target.marked = true;
+    }
+    if (skill.effect === "guard") {
+      state.battle.allies.forEach((ally) => {
+        ally.guard += 6;
+      });
+    }
+    if (skill.effect === "bulwark") {
+      state.battle.allies.forEach((ally) => {
+        ally.guard += 10;
+      });
+    }
+    if (skill.effect === "vulnerable") {
+      target.vulnerable = true;
+    }
+    if (skill.effect === "delay") {
+      rotateBattleQueue();
+    }
+    if (skill.effect === "focus") {
+      state.battle.resonance = Math.min(100, state.battle.resonance + 8);
+    }
+
+    state.battle.log.unshift({
+      title: `${actingHero.name} · ${skill.name}`,
+      body: `${target.name} получает ${damage} урона.${target.hp === 0 ? " Цель выведена из ритма." : ""}`,
+    });
+    state.battle.log = state.battle.log.slice(0, 6);
+
+    if (target.hp === 0) {
+      state.battle.enemies = state.battle.enemies.filter((enemy) => enemy.id !== target.id);
+      if (state.battle.enemies.length === 0) {
+        state.battle.log.unshift({
+          title: "Победа",
+          body: "Арена очищена. Бой можно использовать как Steam-ready vertical slice encounter.",
+        });
+        state.battle.log = state.battle.log.slice(0, 6);
+        renderBattle();
+        addSessionLog("Сцена боя завершена", `${state.battle.title} очищен.`);
+        return;
+      }
+      state.battle.selectedTargetId = state.battle.enemies[0].id;
+    }
+
+    state.battle.turn += 1;
+    rotateBattleQueue();
+    while (state.battle.queue.length && !getBattleAlly(state.battle.queue[0])) {
+      resolveEnemyTurn();
+    }
+
+    state.battle.actingHeroId = state.battle.queue[0];
+    state.battle.selectedSkillId = getBattleSkillSet(state.battle.actingHeroId)[0]?.id ?? state.battle.selectedSkillId;
+    renderBattle();
+  }
+
   function setActiveScreen(screenName) {
+    const navScreen = screenName === "battle" ? "quests" : screenName;
     state.activeScreen = screenName;
     document.body.dataset.screen = screenName;
     if (window.location.hash !== `#${screenName}`) {
@@ -1328,11 +1929,11 @@
     });
 
     railButtons.forEach((button) => {
-      button.classList.toggle("is-active", button.dataset.screenTarget === screenName);
+      button.classList.toggle("is-active", button.dataset.screenTarget === navScreen);
     });
 
     dockButtons.forEach((button) => {
-      button.classList.toggle("is-active", button.dataset.screenTarget === screenName);
+      button.classList.toggle("is-active", button.dataset.screenTarget === navScreen);
     });
   }
 
@@ -1375,7 +1976,15 @@
     addSessionLog(currentNode.title, currentReward.note ?? "Маршрут продвинут.");
   });
 
+  openBattleButton.addEventListener("click", () => {
+    prepareBattleFromQuest();
+  });
+
   shopBuy.addEventListener("click", buyActiveItem);
+  battleCommit.addEventListener("click", commitBattleAction);
+  battleBack.addEventListener("click", () => {
+    setActiveScreen("quests");
+  });
 
   toggleMotion.addEventListener("click", () => {
     state.settings.reducedMotion = !state.settings.reducedMotion;
@@ -1414,6 +2023,10 @@
     if (event.key === "6") {
       setActiveScreen("menu");
     }
+    if (event.key === "7") {
+      prepareBattleFromQuest();
+      setActiveScreen("battle");
+    }
 
     if (state.activeScreen === "party" && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
       event.preventDefault();
@@ -1449,6 +2062,12 @@
           activeShopItem.currency === "fragments"
             ? state.resources.fragments >= activeShopItem.price
             : state.resources.lumen >= activeShopItem.price,
+      },
+      battle: {
+        title: state.battle.title,
+        turn: state.battle.turn,
+        acting: getBattleActingHero().name,
+        target: getBattleTarget().name,
       },
       resources: state.resources,
       settings: state.settings,
@@ -1560,8 +2179,12 @@
   renderUiScaleOptions();
   renderMenuChecklist();
   renderSessionLog();
+  renderBattle();
   applyUiSettings();
   const initialScreen = window.location.hash.replace("#", "");
+  if (initialScreen === "battle") {
+    prepareBattleFromQuest();
+  }
   if (initialScreen) {
     setActiveScreen(initialScreen);
   }
