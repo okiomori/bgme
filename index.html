@@ -69,21 +69,17 @@
 
         <div class="home-layout">
           <section class="intro-card ornate-panel">
-            <p class="eyebrow">Возвращение в святилище</p>
-            <h2>Лес проглотил город, но память всё ещё светится в камне.</h2>
+            <p class="eyebrow">Святилище возвращения</p>
+            <h2>Один путь, один страж, одна живая глава.</h2>
             <p>
-              Домашний экран строится как живой хаб: витражи, бумажные ярлыки,
-              вертикальные карточки и мягкий мистический свет вместо плоского меню.
+              Главный экран делаем тише: больше воздуха, больше фона и только один
+              стеклянный блок управления вместо набора отдельных окошек.
             </p>
-            <div class="intro-tags">
-              <span>заросшие руины</span>
-              <span>paper UI</span>
-              <span>gothic glass</span>
-            </div>
             <div class="intro-actions">
               <button class="primary-button" data-screen-target="quests">Открыть экспедиции</button>
               <button class="secondary-button" data-screen-target="party">Посмотреть отряд</button>
             </div>
+            <p class="home-quote">“Руины помнят дольше людей.”</p>
           </section>
 
           <section class="hero-stage" aria-label="Дух-проводник">
@@ -99,33 +95,10 @@
               <div class="spirit-arm spirit-arm-right"></div>
               <div class="spirit-glow"></div>
             </div>
-            <div class="hero-caption ornate-panel">
+            <div class="hero-caption">
               <p class="eyebrow">Проводница Лиора</p>
               <h3>“Не бойся стражей. Бойся тишины, когда они замолкнут.”</h3>
             </div>
-          </section>
-
-          <section class="board-panel">
-            <article class="board-card board-card-book ornate-panel">
-              <p class="board-kicker">STORY</p>
-              <h3>Книга живых маршрутов</h3>
-              <p>Главное меню подано как доска артефактов и дневников, а не как сухая сетка кнопок.</p>
-            </article>
-            <article class="board-card board-card-leaf ornate-panel">
-              <p class="board-kicker">ALLIES</p>
-              <h3>Союзники рощи</h3>
-              <p>Карточки крепятся как гербарий и полевые заметки.</p>
-            </article>
-            <article class="board-card board-card-map ornate-panel">
-              <p class="board-kicker">EXPEDITION</p>
-              <h3>Маршрут к немому колоссу</h3>
-              <p>Визуальная рифма с картой и вертикальными chapter-картами.</p>
-            </article>
-            <article class="board-card board-card-arch ornate-panel">
-              <p class="board-kicker">RESEARCH</p>
-              <h3>Арочный виварий</h3>
-              <p>Вся архитектура интерфейса остаётся “лесной соборностью”, без sci-fi отхода в сторону.</p>
-            </article>
           </section>
         </div>
       </section>
@@ -174,45 +147,67 @@
         </div>
 
         <div class="party-layout">
-          <section class="party-stats ornate-panel">
-            <p class="eyebrow">Усиление персонажа</p>
-            <div class="party-header">
-              <h2 id="hero-name">Лиора</h2>
-              <span class="hero-role" id="hero-role">Проводница мха</span>
+          <section class="party-sidebar ornate-panel">
+            <p class="eyebrow">Экспедиционный состав</p>
+            <div class="hero-list" id="hero-list"></div>
+            <div class="steam-block">
+              <p class="eyebrow">PC / Steam</p>
+              <p>
+                Крупные карточки, читаемая типографика и быстрая навигация под
+                16:9 и Steam Deck. Клавиши: <strong>1</strong>/<strong>2</strong>/<strong>3</strong> для экранов,
+                <strong>←</strong>/<strong>→</strong> для героев.
+              </p>
             </div>
-            <div class="hero-level">
-              <span>Lv 23 / 50</span>
-              <div class="level-track">
-                <div class="level-fill"></div>
-              </div>
-            </div>
-            <div class="stat-list" id="hero-stats"></div>
           </section>
 
           <section class="party-portrait ornate-panel">
-            <div class="portrait-frame">
+            <div class="portrait-frame" id="portrait-shell" data-hero="liora">
+              <div class="portrait-aura"></div>
+              <div class="portrait-ring"></div>
               <div class="portrait-ornament"></div>
+              <div class="portrait-companion"></div>
+              <div class="portrait-sigil"></div>
               <div class="portrait-figure">
                 <div class="portrait-head"></div>
                 <div class="portrait-hair"></div>
+                <div class="portrait-cloak"></div>
                 <div class="portrait-body"></div>
-                <div class="portrait-blade"></div>
+                <div class="portrait-weapon"></div>
               </div>
             </div>
             <div class="portrait-copy">
-              <p class="eyebrow">Signature</p>
-              <h3>Охотница, говорящая с рунами, как с погодой.</h3>
+              <p class="eyebrow" id="hero-epithet">Проводница святилища</p>
+              <h2 id="hero-name">Лиора</h2>
+              <p class="hero-role" id="hero-role">Проводница мха</p>
+              <p class="hero-quote" id="hero-quote">“Руины отвечают тем, кто умеет слушать медленно.”</p>
+              <div class="skill-list" id="hero-skills"></div>
             </div>
           </section>
 
-          <section class="party-upgrade ornate-panel">
+          <section class="party-design ornate-panel">
             <div class="upgrade-tabs">
-              <button class="upgrade-tab is-active">Усиление</button>
-              <button class="upgrade-tab">Навыки</button>
-              <button class="upgrade-tab">Предел</button>
+              <button class="upgrade-tab is-active">Дизайн</button>
+              <button class="upgrade-tab">Статы</button>
+              <button class="upgrade-tab">Материалы</button>
             </div>
+            <div class="design-copy">
+              <div class="design-block">
+                <span class="design-label">Силуэт</span>
+                <p id="hero-silhouette">Длинная световая фигура, тонкие рукава и круг навигации за спиной.</p>
+              </div>
+              <div class="design-block">
+                <span class="design-label">Материалы</span>
+                <p id="hero-materials-copy">Пергамент, мох, витражная эмаль, полированный камень.</p>
+              </div>
+              <div class="design-block">
+                <span class="design-label">Steam key art</span>
+                <p id="hero-steam-pose">Три четверти корпуса, силуэт читается даже в маленькой капсуле за счёт светового нимба и висящих прядей.</p>
+              </div>
+            </div>
+            <div class="swatch-list" id="hero-swatches"></div>
+            <div class="stat-list" id="hero-stats"></div>
             <div class="material-list" id="material-list"></div>
-            <button class="primary-button upgrade-button">Усилить</button>
+            <button class="primary-button upgrade-button">Подготовить к экспедиции</button>
           </section>
         </div>
       </section>
