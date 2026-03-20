@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Последняя Ступень</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-screen="home">
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+  <div class="fog-layer" aria-hidden="true"></div>
+
+  <div class="shell">
+    <header class="topbar ornate-panel">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span>
+        </div>
+        <div class="brand-copy">
+          <p class="eyebrow">Chronicle of the Mossbound</p>
+          <h1>Последняя Ступень</h1>
+          <p class="chapter-copy">Глава 1. Сад немого стража</p>
+        </div>
+      </div>
+
+      <div class="resource-strip">
+        <div class="resource-pill">
+          <span>AP</span>
+          <strong>15 / 15</strong>
+        </div>
+        <div class="resource-pill">
+          <span>Фрагменты</span>
+          <strong>03</strong>
+        </div>
+        <div class="resource-pill">
+          <span>Люмен</span>
+          <strong>420</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="viewport">
+      <aside class="left-rail ornate-panel">
+        <button class="rail-button is-active" data-screen-target="home">
+          <span class="rail-icon">⌂</span>
+          <span>Дом</span>
+        </button>
+        <button class="rail-button" data-screen-target="quests">
+          <span class="rail-icon">⌘</span>
+          <span>Экспедиции</span>
+        </button>
+        <button class="rail-button" data-screen-target="party">
+          <span class="rail-icon">✦</span>
+          <span>Отряд</span>
+        </button>
+        <button class="rail-button" disabled>
+          <span class="rail-icon">☷</span>
+          <span>Дневник</span>
+        </button>
+      </aside>
+
+      <section class="screen is-active" data-screen="home">
+        <div class="screen-scape home-scape" aria-hidden="true">
+          <div class="home-ruin home-ruin-back"></div>
+          <div class="home-ruin home-ruin-front"></div>
+          <div class="home-monolith"></div>
+          <div class="home-vines"></div>
+        </div>
+
+        <div class="home-layout">
+          <section class="intro-card ornate-panel">
+            <p class="eyebrow">Возвращение в святилище</p>
+            <h2>Лес проглотил город, но память всё ещё светится в камне.</h2>
+            <p>
+              Домашний экран строится как живой хаб: витражи, бумажные ярлыки,
+              вертикальные карточки и мягкий мистический свет вместо плоского меню.
+            </p>
+            <div class="intro-tags">
+              <span>заросшие руины</span>
+              <span>paper UI</span>
+              <span>gothic glass</span>
+            </div>
+            <div class="intro-actions">
+              <button class="primary-button" data-screen-target="quests">Открыть экспедиции</button>
+              <button class="secondary-button" data-screen-target="party">Посмотреть отряд</button>
+            </div>
+          </section>
+
+          <section class="hero-stage" aria-label="Дух-проводник">
+            <div class="hero-stage-aura"></div>
+            <div class="hero-stage-ring"></div>
+            <div class="spirit-figure">
+              <div class="spirit-halo"></div>
+              <div class="spirit-head"></div>
+              <div class="spirit-hair spirit-hair-left"></div>
+              <div class="spirit-hair spirit-hair-right"></div>
+              <div class="spirit-body"></div>
+              <div class="spirit-arm spirit-arm-left"></div>
+              <div class="spirit-arm spirit-arm-right"></div>
+              <div class="spirit-glow"></div>
+            </div>
+            <div class="hero-caption ornate-panel">
+              <p class="eyebrow">Проводница Лиора</p>
+              <h3>“Не бойся стражей. Бойся тишины, когда они замолкнут.”</h3>
+            </div>
+          </section>
+
+          <section class="board-panel">
+            <article class="board-card board-card-book ornate-panel">
+              <p class="board-kicker">STORY</p>
+              <h3>Книга живых маршрутов</h3>
+              <p>Главное меню подано как доска артефактов и дневников, а не как сухая сетка кнопок.</p>
+            </article>
+            <article class="board-card board-card-leaf ornate-panel">
+              <p class="board-kicker">ALLIES</p>
+              <h3>Союзники рощи</h3>
+              <p>Карточки крепятся как гербарий и полевые заметки.</p>
+            </article>
+            <article class="board-card board-card-map ornate-panel">
+              <p class="board-kicker">EXPEDITION</p>
+              <h3>Маршрут к немому колоссу</h3>
+              <p>Визуальная рифма с картой и вертикальными chapter-картами.</p>
+            </article>
+            <article class="board-card board-card-arch ornate-panel">
+              <p class="board-kicker">RESEARCH</p>
+              <h3>Арочный виварий</h3>
+              <p>Вся архитектура интерфейса остаётся “лесной соборностью”, без sci-fi отхода в сторону.</p>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="quests">
+        <div class="screen-scape quest-scape" aria-hidden="true">
+          <div class="city-column city-column-left"></div>
+          <div class="city-column city-column-right"></div>
+          <div class="sky-bridge"></div>
+        </div>
+
+        <div class="quest-layout">
+          <section class="quest-overview ornate-panel">
+            <p class="eyebrow">Экран экспедиций</p>
+            <h2 id="quest-title">Хроника руин</h2>
+            <p id="quest-description">
+              Вертикальные карты читаются как chapter-sheets: атмосферный живописный фон,
+              золотые рамки, тонкие статусы и минимум шумного UI.
+            </p>
+            <div class="quest-meta">
+              <div>
+                <span>Статус</span>
+                <strong id="quest-status">Открыто</strong>
+              </div>
+              <div>
+                <span>Прогресс</span>
+                <strong id="quest-progress">1 / 25</strong>
+              </div>
+            </div>
+            <div class="quest-foot">
+              <span id="quest-cost">AP 0</span>
+              <button class="primary-button">Войти в маршрут</button>
+            </div>
+          </section>
+
+          <section class="quest-carousel" aria-label="Выбор главы">
+            <div class="quest-cards" id="quest-cards"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="party">
+        <div class="screen-scape party-scape" aria-hidden="true">
+          <div class="party-window party-window-left"></div>
+          <div class="party-window party-window-right"></div>
+        </div>
+
+        <div class="party-layout">
+          <section class="party-stats ornate-panel">
+            <p class="eyebrow">Усиление персонажа</p>
+            <div class="party-header">
+              <h2 id="hero-name">Лиора</h2>
+              <span class="hero-role" id="hero-role">Проводница мха</span>
+            </div>
+            <div class="hero-level">
+              <span>Lv 23 / 50</span>
+              <div class="level-track">
+                <div class="level-fill"></div>
+              </div>
+            </div>
+            <div class="stat-list" id="hero-stats"></div>
+          </section>
+
+          <section class="party-portrait ornate-panel">
+            <div class="portrait-frame">
+              <div class="portrait-ornament"></div>
+              <div class="portrait-figure">
+                <div class="portrait-head"></div>
+                <div class="portrait-hair"></div>
+                <div class="portrait-body"></div>
+                <div class="portrait-blade"></div>
+              </div>
+            </div>
+            <div class="portrait-copy">
+              <p class="eyebrow">Signature</p>
+              <h3>Охотница, говорящая с рунами, как с погодой.</h3>
+            </div>
+          </section>
+
+          <section class="party-upgrade ornate-panel">
+            <div class="upgrade-tabs">
+              <button class="upgrade-tab is-active">Усиление</button>
+              <button class="upgrade-tab">Навыки</button>
+              <button class="upgrade-tab">Предел</button>
+            </div>
+            <div class="material-list" id="material-list"></div>
+            <button class="primary-button upgrade-button">Усилить</button>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-dock ornate-panel" aria-label="Основная навигация">
+      <button class="dock-button is-active" data-screen-target="home">Святилище</button>
+      <button class="dock-button" data-screen-target="quests">Квесты</button>
+      <button class="dock-button" data-screen-target="party">Состав</button>
+      <button class="dock-button" disabled>Дневник</button>
+      <button class="dock-button" disabled>Лавка</button>
+      <button class="dock-button" disabled>Меню</button>
+    </nav>
+  </div>
+
+  <script src="src/main.js" defer></script>
+</body>
+</html>
