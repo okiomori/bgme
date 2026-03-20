@@ -797,15 +797,17 @@ button {
 }
 
 .quest-overview,
-.party-stats,
+.party-sidebar,
 .party-portrait,
-.party-upgrade {
+.party-design {
   padding: 26px 24px;
   border-radius: 28px;
 }
 
 .quest-overview {
   align-self: start;
+  max-height: 100%;
+  overflow: auto;
 }
 
 .quest-overview h2 {
@@ -862,6 +864,75 @@ button {
   background: rgba(255, 255, 255, 0.045);
   border: 1px solid rgba(240, 221, 172, 0.12);
   color: var(--gold-soft);
+}
+
+.route-section {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.route-map {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.route-node {
+  position: relative;
+  min-height: auto;
+  padding: 10px 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  text-align: left;
+}
+
+.route-node::before {
+  display: none;
+}
+
+.route-node.is-active {
+  border-color: rgba(240, 221, 172, 0.28);
+  box-shadow: 0 0 0 1px rgba(240, 221, 172, 0.08) inset;
+}
+
+.route-node.is-cleared {
+  background:
+    linear-gradient(180deg, rgba(173, 213, 178, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.03);
+}
+
+.route-node.is-boss {
+  background:
+    linear-gradient(180deg, rgba(205, 124, 111, 0.12), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.03);
+}
+
+.route-node-step {
+  color: var(--gold-soft);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.route-node-title {
+  display: block;
+  margin-top: 6px;
+  line-height: 1.35;
+}
+
+.route-log {
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.026);
+  border: 1px solid rgba(240, 221, 172, 0.12);
+}
+
+.route-log p {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  line-height: 1.55;
 }
 
 .quest-carousel {
@@ -1068,56 +1139,385 @@ button {
 
 .party-layout {
   display: grid;
-  grid-template-columns: minmax(280px, 320px) minmax(340px, 1fr) minmax(330px, 380px);
+  grid-template-columns: minmax(250px, 290px) minmax(420px, 1fr) minmax(330px, 390px);
   gap: 22px;
+  align-items: stretch;
+}
+
+.party-sidebar {
+  display: grid;
+  gap: 18px;
+  align-self: stretch;
+  min-height: 0;
+  overflow: auto;
+}
+
+.hero-list {
+  display: grid;
+  gap: 10px;
+}
+
+.hero-card {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px 14px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.028);
+  text-align: left;
+  overflow: hidden;
+}
+
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--card-accent, rgba(240, 221, 172, 0.5));
+}
+
+.hero-card.is-active {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.03);
+  border-color: rgba(240, 221, 172, 0.24);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.16);
+}
+
+.hero-card-top {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.party-header {
-  margin-top: 10px;
+.hero-card-name {
+  font-family: "Palatino Linotype", Georgia, serif;
+  font-size: 1.1rem;
 }
 
-.party-header h2 {
-  font-size: clamp(2rem, 2.5vw, 2.6rem);
+.hero-card-role {
+  color: var(--text-soft);
+  font-size: 0.82rem;
+}
+
+.hero-card-tag {
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--gold-soft);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-card p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.steam-block {
+  margin-top: auto;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(240, 221, 172, 0.12);
+}
+
+.steam-block p:last-child {
+  margin: 10px 0 0;
+  color: var(--text-soft);
+  line-height: 1.55;
+}
+
+.steam-block strong {
+  color: var(--gold-soft);
+}
+
+.party-portrait,
+.party-design {
+  display: grid;
+  gap: 18px;
+  min-height: 0;
+}
+
+.portrait-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.portrait-copy h2 {
+  font-size: clamp(2rem, 2.7vw, 2.8rem);
 }
 
 .hero-role {
   display: inline-block;
-  margin-top: 6px;
   color: var(--gold-soft);
   letter-spacing: 0.08em;
 }
 
-.hero-level {
-  margin-top: 20px;
+.hero-quote {
+  margin: 2px 0 0;
+  color: var(--text-soft);
+  line-height: 1.65;
+  font-family: "Palatino Linotype", Georgia, serif;
 }
 
-.hero-level span {
-  display: block;
-  margin-bottom: 8px;
+.skill-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.skill-card {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.026);
+  border: 1px solid rgba(240, 221, 172, 0.12);
+}
+
+.skill-card h3 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.skill-card p {
+  margin: 6px 0 0;
   color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.portrait-frame {
+  position: relative;
+  min-height: 392px;
+  border-radius: 26px;
+  border: 1px solid rgba(240, 221, 172, 0.16);
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.08), transparent 18%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(16, 12, 12, 0.65));
+  overflow: hidden;
+  --portrait-skin-1: #f3eee5;
+  --portrait-skin-2: #d8d4cf;
+  --hair-1: #f6f6f2;
+  --hair-2: #b3bec8;
+  --hair-3: #5a6470;
+  --cloak-1: rgba(208, 237, 227, 0.44);
+  --cloak-2: rgba(126, 174, 160, 0.18);
+  --body-1: rgba(255, 250, 240, 0.94);
+  --body-2: rgba(180, 175, 154, 0.68);
+  --body-3: rgba(18, 18, 19, 0.98);
+  --accent: rgba(183, 232, 220, 0.46);
+  --accent-soft: rgba(183, 232, 220, 0.16);
+  --weapon: rgba(252, 247, 236, 0.9);
+  --companion: rgba(210, 245, 231, 0.8);
+  --sigil: rgba(230, 242, 233, 0.18);
+}
+
+.portrait-aura,
+.portrait-ring,
+.portrait-sigil,
+.portrait-companion {
+  position: absolute;
+}
+
+.portrait-aura {
+  inset: 12% 18% 14%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, var(--accent) 0%, rgba(255, 255, 255, 0.18) 18%, transparent 56%);
+  filter: blur(12px);
+}
+
+.portrait-ring {
+  inset: 8% 18% 14%;
+  border-radius: 50%;
+  border: 1px solid var(--sigil);
+  box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.015);
+}
+
+.portrait-ornament {
+  position: absolute;
+  inset: 8%;
+  border: 1px solid rgba(240, 221, 172, 0.16);
+  border-radius: 18px;
+}
+
+.portrait-figure {
+  position: absolute;
+  inset: 6% 16% 0;
+}
+
+.portrait-sigil {
+  inset: 18% 24% 22%;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.portrait-companion {
+  top: 22%;
+  right: 20%;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, var(--companion) 0%, rgba(255, 255, 255, 0.18) 28%, transparent 70%);
+  filter: blur(1px);
+  opacity: 0.9;
+}
+
+.portrait-head,
+.portrait-hair,
+.portrait-cloak,
+.portrait-body,
+.portrait-weapon {
+  position: absolute;
+}
+
+.portrait-head {
+  top: 8%;
+  left: 50%;
+  width: 20%;
+  aspect-ratio: 0.82;
+  transform: translateX(-50%);
+  border-radius: 48% 48% 44% 44%;
+  background:
+    radial-gradient(circle at 50% 30%, var(--portrait-skin-1), var(--portrait-skin-2) 58%, rgba(148, 154, 161, 0.32));
+}
+
+.portrait-hair {
+  inset: 10% 16% 10%;
+  border-radius: 38% 62% 48% 52% / 14% 14% 86% 86%;
+  background:
+    linear-gradient(180deg, var(--hair-1), var(--hair-2) 22%, var(--hair-3) 58%, rgba(19, 17, 18, 0.08) 100%);
+  clip-path: polygon(34% 0, 60% 0, 76% 14%, 78% 36%, 92% 76%, 74% 98%, 56% 100%, 44% 82%, 30% 96%, 10% 82%, 18% 36%, 22% 14%);
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.18));
+}
+
+.portrait-cloak {
+  inset: 16% 10% 0;
+  border-radius: 40% 60% 16% 16% / 18% 18% 12% 12%;
+  background: linear-gradient(180deg, var(--cloak-1), var(--cloak-2) 42%, rgba(10, 10, 11, 0.04) 100%);
+  clip-path: polygon(28% 0, 72% 0, 92% 14%, 100% 70%, 72% 100%, 28% 100%, 0 72%, 8% 14%);
+  filter: blur(0.4px);
+}
+
+.portrait-body {
+  left: 50%;
+  bottom: 2%;
+  width: 46%;
+  height: 62%;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(180deg, var(--body-1), var(--body-2) 38%, var(--body-3) 100%);
+  border-radius: 48% 52% 20% 20% / 16% 16% 22% 22%;
+  clip-path: polygon(30% 0, 70% 0, 88% 18%, 100% 70%, 75% 100%, 22% 100%, 0 72%, 10% 18%);
+  box-shadow: inset 0 0 0 1px rgba(240, 221, 172, 0.16);
+}
+
+.portrait-body::before,
+.portrait-body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.portrait-body::before {
+  background:
+    linear-gradient(180deg, transparent 0 30%, rgba(240, 221, 172, 0.08) 30% 32%, transparent 32% 100%),
+    linear-gradient(90deg, transparent 0 18%, rgba(240, 221, 172, 0.08) 18% 20%, transparent 20% 80%, rgba(240, 221, 172, 0.08) 80% 82%, transparent 82%);
+}
+
+.portrait-body::after {
+  background:
+    radial-gradient(circle at 50% 38%, var(--accent-soft), transparent 14%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 24%);
+}
+
+.portrait-weapon {
+  right: 22%;
+  bottom: 8%;
+  width: 12px;
+  height: 58%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--weapon), rgba(145, 144, 151, 0.18));
+  transform: rotate(26deg);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.08);
+}
+
+.upgrade-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.upgrade-tab {
+  padding: 11px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  color: var(--text-soft);
+}
+
+.upgrade-tab.is-active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(207, 193, 160, 0.08));
+  color: var(--text-main);
+}
+
+.design-copy {
+  display: grid;
+  gap: 14px;
+}
+
+.design-block {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.026);
+  border: 1px solid rgba(240, 221, 172, 0.12);
+}
+
+.design-block p {
+  margin: 8px 0 0;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.design-label {
+  color: var(--gold-soft);
+  font-size: 0.74rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-size: 0.76rem;
 }
 
-.level-track {
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(240, 221, 172, 0.1);
+.swatch-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.swatch {
+  min-height: 58px;
+  border-radius: 16px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  position: relative;
   overflow: hidden;
 }
 
-.level-fill {
-  width: 46%;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, rgba(244, 240, 221, 0.3), rgba(169, 197, 155, 0.78));
+.swatch::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .stat-list {
-  margin-top: 22px;
   display: grid;
   gap: 10px;
 }
@@ -1142,131 +1542,9 @@ button {
   font-weight: 600;
 }
 
-.party-portrait {
-  display: grid;
-  gap: 18px;
-}
-
-.portrait-frame {
-  position: relative;
-  min-height: 580px;
-  border-radius: 26px;
-  border: 1px solid rgba(240, 221, 172, 0.16);
-  background:
-    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.08), transparent 18%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(16, 12, 12, 0.75));
-  overflow: hidden;
-}
-
-.portrait-ornament {
-  position: absolute;
-  inset: 8%;
-  border: 1px solid rgba(240, 221, 172, 0.16);
-  border-radius: 18px;
-}
-
-.portrait-figure {
-  position: absolute;
-  inset: 6% 16% 0;
-}
-
-.portrait-head,
-.portrait-hair,
-.portrait-body,
-.portrait-blade {
-  position: absolute;
-}
-
-.portrait-head {
-  top: 8%;
-  left: 50%;
-  width: 20%;
-  aspect-ratio: 0.82;
-  transform: translateX(-50%);
-  border-radius: 48% 48% 44% 44%;
-  background:
-    radial-gradient(circle at 50% 30%, rgba(247, 243, 237, 0.98), rgba(223, 224, 226, 0.88) 52%, rgba(148, 154, 161, 0.32));
-}
-
-.portrait-hair {
-  inset: 10% 18% 12%;
-  border-radius: 38% 62% 48% 52% / 14% 14% 86% 86%;
-  background:
-    linear-gradient(180deg, rgba(239, 242, 245, 0.96), rgba(175, 182, 190, 0.88) 22%, rgba(83, 85, 95, 0.62) 58%, rgba(19, 17, 18, 0.08) 100%);
-  clip-path: polygon(34% 0, 60% 0, 76% 14%, 78% 36%, 92% 76%, 74% 98%, 56% 100%, 44% 82%, 30% 96%, 10% 82%, 18% 36%, 22% 14%);
-  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.18));
-}
-
-.portrait-body {
-  left: 50%;
-  bottom: 2%;
-  width: 46%;
-  height: 62%;
-  transform: translateX(-50%);
-  background:
-    linear-gradient(180deg, rgba(38, 34, 33, 0.96), rgba(6, 6, 7, 0.98));
-  border-radius: 48% 52% 20% 20% / 16% 16% 22% 22%;
-  clip-path: polygon(30% 0, 70% 0, 88% 18%, 100% 70%, 75% 100%, 22% 100%, 0 72%, 10% 18%);
-  box-shadow: inset 0 0 0 1px rgba(240, 221, 172, 0.16);
-}
-
-.portrait-body::before,
-.portrait-body::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-
-.portrait-body::before {
-  background:
-    linear-gradient(180deg, transparent 0 30%, rgba(240, 221, 172, 0.08) 30% 32%, transparent 32% 100%),
-    linear-gradient(90deg, transparent 0 18%, rgba(240, 221, 172, 0.08) 18% 20%, transparent 20% 80%, rgba(240, 221, 172, 0.08) 80% 82%, transparent 82%);
-}
-
-.portrait-body::after {
-  background:
-    radial-gradient(circle at 50% 38%, rgba(240, 221, 172, 0.12), transparent 14%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 24%);
-}
-
-.portrait-blade {
-  right: 22%;
-  bottom: 8%;
-  width: 10px;
-  height: 58%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(253, 250, 245, 0.9), rgba(145, 144, 151, 0.26));
-  transform: rotate(28deg);
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.08);
-}
-
-.portrait-copy h3 {
-  margin-top: 12px;
-  font-size: 1.08rem;
-  line-height: 1.5;
-}
-
-.party-upgrade {
-  display: grid;
-  gap: 18px;
-}
-
-.upgrade-tabs {
-  display: flex;
-  gap: 10px;
-}
-
-.upgrade-tab {
-  padding: 11px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(240, 221, 172, 0.14);
-  color: var(--text-soft);
-}
-
-.upgrade-tab.is-active {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(207, 193, 160, 0.08));
-  color: var(--text-main);
+.party-design {
+  align-self: stretch;
+  overflow: auto;
 }
 
 .material-list {
@@ -1341,6 +1619,159 @@ button {
 .upgrade-button {
   justify-self: stretch;
   margin-top: 6px;
+}
+
+#portrait-shell[data-hero="liora"] {
+  --portrait-skin-1: #f4efe8;
+  --portrait-skin-2: #ddd7d0;
+  --hair-1: #fbfbf7;
+  --hair-2: #d8e5e6;
+  --hair-3: #92b8b5;
+  --cloak-1: rgba(232, 248, 243, 0.46);
+  --cloak-2: rgba(147, 201, 186, 0.18);
+  --body-1: rgba(255, 250, 240, 0.94);
+  --body-2: rgba(211, 223, 214, 0.58);
+  --body-3: rgba(36, 45, 42, 0.94);
+  --accent: rgba(193, 242, 228, 0.5);
+  --accent-soft: rgba(193, 242, 228, 0.22);
+  --weapon: rgba(247, 244, 232, 0.96);
+  --companion: rgba(224, 255, 243, 0.86);
+  --sigil: rgba(214, 245, 233, 0.2);
+}
+
+#portrait-shell[data-hero="rian"] {
+  --portrait-skin-1: #e7d7c4;
+  --portrait-skin-2: #b6977f;
+  --hair-1: #503f33;
+  --hair-2: #2f251f;
+  --hair-3: #181414;
+  --cloak-1: rgba(149, 172, 135, 0.42);
+  --cloak-2: rgba(92, 115, 82, 0.22);
+  --body-1: rgba(196, 182, 143, 0.94);
+  --body-2: rgba(110, 102, 84, 0.72);
+  --body-3: rgba(20, 20, 18, 0.96);
+  --accent: rgba(190, 216, 161, 0.34);
+  --accent-soft: rgba(190, 216, 161, 0.16);
+  --weapon: rgba(223, 217, 195, 0.9);
+  --companion: rgba(191, 214, 176, 0.62);
+  --sigil: rgba(203, 215, 181, 0.16);
+}
+
+#portrait-shell[data-hero="saya"] {
+  --portrait-skin-1: #f0dfd8;
+  --portrait-skin-2: #c8a193;
+  --hair-1: #2f2a30;
+  --hair-2: #652f3e;
+  --hair-3: #140f17;
+  --cloak-1: rgba(132, 52, 67, 0.4);
+  --cloak-2: rgba(48, 18, 24, 0.22);
+  --body-1: rgba(55, 43, 47, 0.96);
+  --body-2: rgba(23, 19, 23, 0.86);
+  --body-3: rgba(8, 8, 10, 0.98);
+  --accent: rgba(211, 98, 124, 0.28);
+  --accent-soft: rgba(211, 98, 124, 0.16);
+  --weapon: rgba(246, 231, 214, 0.9);
+  --companion: rgba(220, 112, 120, 0.68);
+  --sigil: rgba(211, 122, 136, 0.14);
+}
+
+#portrait-shell[data-hero="noel"] {
+  --portrait-skin-1: #f1e6de;
+  --portrait-skin-2: #cfb4a6;
+  --hair-1: #d6e6f4;
+  --hair-2: #7e9fbe;
+  --hair-3: #2d4358;
+  --cloak-1: rgba(152, 194, 227, 0.36);
+  --cloak-2: rgba(68, 100, 134, 0.18);
+  --body-1: rgba(227, 234, 238, 0.94);
+  --body-2: rgba(140, 153, 170, 0.72);
+  --body-3: rgba(19, 26, 34, 0.96);
+  --accent: rgba(169, 215, 252, 0.36);
+  --accent-soft: rgba(169, 215, 252, 0.16);
+  --weapon: rgba(233, 241, 248, 0.92);
+  --companion: rgba(182, 215, 245, 0.74);
+  --sigil: rgba(176, 212, 241, 0.16);
+}
+
+#portrait-shell[data-hero="rian"] .portrait-hair {
+  inset: 12% 22% 18%;
+  clip-path: polygon(34% 0, 66% 0, 82% 16%, 78% 44%, 72% 68%, 68% 92%, 30% 92%, 18% 64%, 20% 20%);
+}
+
+#portrait-shell[data-hero="rian"] .portrait-cloak {
+  inset: 22% 8% 0;
+  clip-path: polygon(22% 0, 78% 0, 98% 18%, 100% 76%, 68% 100%, 32% 100%, 0 74%, 2% 20%);
+}
+
+#portrait-shell[data-hero="rian"] .portrait-weapon {
+  right: 17%;
+  width: 28px;
+  height: 44%;
+  border-radius: 18px;
+  transform: rotate(18deg);
+  box-shadow: inset 0 -40px 0 rgba(56, 64, 56, 0.36), 0 0 18px rgba(255, 255, 255, 0.06);
+}
+
+#portrait-shell[data-hero="rian"] .portrait-companion {
+  top: 28%;
+  right: 14%;
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+}
+
+#portrait-shell[data-hero="saya"] .portrait-head {
+  top: 10%;
+}
+
+#portrait-shell[data-hero="saya"] .portrait-hair {
+  inset: 10% 12% 12%;
+  clip-path: polygon(32% 0, 64% 0, 82% 12%, 100% 42%, 84% 62%, 94% 92%, 70% 100%, 44% 78%, 22% 100%, 0 92%, 10% 60%, 0 42%, 18% 12%);
+}
+
+#portrait-shell[data-hero="saya"] .portrait-cloak {
+  inset: 22% 8% 2%;
+  clip-path: polygon(20% 0, 80% 0, 100% 24%, 76% 52%, 100% 78%, 70% 100%, 34% 78%, 0 100%, 18% 48%, 0 24%);
+}
+
+#portrait-shell[data-hero="saya"] .portrait-weapon {
+  right: 18%;
+  width: 14px;
+  height: 48%;
+  transform: rotate(-28deg);
+}
+
+#portrait-shell[data-hero="saya"] .portrait-companion {
+  top: 18%;
+  right: 17%;
+  width: 92px;
+  height: 72px;
+  border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+}
+
+#portrait-shell[data-hero="noel"] .portrait-hair {
+  inset: 10% 14% 8%;
+  clip-path: polygon(36% 0, 60% 0, 78% 10%, 86% 28%, 92% 84%, 70% 100%, 54% 82%, 40% 100%, 14% 86%, 20% 26%, 24% 10%);
+}
+
+#portrait-shell[data-hero="noel"] .portrait-cloak {
+  inset: 18% 12% 0;
+  clip-path: polygon(22% 0, 78% 0, 90% 14%, 100% 80%, 74% 100%, 48% 80%, 22% 100%, 0 80%, 8% 16%);
+}
+
+#portrait-shell[data-hero="noel"] .portrait-weapon {
+  right: 16%;
+  width: 9px;
+  height: 54%;
+  transform: rotate(42deg);
+}
+
+#portrait-shell[data-hero="noel"] .portrait-companion {
+  top: 16%;
+  right: 18%;
+  width: 84px;
+  height: 84px;
+  border-radius: 22px;
 }
 
 .bottom-dock {
