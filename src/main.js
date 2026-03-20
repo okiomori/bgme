@@ -1009,7 +1009,6 @@
       ["Стоимость", item.currency === "fragments" ? `${item.price} фрагм.` : `${item.price} люм.`],
       ["Остаток", item.stock],
       ["Назначение", item.use],
-      ["Steam note", item.steam],
     ]
       .map(
         ([label, value]) => `
