@@ -1,5 +1,7 @@
 :root {
   color-scheme: dark;
+  --shell-edge: clamp(14px, 1.2vw, 28px);
+  --shell-max: 1860px;
   --bg-void: #071010;
   --bg-deep: #0f1b18;
   --bg-forest: #142922;
@@ -103,10 +105,10 @@ button {
   z-index: 3;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  gap: 18px;
-  width: min(1500px, calc(100vw - 32px));
-  height: calc(100vh - 32px);
-  margin: 16px auto;
+  gap: clamp(16px, 1vw, 22px);
+  width: min(var(--shell-max), calc(100vw - (var(--shell-edge) * 2)));
+  height: calc(100vh - (var(--shell-edge) * 2));
+  margin: var(--shell-edge) auto;
 }
 
 .ornate-panel {
@@ -148,7 +150,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 24px;
+  padding: clamp(18px, 1.2vw, 24px) clamp(22px, 1.4vw, 30px);
   border-radius: var(--radius-xl);
 }
 
@@ -218,7 +220,7 @@ button {
 .resource-strip {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: clamp(8px, 0.7vw, 12px);
 }
 
 .resource-pill {
@@ -248,8 +250,8 @@ button {
 .viewport {
   min-height: 0;
   display: grid;
-  grid-template-columns: 94px 1fr;
-  gap: 18px;
+  grid-template-columns: clamp(86px, 5.4vw, 104px) 1fr;
+  gap: clamp(16px, 1vw, 22px);
 }
 
 .left-rail {
@@ -448,7 +450,7 @@ button {
   position: relative;
   z-index: 1;
   height: 100%;
-  padding: 26px;
+  padding: clamp(24px, 1.5vw, 32px);
 }
 
 .home-layout {
@@ -2238,6 +2240,99 @@ button {
     linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(197, 174, 126, 0.08)),
     rgba(255, 255, 255, 0.04);
   color: var(--text-main);
+}
+
+@media (min-width: 1600px) {
+  body {
+    font-size: calc(17px * var(--ui-scale-factor, 1));
+  }
+
+  .shell {
+    --shell-max: 1880px;
+  }
+
+  .brand-copy h1 {
+    font-size: clamp(2.2rem, 2.8vw, 3.25rem);
+  }
+
+  .resource-pill {
+    min-width: 138px;
+    padding: 12px 16px;
+  }
+
+  .home-layout,
+  .quest-layout,
+  .party-layout,
+  .journal-layout,
+  .shop-layout,
+  .menu-layout {
+    padding: 30px;
+    gap: 26px;
+  }
+
+  .home-layout {
+    grid-template-columns: minmax(340px, 400px) minmax(860px, 1fr);
+  }
+
+  .intro-card {
+    max-width: 390px;
+    padding: 30px 28px;
+    margin-bottom: 24px;
+  }
+
+  .quest-layout {
+    grid-template-columns: minmax(330px, 380px) 1fr;
+  }
+
+  .party-layout {
+    grid-template-columns: minmax(300px, 350px) minmax(560px, 1.1fr) minmax(380px, 450px);
+  }
+
+  .journal-layout {
+    grid-template-columns: minmax(290px, 340px) 1fr minmax(300px, 350px);
+  }
+
+  .shop-layout {
+    grid-template-columns: minmax(300px, 340px) minmax(760px, 1.12fr) minmax(340px, 390px);
+  }
+
+  .menu-layout {
+    grid-template-columns: minmax(420px, 1.18fr) minmax(340px, 0.92fr) minmax(320px, 0.88fr);
+  }
+}
+
+@media (min-width: 2200px) {
+  body {
+    font-size: calc(18px * var(--ui-scale-factor, 1));
+  }
+
+  .shell {
+    --shell-max: 2280px;
+  }
+
+  .home-layout {
+    grid-template-columns: minmax(380px, 440px) minmax(1040px, 1fr);
+  }
+
+  .quest-layout {
+    grid-template-columns: minmax(360px, 420px) 1fr;
+  }
+
+  .party-layout {
+    grid-template-columns: minmax(330px, 390px) minmax(700px, 1.18fr) minmax(430px, 510px);
+  }
+
+  .journal-layout {
+    grid-template-columns: minmax(320px, 380px) minmax(920px, 1.12fr) minmax(330px, 390px);
+  }
+
+  .shop-layout {
+    grid-template-columns: minmax(320px, 380px) minmax(900px, 1.16fr) minmax(360px, 430px);
+  }
+
+  .menu-layout {
+    grid-template-columns: minmax(480px, 1.2fr) minmax(360px, 0.94fr) minmax(360px, 0.92fr);
+  }
 }
 
 @media (max-width: 1280px) {
