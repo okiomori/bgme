@@ -625,11 +625,11 @@
   const journalUnlockRules = {
     vestibule: { questId: "story", minNode: 0 },
     architect: { questId: "story", minNode: 1 },
-    blank-page: { questId: "event", minNode: 3 },
-    bridge-map: { questId: "story", minNode: 1 },
-    greenhouse-map: { questId: "gathering", minNode: 1 },
-    burial-map: { questId: "raid", minNode: 1 },
-    root-eaters: { questId: "story", minNode: 2 },
+    "blank-page": { questId: "event", minNode: 3 },
+    "bridge-map": { questId: "story", minNode: 1 },
+    "greenhouse-map": { questId: "gathering", minNode: 1 },
+    "burial-map": { questId: "raid", minNode: 1 },
+    "root-eaters": { questId: "story", minNode: 2 },
     silkwing: { questId: "event", minNode: 2 },
     colossus: { questId: "story", minNode: 4 },
   };
@@ -637,7 +637,7 @@
   const journalEntryContext = {
     vestibule: { source: "Хроника руин · Вход", related: ["Верхний мост", "Слепые корнееды"] },
     architect: { source: "Хроника руин · Лор", related: ["Оранжерея тумана", "Верхний мост"] },
-    blank-page: { source: "Хор мольб · Лор", related: ["Шёлкокрылы", "Немой колосс"] },
+    "blank-page": { source: "Хор мольб · Лор", related: ["Шёлкокрылы", "Немой колосс"] },
     "bridge-map": { source: "Атлас святилища", related: ["Разломанный вестибюль", "Погреб стражей"] },
     "greenhouse-map": { source: "Атлас ресурсов", related: ["Дневник архитектора", "Тихие оранжереи"] },
     "burial-map": { source: "Нижние маршруты", related: ["Погреб стражей", "Немой колосс"] },
@@ -737,6 +737,7 @@
       subtitle: "Глава 1 · Сад немого стража",
       objective: "Сломайте два узла резонанса и сорвите тяжёлый телеграф босса до обрушения арки.",
       phase: "Фаза I · Сломанное святилище",
+      result: "ongoing",
       turn: 1,
       resonance: 42,
       actingHeroId: "liora",
@@ -1018,6 +1019,7 @@
     }
 
     const payload = {
+      activeScreen: state.activeScreen,
       activeQuestId: state.activeQuestId,
       activeHeroId: state.activeHeroId,
       activeJournalTab: state.activeJournalTab,
@@ -1047,6 +1049,7 @@
 
     try {
       const parsed = JSON.parse(raw);
+      if (parsed.activeScreen) state.activeScreen = parsed.activeScreen;
       if (parsed.activeQuestId) state.activeQuestId = parsed.activeQuestId;
       if (parsed.activeHeroId) state.activeHeroId = parsed.activeHeroId;
       if (parsed.activeJournalTab) state.activeJournalTab = parsed.activeJournalTab;
@@ -1078,6 +1081,199 @@
     return quest.route[nodeIndex].reward ?? fallbackRewards[nodeIndex] ?? { note: "Маршрут продвинут." };
   }
 
+  function getQuestBlueprint(questId) {
+    return (
+      questBlueprints[questId] ?? {
+        objective: "Продвиньте маршрут и удерживайте строй.",
+        recommendation: "Соберите устойчивую партию под текущую угрозу.",
+        reward: "Ресурсы маршрута и прогресс главы.",
+        threat: "Экспедиция",
+      }
+    );
+  }
+
+  function getQuestById(questId) {
+    return questCards.find((quest) => quest.id === questId) ?? questCards[0];
+  }
+
+  function getQuestProgress(questId) {
+    const quest = getQuestById(questId);
+    return Math.max(0, Math.min(state.routeProgress[questId] ?? 0, quest.route.length));
+  }
+
+  function getQuestNodeContext(quest) {
+    const progress = getQuestProgress(quest.id);
+    const isCompleted = progress >= quest.route.length;
+    const nodeIndex = isCompleted ? quest.route.length - 1 : progress;
+    const node = quest.route[nodeIndex];
+    const reward = node ? getNodeReward(quest, nodeIndex) : { note: "Маршрут завершён." };
+    const resolved = node ? Boolean(state.resolvedBattles[getNodeKey(quest.id, nodeIndex)]) : false;
+
+    return {
+      progress,
+      isCompleted,
+      nodeIndex,
+      node,
+      reward,
+      resolved,
+    };
+  }
+
+  function formatRewardSummary(reward) {
+    const parts = [];
+    if (reward.lumen) {
+      parts.push(`${reward.lumen} люмена`);
+    }
+    if (reward.fragments) {
+      parts.push(`${reward.fragments} фрагм.`);
+    }
+    if (reward.ap) {
+      parts.push("восстановление AP");
+    }
+    if (reward.note) {
+      parts.push(reward.note);
+    }
+    return parts.join(" · ") || "Прогресс главы и архивный след.";
+  }
+
+  function formatRewardHeadline(reward) {
+    const parts = [];
+    if (reward.lumen) {
+      parts.push(`${reward.lumen} люмена`);
+    }
+    if (reward.fragments) {
+      parts.push(`${reward.fragments} фрагм.`);
+    }
+    if (reward.ap) {
+      parts.push("восстановление AP");
+    }
+    return parts.join(" · ") || "Архивный след и прогресс главы.";
+  }
+
+  function getNodeTypeLabel(node, resolved) {
+    if (!node) {
+      return "Завершено";
+    }
+    if (isCombatNode(node)) {
+      return resolved ? "Бой выигран" : "Боевой узел";
+    }
+    if (node.label === "Лор") {
+      return "Архив";
+    }
+    if (node.label === "Передышка" || node.label === "Ресурс") {
+      return "Передышка";
+    }
+    if (node.label === "Вход" || node.label === "Сбор" || node.label === "Поиск") {
+      return "Разведка";
+    }
+    return node.label;
+  }
+
+  function getJournalUnlockLabel(entryId) {
+    const rule = journalUnlockRules[entryId];
+    if (!rule) {
+      return "Открыто с начала кампании.";
+    }
+
+    const quest = getQuestById(rule.questId);
+    const node = quest.route[Math.min(rule.minNode, quest.route.length - 1)];
+    return `Откроется после узла «${node.title}» в главе «${quest.title}».`;
+  }
+
+  function getFirstUnlockedJournalEntryId(tab) {
+    return tab.entries.find((entry) => isJournalEntryUnlocked(entry.id))?.id ?? tab.entries[0]?.id;
+  }
+
+  function ensureValidJournalSelection() {
+    let activeTab = getActiveJournalTab();
+    let firstUnlockedId = getFirstUnlockedJournalEntryId(activeTab);
+
+    if (!firstUnlockedId) {
+      const fallbackTab = journalTabs.find((tab) => Boolean(getFirstUnlockedJournalEntryId(tab))) ?? journalTabs[0];
+      state.activeJournalTab = fallbackTab.id;
+      activeTab = fallbackTab;
+      firstUnlockedId = getFirstUnlockedJournalEntryId(activeTab);
+    }
+
+    if (!activeTab.entries.some((entry) => entry.id === state.activeJournalEntryId && isJournalEntryUnlocked(entry.id))) {
+      state.activeJournalEntryId = firstUnlockedId;
+    }
+  }
+
+  function claimNodeReward(quest, nodeIndex) {
+    const rewardKey = getNodeKey(quest.id, nodeIndex);
+    if (state.claimedNodeRewards[rewardKey]) {
+      return false;
+    }
+
+    const reward = getNodeReward(quest, nodeIndex);
+    if (reward.lumen) {
+      state.resources.lumen += reward.lumen;
+    }
+    if (reward.fragments) {
+      state.resources.fragments += reward.fragments;
+    }
+    if (reward.ap) {
+      state.resources.ap = reward.ap;
+    }
+
+    state.claimedNodeRewards[rewardKey] = true;
+    renderResources();
+    return true;
+  }
+
+  function getReadinessReport() {
+    const totalJournalEntries = journalTabs.reduce((sum, tab) => sum + tab.entries.length, 0);
+    const unlockedJournalEntries = journalTabs.reduce(
+      (sum, tab) => sum + tab.entries.filter((entry) => isJournalEntryUnlocked(entry.id)).length,
+      0,
+    );
+    const totalNodes = questCards.reduce((sum, quest) => sum + quest.route.length, 0);
+    const clearedNodes = questCards.reduce((sum, quest) => sum + getQuestProgress(quest.id), 0);
+    const totalCombatNodes = questCards.reduce(
+      (sum, quest) => sum + quest.route.filter((node) => isCombatNode(node)).length,
+      0,
+    );
+    const resolvedCombatNodes = Object.keys(state.resolvedBattles).length;
+    const percent = 62;
+
+    return {
+      percent,
+      cards: [
+        {
+          title: "Визуальный shell",
+          body: "Стиль, крупные формы и desktop-композиция уже считываются как Steam-first срез.",
+          tone: "good",
+        },
+        {
+          title: "Маршруты и награды",
+          body: `${clearedNodes} из ${totalNodes} узлов отслеживаются, а награды выдаются только один раз.`,
+          tone: "good",
+        },
+        {
+          title: "Архив и дневник",
+          body: `${unlockedJournalEntries} из ${totalJournalEntries} записей открываются по прогрессу, а не смешаны с mission UI.`,
+          tone: "mid",
+        },
+        {
+          title: "Боевые encounter'ы",
+          body: `${resolvedCombatNodes} из ${totalCombatNodes} боевых узлов уже могут фиксироваться как выигранные.`,
+          tone: "mid",
+        },
+        {
+          title: "Meta-прогрессия",
+          body: "Сохранение ресурсов, экранов, маршрутов и архива работает, но усиления героев ещё не привязаны к результатам боёв.",
+          tone: "mid",
+        },
+        {
+          title: "Чего ещё не хватает",
+          body: "Нужны post-battle экран, больше encounter-вариантов, развитие героев и более глубокая экономическая петля.",
+          tone: "low",
+        },
+      ],
+    };
+  }
+
   function formatClock() {
     const now = new Date();
     return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
@@ -1091,6 +1287,7 @@
     });
     state.sessionLog = state.sessionLog.slice(0, 6);
     renderSessionLog();
+    saveState();
   }
 
   function renderResources() {
@@ -1126,7 +1323,7 @@
               <div class="quest-card-footer">
                 <div>
                   <div>${card.cost}</div>
-                  <div class="quest-progress">${Math.min((state.routeProgress[card.id] ?? 0) + 1, card.route.length)} / ${card.route.length}</div>
+                  <div class="quest-progress">${Math.min(getQuestProgress(card.id), card.route.length)} / ${card.route.length}</div>
                 </div>
                 <span class="quest-status ${
                   card.status === "Закрыто" ? "locked" : ""
@@ -1143,35 +1340,56 @@
         state.activeQuestId = button.dataset.questId;
         renderQuestCards();
         updateQuestOverview();
+        saveState();
       });
     });
   }
 
   function updateQuestOverview() {
     const activeQuest = getActiveQuest();
-
-    const currentNodeIndex = state.routeProgress[activeQuest.id] ?? 0;
-    const currentNode = activeQuest.route[currentNodeIndex];
-    const currentReward = getNodeReward(activeQuest, currentNodeIndex);
-    const isCompleted = currentNodeIndex >= activeQuest.route.length - 1;
+    const blueprint = getQuestBlueprint(activeQuest.id);
+    const { progress, isCompleted, nodeIndex, node: currentNode, reward: currentReward, resolved } = getQuestNodeContext(activeQuest);
+    const combatLocked = Boolean(currentNode && isCombatNode(currentNode) && !resolved);
 
     questTitle.textContent = activeQuest.title;
     questDescription.textContent = activeQuest.description;
-    questStatus.textContent = isCompleted ? "Очищено" : currentNodeIndex > 0 ? "В пути" : activeQuest.status;
-    questProgress.textContent = `${Math.min(currentNodeIndex + 1, activeQuest.route.length)} / ${activeQuest.route.length}`;
+    questStatus.textContent = isCompleted ? "Очищено" : progress > 0 ? "В экспедиции" : activeQuest.status;
+    questProgress.textContent = `${Math.min(progress, activeQuest.route.length)} / ${activeQuest.route.length}`;
     questCost.textContent = activeQuest.cost;
-    routeAdvanceButton.disabled = isCompleted;
-    routeAdvanceButton.textContent = isCompleted ? "Маршрут завершён" : currentNodeIndex === 0 ? "Войти в маршрут" : "К следующему узлу";
-    openBattleButton.textContent =
-      currentNode.label === "Boss" || currentNode.label === "Стычка" || currentNode.label === "Угроза"
-        ? "Открыть бой"
+    questNodeType.textContent = isCompleted ? "Маршрут очищен" : getNodeTypeLabel(currentNode, resolved);
+    questObjective.textContent = isCompleted
+      ? "Глава закрыта. Можно переходить к следующему маршруту или использовать encounter как showcase-сцену."
+      : `${blueprint.objective} Узел: «${currentNode.title}».`;
+    questReward.textContent = isCompleted ? "Основные награды уже собраны." : formatRewardHeadline(currentReward);
+    questRecommendation.textContent = isCompleted
+      ? "Соберите следующий маршрут или вернитесь в архив за деталями мира."
+      : combatLocked
+        ? `${blueprint.recommendation} Сначала бой.`
+        : blueprint.recommendation;
+    routeAdvanceButton.disabled = isCompleted || combatLocked;
+    routeAdvanceButton.textContent = isCompleted
+      ? "Маршрут завершён"
+      : combatLocked
+        ? "Сначала выиграйте бой"
+        : progress === 0
+          ? "Войти в маршрут"
+          : "Завершить узел";
+    openBattleButton.disabled = isCompleted;
+    openBattleButton.textContent = isCompleted
+      ? "Глава очищена"
+      : isCombatNode(currentNode)
+        ? resolved
+          ? "Бой уже выигран"
+          : "Открыть бой"
         : "Тактический экран";
 
     routeMap.innerHTML = activeQuest.route
       .map((node, index) => {
         const stateClass = [
-          index === currentNodeIndex ? "is-active" : "",
-          index < currentNodeIndex ? "is-cleared" : "",
+          !isCompleted && index === nodeIndex ? "is-active" : "",
+          index < progress ? "is-cleared" : "",
+          !isCompleted && index === nodeIndex && isCombatNode(node) && !resolved ? "is-blocked" : "",
+          !isCompleted && index === nodeIndex && resolved ? "is-resolved" : "",
           node.label === "Boss" ? "is-boss" : "",
         ]
           .filter(Boolean)
@@ -1186,12 +1404,19 @@
       })
       .join("");
 
-    routeLog.innerHTML = `
-      <span class="route-node-step">Текущий узел</span>
-      <strong class="route-node-title">${currentNode.title}</strong>
-      <p>${currentNode.body}</p>
-      <p>${currentReward.note ?? "Маршрут продолжается без особой находки."}</p>
-    `;
+    routeLog.innerHTML = isCompleted
+      ? `
+        <span class="route-node-step">Маршрут завершён</span>
+        <strong class="route-node-title">${activeQuest.title}</strong>
+        <p>Все узлы главы закрыты. Архив обновлён, а боевую сцену можно использовать как витринный encounter.</p>
+        <p>${blueprint.reward}</p>
+      `
+      : `
+        <span class="route-node-step">Текущий узел</span>
+        <strong class="route-node-title">${currentNode.title}</strong>
+        <p>${currentNode.body}</p>
+        <p>${combatLocked ? "Узел заблокирован боем. Сначала завершите encounter." : currentReward.note ?? "Маршрут продолжается без особой находки."}</p>
+      `;
     renderJournalHighlights();
   }
 
@@ -1308,22 +1533,24 @@
 
   function renderJournalTabs() {
     journalTabsContainer.innerHTML = journalTabs
-      .map(
-        (tab) => `
+      .map((tab) => {
+        const unlockedCount = tab.entries.filter((entry) => isJournalEntryUnlocked(entry.id)).length;
+        return `
           <button class="journal-tab ${tab.id === state.activeJournalTab ? "is-active" : ""}" data-journal-tab="${tab.id}">
-            ${tab.label}
+            ${tab.label} · ${unlockedCount}/${tab.entries.length}
           </button>
-        `,
-      )
+        `;
+      })
       .join("");
 
     journalTabsContainer.querySelectorAll("[data-journal-tab]").forEach((button) => {
       button.addEventListener("click", () => {
         state.activeJournalTab = button.dataset.journalTab;
-        state.activeJournalEntryId = getActiveJournalTab().entries[0].id;
+        ensureValidJournalSelection();
         renderJournalTabs();
         renderJournalList();
         updateJournalPanel();
+        saveState();
       });
     });
   }
@@ -1332,42 +1559,54 @@
     const activeTab = getActiveJournalTab();
 
     journalList.innerHTML = activeTab.entries
-      .map(
-        (entry) => `
-          <button class="journal-entry-button ${entry.id === state.activeJournalEntryId ? "is-active" : ""}" data-journal-entry="${entry.id}">
+      .map((entry) => {
+        const unlocked = isJournalEntryUnlocked(entry.id);
+        return `
+          <button
+            class="journal-entry-button ${entry.id === state.activeJournalEntryId ? "is-active" : ""} ${!unlocked ? "is-locked" : ""}"
+            data-journal-entry="${entry.id}"
+            ${!unlocked ? "data-entry-locked=true" : ""}
+          >
             <strong>${entry.title}</strong>
-            <p>${entry.subtitle}</p>
+            <p>${unlocked ? entry.subtitle : getJournalUnlockLabel(entry.id)}</p>
+            ${!unlocked ? '<span class="journal-entry-lock">Закрыто</span>' : ""}
           </button>
-        `,
-      )
+        `;
+      })
       .join("");
 
     journalList.querySelectorAll("[data-journal-entry]").forEach((button) => {
       button.addEventListener("click", () => {
+        if (button.dataset.entryLocked === "true") {
+          return;
+        }
         state.activeJournalEntryId = button.dataset.journalEntry;
         renderJournalList();
         updateJournalPanel();
+        saveState();
       });
     });
   }
 
   function renderJournalHighlights() {
-    const activeQuest = getActiveQuest();
-    const activeHero = getActiveHero();
-    const currentNode = activeQuest.route[state.routeProgress[activeQuest.id] ?? 0];
+    const activeTab = getActiveJournalTab();
+    const activeEntry = getActiveJournalEntry();
+    const context = journalEntryContext[activeEntry.id];
 
     journalHighlights.innerHTML = [
       {
-        title: "Активная глава",
-        body: `${activeQuest.title} · ${currentNode.title}`,
+        title: "Источник",
+        body: context?.source ?? `${activeTab.label} · Архивная запись`,
       },
       {
-        title: "Лицо отряда",
-        body: `${activeHero.name} — ${activeHero.role}`,
+        title: "Связанные записи",
+        body: context?.related?.join(" · ") ?? "Связей пока не найдено.",
       },
       {
-        title: "Ресурсный след",
-        body: `Люмен: ${state.resources.lumen} · Фрагменты: ${String(state.resources.fragments).padStart(2, "0")}`,
+        title: "Статус архива",
+        body: isJournalEntryUnlocked(activeEntry.id)
+          ? "Запись открыта и добавлена в походный архив."
+          : getJournalUnlockLabel(activeEntry.id),
       },
     ]
       .map(
@@ -1383,16 +1622,68 @@
 
   function updateJournalPanel() {
     const activeTab = getActiveJournalTab();
+    ensureValidJournalSelection();
     const activeEntry = getActiveJournalEntry();
+    const context = journalEntryContext[activeEntry.id];
 
     journalKicker.textContent = activeTab.kicker;
     journalTitle.textContent = activeEntry.title;
     journalBody.textContent = activeEntry.body;
     journalMeta.textContent = activeEntry.meta;
+    journalSideKicker.textContent = context?.source ? "Источник архива" : "Архивная карточка";
+    journalSideTitle.textContent = context?.source ?? activeTab.label;
     journalStamps.innerHTML = activeEntry.stamps
       .map((stamp) => `<span class="journal-stamp">${stamp}</span>`)
       .join("");
     renderJournalHighlights();
+  }
+
+  function renderGuideSections() {
+    guideSectionList.innerHTML = guideSections
+      .map(
+        (section) => `
+          <button class="guide-section-button ${section.id === state.activeGuideSectionId ? "is-active" : ""}" data-guide-section="${section.id}">
+            <strong>${section.title}</strong>
+            <p>${section.kicker}</p>
+          </button>
+        `,
+      )
+      .join("");
+
+    guideSectionList.querySelectorAll("[data-guide-section]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.activeGuideSectionId = button.dataset.guideSection;
+        renderGuideSections();
+        updateGuidePanel();
+        saveState();
+      });
+    });
+  }
+
+  function updateGuidePanel() {
+    const activeSection = getActiveGuideSection();
+    const readiness = getReadinessReport();
+
+    guideKicker.textContent = activeSection.kicker;
+    guideTitle.textContent = activeSection.title;
+    guideSummary.textContent =
+      activeSection.id === "steam"
+        ? `${activeSection.summary} Текущая готовность вертикального среза: ${readiness.percent}%.`
+        : activeSection.summary;
+    guidePointList.innerHTML = activeSection.points
+      .map((point) => `<article class="guide-point">${point}</article>`)
+      .join("");
+    guideStatusTitle.textContent = `Готовность среза · ${readiness.percent}%`;
+    guideStatusList.innerHTML = readiness.cards
+      .map(
+        (card) => `
+          <article class="guide-status-card is-${card.tone}">
+            <strong>${card.title}</strong>
+            <p>${card.body}</p>
+          </article>
+        `,
+      )
+      .join("");
   }
 
   function renderShopGrid() {
@@ -1493,7 +1784,19 @@
   }
 
   function renderMenuChecklist() {
-    menuCheckList.innerHTML = steamChecklist
+    const readiness = getReadinessReport();
+    const checklist = [
+      steamChecklist[0],
+      { ...steamChecklist[1], body: "Экраны листаются цифрами 1–7, а руководство открывается также по клавише 8." },
+      steamChecklist[2],
+      {
+        title: "Логика вертикального среза",
+        body: `Текущая оценка готовности: ${readiness.percent}%. Маршруты, архив и бой уже связаны, но мета-слой ещё неглубокий.`,
+        complete: readiness.percent >= 60,
+      },
+    ];
+
+    menuCheckList.innerHTML = checklist
       .map(
         (item) => `
           <article class="menu-check-item ${item.complete ? "is-complete" : ""}">
@@ -1571,8 +1874,11 @@
 
   function prepareBattleFromQuest() {
     const activeQuest = getActiveQuest();
-    const currentNodeIndex = state.routeProgress[activeQuest.id] ?? 0;
-    const currentNode = activeQuest.route[currentNodeIndex];
+    const { isCompleted, nodeIndex: currentNodeIndex, node: currentNode, resolved } = getQuestNodeContext(activeQuest);
+    if (isCompleted || !currentNode) {
+      return;
+    }
+
     const nextBattle = createBattleState();
 
     nextBattle.title = currentNode.title;
@@ -1581,6 +1887,20 @@
     nextBattle.phase = currentNode.label === "Boss" ? "Фаза I · Подъём колосса" : "Фаза I · Контакт в руинах";
     nextBattle.sourceQuestId = activeQuest.id;
     nextBattle.sourceNodeIndex = currentNodeIndex;
+
+    if (resolved && isCombatNode(currentNode)) {
+      nextBattle.result = "victory";
+      nextBattle.enemies = [];
+      nextBattle.log = [
+        {
+          title: "Узел уже очищен",
+          body: "Encounter завершён. Вернитесь в Экспедиции и закройте узел маршрута, чтобы продвинуть главу.",
+        },
+      ];
+      state.battle = nextBattle;
+      renderBattle();
+      return;
+    }
 
     if (currentNode.label === "Boss") {
       nextBattle.enemies = [
@@ -1784,11 +2104,20 @@
   function renderBattle() {
     const actingHero = getBattleActingHero();
     const target = getBattleTarget();
+    const isOngoing = state.battle.result === "ongoing";
 
     battleTitle.textContent = state.battle.title;
     battleSubtitle.textContent = state.battle.subtitle;
-    battleObjective.textContent = state.battle.objective;
-    battlePhase.textContent = state.battle.phase;
+    battleObjective.textContent = isOngoing
+      ? state.battle.objective
+      : state.battle.result === "victory"
+        ? "Узел подавлен. Вернитесь в Экспедиции и завершите узел маршрута, чтобы получить награду."
+        : "Отряд отступил. Encounter можно перезапустить без потери маршрута.";
+    battlePhase.textContent = isOngoing
+      ? state.battle.phase
+      : state.battle.result === "victory"
+        ? "Результат · Победа"
+        : "Результат · Отступление";
     battleTurn.textContent = String(state.battle.turn);
     battleActingName.textContent = actingHero.name;
     battleActingRole.textContent = actingHero.role;
@@ -1796,6 +2125,11 @@
     battleTargetDesc.textContent = target.description;
     battleResonanceValue.textContent = `${state.battle.resonance}%`;
     battleResonanceBar.style.width = `${Math.min(100, state.battle.resonance)}%`;
+    battleCommit.textContent = isOngoing
+      ? "Применить приём"
+      : state.battle.result === "victory"
+        ? "Вернуться с победой"
+        : "Повторить encounter";
 
     renderBattleParty();
     renderBattleUnits();
@@ -1806,12 +2140,50 @@
   }
 
   function rotateBattleQueue() {
-    const nextQueue = [...state.battle.queue];
+    const nextQueue = state.battle.queue.filter((actorId) => {
+      const ally = getBattleAlly(actorId);
+      if (ally) {
+        return ally.hp > 0;
+      }
+
+      const enemy = getBattleEnemy(actorId);
+      return Boolean(enemy && enemy.hp > 0);
+    });
     const first = nextQueue.shift();
     if (first) {
       nextQueue.push(first);
     }
     state.battle.queue = nextQueue;
+  }
+
+  function resolveBattleVictory() {
+    const battleKey = getNodeKey(state.battle.sourceQuestId, state.battle.sourceNodeIndex);
+    state.battle.result = "victory";
+    state.resolvedBattles[battleKey] = true;
+    state.battle.enemies = [];
+    state.battle.selectedTargetId = "cleared";
+    state.battle.log.unshift({
+      title: "Победа",
+      body: "Узел зачищен. Теперь вернитесь в Экспедиции и завершите узел маршрута, чтобы забрать награду.",
+    });
+    state.battle.log = state.battle.log.slice(0, 6);
+    renderBattle();
+    renderQuestCards();
+    updateQuestOverview();
+    renderGuideSections();
+    updateGuidePanel();
+    addSessionLog("Encounter завершён", `${state.battle.title} выигран. Маршрут можно продвинуть дальше.`);
+  }
+
+  function resolveBattleDefeat() {
+    state.battle.result = "defeat";
+    state.battle.log.unshift({
+      title: "Отступление",
+      body: "Отряд не удержал строй. Encounter можно перезапустить без потери текущего маршрута.",
+    });
+    state.battle.log = state.battle.log.slice(0, 6);
+    renderBattle();
+    addSessionLog("Encounter сорван", `${state.battle.title} требует повторной попытки.`);
   }
 
   function resolveEnemyTurn() {
@@ -1820,7 +2192,13 @@
       return;
     }
 
-    const targetAlly = [...state.battle.allies].sort((left, right) => left.hp - right.hp)[0];
+    const livingAllies = state.battle.allies.filter((ally) => ally.hp > 0);
+    if (!livingAllies.length) {
+      resolveBattleDefeat();
+      return;
+    }
+
+    const targetAlly = [...livingAllies].sort((left, right) => left.hp - right.hp)[0];
     const rawDamage = enemy.id === "colossus" ? 220 : 140;
     const mitigatedDamage = Math.max(80, rawDamage - targetAlly.guard);
     targetAlly.hp = Math.max(0, targetAlly.hp - mitigatedDamage);
@@ -1832,8 +2210,16 @@
     });
     state.battle.log = state.battle.log.slice(0, 6);
 
+    if (state.battle.allies.every((ally) => ally.hp <= 0)) {
+      resolveBattleDefeat();
+      return;
+    }
+
     rotateBattleQueue();
-    const nextHero = state.battle.queue.find((actorId) => Boolean(getBattleAlly(actorId)));
+    const nextHero = state.battle.queue.find((actorId) => {
+      const ally = getBattleAlly(actorId);
+      return Boolean(ally && ally.hp > 0);
+    });
     if (nextHero) {
       state.battle.actingHeroId = nextHero;
       state.battle.selectedSkillId = getBattleSkillSet(nextHero)[0]?.id ?? state.battle.selectedSkillId;
@@ -1841,6 +2227,17 @@
   }
 
   function commitBattleAction() {
+    if (state.battle.result === "victory") {
+      setActiveScreen("quests");
+      return;
+    }
+
+    if (state.battle.result === "defeat") {
+      prepareBattleFromQuest();
+      setActiveScreen("battle");
+      return;
+    }
+
     const actingHero = getBattleActingHero();
     const target = getBattleTarget();
     const skill = getBattleSkillSet(actingHero.id).find((item) => item.id === state.battle.selectedSkillId);
@@ -1893,13 +2290,7 @@
     if (target.hp === 0) {
       state.battle.enemies = state.battle.enemies.filter((enemy) => enemy.id !== target.id);
       if (state.battle.enemies.length === 0) {
-        state.battle.log.unshift({
-          title: "Победа",
-          body: "Арена очищена. Бой можно использовать как Steam-ready vertical slice encounter.",
-        });
-        state.battle.log = state.battle.log.slice(0, 6);
-        renderBattle();
-        addSessionLog("Сцена боя завершена", `${state.battle.title} очищен.`);
+        resolveBattleVictory();
         return;
       }
       state.battle.selectedTargetId = state.battle.enemies[0].id;
@@ -1914,10 +2305,11 @@
     state.battle.actingHeroId = state.battle.queue[0];
     state.battle.selectedSkillId = getBattleSkillSet(state.battle.actingHeroId)[0]?.id ?? state.battle.selectedSkillId;
     renderBattle();
+    saveState();
   }
 
   function setActiveScreen(screenName) {
-    const navScreen = screenName === "battle" ? "quests" : screenName;
+    const navScreen = screenName === "battle" ? "quests" : screenName === "guide" ? "menu" : screenName;
     state.activeScreen = screenName;
     document.body.dataset.screen = screenName;
     if (window.location.hash !== `#${screenName}`) {
@@ -1935,6 +2327,7 @@
     dockButtons.forEach((button) => {
       button.classList.toggle("is-active", button.dataset.screenTarget === navScreen);
     });
+    saveState();
   }
 
   screenButtons.forEach((button) => {
@@ -1952,28 +2345,32 @@
 
   routeAdvanceButton.addEventListener("click", () => {
     const activeQuest = getActiveQuest();
-    const currentNodeIndex = state.routeProgress[activeQuest.id] ?? 0;
-    if (currentNodeIndex >= activeQuest.route.length - 1) {
+    const { progress, isCompleted, nodeIndex: currentNodeIndex, node: currentNode, resolved } = getQuestNodeContext(activeQuest);
+    if (isCompleted || !currentNode) {
       return;
     }
 
-    const currentNode = activeQuest.route[currentNodeIndex];
-    const currentReward = getNodeReward(activeQuest, currentNodeIndex);
-    if (currentReward.lumen) {
-      state.resources.lumen += currentReward.lumen;
-    }
-    if (currentReward.fragments) {
-      state.resources.fragments += currentReward.fragments;
-    }
-    if (currentReward.ap) {
-      state.resources.ap = currentReward.ap;
+    if (isCombatNode(currentNode) && !resolved) {
+      prepareBattleFromQuest();
+      setActiveScreen("battle");
+      return;
     }
 
-    state.routeProgress[activeQuest.id] = currentNodeIndex + 1;
+    const rewardWasClaimed = claimNodeReward(activeQuest, currentNodeIndex);
+    state.routeProgress[activeQuest.id] = Math.min(progress + 1, activeQuest.route.length);
+    ensureValidJournalSelection();
     renderResources();
     renderQuestCards();
     updateQuestOverview();
-    addSessionLog(currentNode.title, currentReward.note ?? "Маршрут продвинут.");
+    renderJournalTabs();
+    renderJournalList();
+    updateJournalPanel();
+    renderGuideSections();
+    updateGuidePanel();
+    addSessionLog(
+      currentNode.title,
+      rewardWasClaimed ? getNodeReward(activeQuest, currentNodeIndex).note ?? "Узел закрыт." : "Узел закрыт без дополнительной награды.",
+    );
   });
 
   openBattleButton.addEventListener("click", () => {
@@ -2027,6 +2424,9 @@
       prepareBattleFromQuest();
       setActiveScreen("battle");
     }
+    if (event.key === "8") {
+      setActiveScreen("guide");
+    }
 
     if (state.activeScreen === "party" && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
       event.preventDefault();
@@ -2036,17 +2436,23 @@
 
   function renderGameToText() {
     const activeQuest = getActiveQuest();
+    ensureValidJournalSelection();
     const activeJournalEntry = getActiveJournalEntry();
     const activeShopItem = getActiveShopItem();
-    const currentNodeIndex = state.routeProgress[activeQuest.id] ?? 0;
+    const activeGuideSection = getActiveGuideSection();
+    const { progress, nodeIndex, node, resolved, isCompleted } = getQuestNodeContext(activeQuest);
+    const readiness = getReadinessReport();
 
     return JSON.stringify({
       mode: state.activeScreen,
       note: "UI origin top-left, x grows right, y grows down.",
       quest: {
         id: activeQuest.id,
-        nodeIndex: currentNodeIndex,
-        nodeTitle: activeQuest.route[currentNodeIndex].title,
+        progress,
+        nodeIndex,
+        nodeTitle: node?.title ?? "Маршрут завершён",
+        resolvedCombat: resolved,
+        completed: isCompleted,
       },
       hero: {
         id: state.activeHeroId,
@@ -2063,9 +2469,14 @@
             ? state.resources.fragments >= activeShopItem.price
             : state.resources.lumen >= activeShopItem.price,
       },
+      guide: {
+        section: activeGuideSection.title,
+        readiness: readiness.percent,
+      },
       battle: {
         title: state.battle.title,
         turn: state.battle.turn,
+        result: state.battle.result,
         acting: getBattleActingHero().name,
         target: getBattleTarget().name,
       },
@@ -2166,6 +2577,8 @@
     });
   }
 
+  loadState();
+  ensureValidJournalSelection();
   renderResources();
   renderQuestCards();
   updateQuestOverview();
@@ -2179,14 +2592,14 @@
   renderUiScaleOptions();
   renderMenuChecklist();
   renderSessionLog();
+  renderGuideSections();
+  updateGuidePanel();
   renderBattle();
   applyUiSettings();
   const initialScreen = window.location.hash.replace("#", "");
   if (initialScreen === "battle") {
     prepareBattleFromQuest();
   }
-  if (initialScreen) {
-    setActiveScreen(initialScreen);
-  }
+  setActiveScreen(initialScreen || state.activeScreen || "home");
   startAmbientCanvas();
 })();
