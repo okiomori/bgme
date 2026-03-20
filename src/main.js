@@ -348,6 +348,200 @@
     },
   ];
 
+  const journalTabs = [
+    {
+      id: "records",
+      label: "Записи",
+      kicker: "Полевой лист",
+      entries: [
+        {
+          id: "vestibule",
+          title: "Разломанный вестибюль",
+          subtitle: "Своды ещё держатся",
+          body:
+            "Святилище не рухнуло. Оно просто стало говорить корнями и водой. В мхе видны старые тропы служителей, и по ним всё ещё можно пройти, если не спорить с тишиной.",
+          meta:
+            "Короткий путь к мосту открыт, если сначала прочитать рисунки архитектора и не тревожить корнеедов.",
+          stamps: ["Собор листвы", "Тихий вход", "Проводник"],
+        },
+        {
+          id: "architect",
+          title: "Дневник архитектора",
+          subtitle: "Служебные коридоры",
+          body:
+            "На полях сохранились схемы оранжереи и отметки, куда вели обслуживающие галереи. Именно там древние проводники очищали люмен перед великими походами.",
+          meta:
+            "Эта запись удерживает лор в Steam-формате: один сильный образ, один вывод для геймплея и никаких перегруженных мобильных всплывашек.",
+          stamps: ["Архив", "Маршрут", "Секрет"],
+        },
+        {
+          id: "blank-page",
+          title: "Страница без чернил",
+          subtitle: "След временной главы",
+          body:
+            "Лист кажется пустым, пока на него не падает влажный свет. Тогда проступает рисунок красного распева и будущий силуэт босса события.",
+          meta:
+            "События должны выглядеть как часть того же мира: тёмнее, страннее, но всё ещё соборно-зелёные и тихие.",
+          stamps: ["Event", "Моль", "Предзнаменование"],
+        },
+      ],
+    },
+    {
+      id: "atlas",
+      label: "Атлас",
+      kicker: "Карта узлов",
+      entries: [
+        {
+          id: "bridge-map",
+          title: "Верхний мост",
+          subtitle: "Путь над затопленным нефом",
+          body:
+            "Ноэль отмечает мост как безопасный только при низком ветре. Если туман густой, маршрут лучше переводить через боковые хоры и технические арки.",
+          meta:
+            "Маршрут связывает хаб, экран экспедиций и будущую боевую encounter-сцену в единый цикл.",
+          stamps: ["Карта", "Высота", "Хор"],
+        },
+        {
+          id: "greenhouse-map",
+          title: "Оранжерея тумана",
+          subtitle: "Стекло и корни",
+          body:
+            "Главный источник витражного мха. Внутри безопасно только до тех пор, пока не тронуты нижние дренажи и не сорваны мостики над водой.",
+          meta:
+            "Локация одновременно служит красивой сценой, ресурсным узлом и местом короткой передышки между боями.",
+          stamps: ["Ресурсы", "Мох", "Люмен"],
+        },
+        {
+          id: "burial-map",
+          title: "Погреб стражей",
+          subtitle: "Нижний уровень",
+          body:
+            "Осушенные шлюзы скрывают тяжёлые залы, где эхо мешает читать телеграф атак. Здесь лучше всего работает массивный фронт и точечный контроль.",
+          meta:
+            "Это уже следующий крупный экран после вертикального среза: более тяжёлый рейд, меньше воздуха, больше камня.",
+          stamps: ["Рейд", "Эхо", "Стражи"],
+        },
+      ],
+    },
+    {
+      id: "bestiary",
+      label: "Бестиарий",
+      kicker: "Полевой разбор",
+      entries: [
+        {
+          id: "root-eaters",
+          title: "Слепые корнееды",
+          subtitle: "Мелкая нечисть передней линии",
+          body:
+            "Появляются из влажных швов кладки и тянутся к свету проводников. Опасны количеством и тем, что ломают строй поддержки.",
+          meta:
+            "Лучше всего сдерживаются мягким контролем Лиоры и узкими проходами, которые удерживает Риан.",
+          stamps: ["Флора", "Стая", "Контроль"],
+        },
+        {
+          id: "silkwing",
+          title: "Шёлкокрылы",
+          subtitle: "Событийная стая",
+          body:
+            "Существа с тонким рисунком крыльев и резкими заходами в спину. Их мотив помогает связать мрачную сказку с общим храмовым миром.",
+          meta:
+            "Хорошая цель для промо-арта: выразительные силуэты, мало шума, много характера.",
+          stamps: ["Event", "Воздух", "Охота"],
+        },
+        {
+          id: "colossus",
+          title: "Немой колосс",
+          subtitle: "Босс главы",
+          body:
+            "Каменный страж, обросший мхом и водопадами. Почти неподвижен, пока не нарушен ритм святилища. Потом начинает двигаться так, будто сама архитектура решила вытолкнуть вас наружу.",
+          meta:
+            "Главный образ проекта для Steam: большой, тихий, монументальный и сразу считываемый даже на дальнем плане.",
+          stamps: ["Boss", "Монолит", "Память"],
+        },
+      ],
+    },
+  ];
+
+  const shopItems = [
+    {
+      id: "moss-seed",
+      tag: "Support",
+      name: "Семя витражного мха",
+      description:
+        "Катализатор для мягких люменных усилений. Особенно полезен Лиоре и Ноэль, потому что усиливает контроль пути и световые метки.",
+      price: 34,
+      currency: "lumen",
+      stock: "3 в поставке",
+      use: "Усиление поддержки и проводников",
+      steam: "Надёжный базовый лут для раннего vertical slice",
+    },
+    {
+      id: "compass-silver",
+      tag: "Archive",
+      name: "Серебро компаса",
+      description:
+        "Холодный сплав для архивных инструментов и посохов. Нужен Ноэль, чтобы открыть второй контрольный узел.",
+      price: 1,
+      currency: "fragments",
+      stock: "1 редкий лист",
+      use: "Продвинутый апгрейд контроля и картографии",
+      steam: "Редкий ресурс для долгого PC-прогресса",
+    },
+    {
+      id: "moth-ash",
+      tag: "Hunter",
+      name: "Пепел моли",
+      description:
+        "Красноватая пыльца после шёлкокрылов. Сайя использует её для меток распада и ослабления приоритетной цели.",
+      price: 26,
+      currency: "lumen",
+      stock: "5 в поставке",
+      use: "Усиление охотницы и статусных билдов",
+      steam: "Поддерживает более мрачный слой арт-направления",
+    },
+    {
+      id: "monolith-core",
+      tag: "Vanguard",
+      name: "Ядро монолита",
+      description:
+        "Тяжёлый каменный фрагмент из погреба стражей. Нужен Риану для укрепления молота и стойки фронта.",
+      price: 58,
+      currency: "lumen",
+      stock: "2 в поставке",
+      use: "Укрепление фронтовой линии и пролома",
+      steam: "Сильный mid-game предмет для прогресса и билдообразования",
+    },
+  ];
+
+  const steamChecklist = [
+    {
+      title: "Читаемость в 16:9",
+      body: "Главные окна крупные, вторичные блоки сгруппированы и не распадаются на мобильную сетку.",
+      complete: true,
+    },
+    {
+      title: "Клавиатурная навигация",
+      body: "Экраны листаются цифрами 1–6, а персонажи в составе стрелками.",
+      complete: true,
+    },
+    {
+      title: "Низкий визуальный шум",
+      body: "Главный экран остаётся спокойным, а новые разделы читаются как большие тематические сцены.",
+      complete: true,
+    },
+    {
+      title: "Боевой вертикальный срез",
+      body: "Следующий этап — связать маршрутные узлы с encounter-сценой и наградами.",
+      complete: false,
+    },
+  ];
+
+  const uiScaleOptions = [
+    { id: "compact", label: "90%", value: 0.9 },
+    { id: "default", label: "100%", value: 1 },
+    { id: "cinematic", label: "110%", value: 1.1 },
+  ];
+
   const screenButtons = document.querySelectorAll("[data-screen-target]");
   const screens = document.querySelectorAll("[data-screen]");
   const railButtons = document.querySelectorAll(".rail-button");
@@ -374,13 +568,125 @@
   const heroSwatches = document.getElementById("hero-swatches");
   const materialList = document.getElementById("material-list");
   const portraitShell = document.getElementById("portrait-shell");
+  const resourceAp = document.getElementById("resource-ap");
+  const resourceFragments = document.getElementById("resource-fragments");
+  const resourceLumen = document.getElementById("resource-lumen");
+  const journalTabsContainer = document.getElementById("journal-tabs");
+  const journalList = document.getElementById("journal-list");
+  const journalKicker = document.getElementById("journal-kicker");
+  const journalTitle = document.getElementById("journal-title");
+  const journalBody = document.getElementById("journal-body");
+  const journalMeta = document.getElementById("journal-meta");
+  const journalStamps = document.getElementById("journal-stamps");
+  const journalHighlights = document.getElementById("journal-highlights");
+  const shopGrid = document.getElementById("shop-grid");
+  const shopItemName = document.getElementById("shop-item-name");
+  const shopItemDesc = document.getElementById("shop-item-desc");
+  const shopItemMeta = document.getElementById("shop-item-meta");
+  const shopBuy = document.getElementById("shop-buy");
+  const uiScaleOptionsContainer = document.getElementById("ui-scale-options");
+  const toggleMotion = document.getElementById("toggle-motion");
+  const toggleContrast = document.getElementById("toggle-contrast");
+  const menuCheckList = document.getElementById("menu-check-list");
+  const menuLogList = document.getElementById("menu-log-list");
 
   const state = {
     activeScreen: "home",
     activeQuestId: questCards[0].id,
     activeHeroId: heroes[0].id,
+    activeJournalTab: journalTabs[0].id,
+    activeJournalEntryId: journalTabs[0].entries[0].id,
+    activeShopItemId: shopItems[0].id,
+    resources: {
+      ap: "15 / 15",
+      fragments: 3,
+      lumen: 420,
+    },
+    settings: {
+      uiScaleId: "default",
+      reducedMotion: false,
+      highContrast: false,
+    },
+    sessionLog: [
+      {
+        title: "Интерфейс синхронизирован",
+        body: "Новые окна получают данные из общего состояния и не остаются пустыми.",
+        time: "20:06",
+      },
+      {
+        title: "Референсы собраны",
+        body: "Архив, лавка и меню сведены к большим зелёным сценам без мобильной дробности.",
+        time: "20:12",
+      },
+    ],
+    clockMs: 0,
     routeProgress: Object.fromEntries(questCards.map((quest) => [quest.id, 0])),
   };
+
+  function getActiveQuest() {
+    return questCards.find((quest) => quest.id === state.activeQuestId) ?? questCards[0];
+  }
+
+  function getActiveHero() {
+    return heroes.find((hero) => hero.id === state.activeHeroId) ?? heroes[0];
+  }
+
+  function getActiveJournalTab() {
+    return journalTabs.find((tab) => tab.id === state.activeJournalTab) ?? journalTabs[0];
+  }
+
+  function getActiveJournalEntry() {
+    const activeTab = getActiveJournalTab();
+    return activeTab.entries.find((entry) => entry.id === state.activeJournalEntryId) ?? activeTab.entries[0];
+  }
+
+  function getActiveShopItem() {
+    return shopItems.find((item) => item.id === state.activeShopItemId) ?? shopItems[0];
+  }
+
+  function getNodeReward(quest, nodeIndex) {
+    const fallbackRewards = [
+      { lumen: 12, note: "Найден люменный узел и обновлена карта маршрута." },
+      { fragments: 1, note: "Архив пополнился фрагментом и короткой записью." },
+      { lumen: 18, note: "После столкновения собран запас люмена." },
+      { ap: "15 / 15", note: "Команда перевела дух и восстановила походный ритм." },
+      { fragments: 2, note: "Узел завершён, добыт редкий след главы." },
+    ];
+
+    return quest.route[nodeIndex].reward ?? fallbackRewards[nodeIndex] ?? { note: "Маршрут продвинут." };
+  }
+
+  function formatClock() {
+    const now = new Date();
+    return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  }
+
+  function addSessionLog(title, body) {
+    state.sessionLog.unshift({
+      title,
+      body,
+      time: formatClock(),
+    });
+    state.sessionLog = state.sessionLog.slice(0, 6);
+    renderSessionLog();
+  }
+
+  function renderResources() {
+    resourceAp.textContent = state.resources.ap;
+    resourceFragments.textContent = String(state.resources.fragments).padStart(2, "0");
+    resourceLumen.textContent = String(state.resources.lumen);
+  }
+
+  function applyUiSettings() {
+    const currentScale =
+      uiScaleOptions.find((option) => option.id === state.settings.uiScaleId) ?? uiScaleOptions[1];
+
+    document.documentElement.style.setProperty("--ui-scale-factor", String(currentScale.value));
+    document.body.classList.toggle("reduced-motion", state.settings.reducedMotion);
+    document.body.classList.toggle("high-contrast", state.settings.highContrast);
+    toggleMotion.classList.toggle("is-active", state.settings.reducedMotion);
+    toggleContrast.classList.toggle("is-active", state.settings.highContrast);
+  }
 
   function renderQuestCards() {
     questCardsContainer.innerHTML = questCards
@@ -398,7 +704,7 @@
               <div class="quest-card-footer">
                 <div>
                   <div>${card.cost}</div>
-                  <div class="quest-progress">${card.progress}</div>
+                  <div class="quest-progress">${Math.min((state.routeProgress[card.id] ?? 0) + 1, card.route.length)} / ${card.route.length}</div>
                 </div>
                 <span class="quest-status ${
                   card.status === "Закрыто" ? "locked" : ""
@@ -420,13 +726,11 @@
   }
 
   function updateQuestOverview() {
-    const activeQuest = questCards.find((quest) => quest.id === state.activeQuestId);
-    if (!activeQuest) {
-      return;
-    }
+    const activeQuest = getActiveQuest();
 
     const currentNodeIndex = state.routeProgress[activeQuest.id] ?? 0;
     const currentNode = activeQuest.route[currentNodeIndex];
+    const currentReward = getNodeReward(activeQuest, currentNodeIndex);
     const isCompleted = currentNodeIndex >= activeQuest.route.length - 1;
 
     questTitle.textContent = activeQuest.title;
@@ -460,7 +764,9 @@
       <span class="route-node-step">Текущий узел</span>
       <strong class="route-node-title">${currentNode.title}</strong>
       <p>${currentNode.body}</p>
+      <p>${currentReward.note ?? "Маршрут продолжается без особой находки."}</p>
     `;
+    renderJournalHighlights();
   }
 
   function renderHeroList() {
@@ -549,10 +855,7 @@
   }
 
   function updateHeroPanel() {
-    const activeHero = heroes.find((hero) => hero.id === state.activeHeroId);
-    if (!activeHero) {
-      return;
-    }
+    const activeHero = getActiveHero();
 
     portraitShell.dataset.hero = activeHero.id;
     heroName.textContent = activeHero.name;
@@ -566,6 +869,7 @@
     renderSwatches(activeHero);
     renderHeroStats(activeHero);
     renderMaterials(activeHero);
+    renderJournalHighlights();
   }
 
   function cycleHero(direction) {
@@ -574,6 +878,220 @@
     state.activeHeroId = heroes[nextIndex].id;
     renderHeroList();
     updateHeroPanel();
+  }
+
+  function renderJournalTabs() {
+    journalTabsContainer.innerHTML = journalTabs
+      .map(
+        (tab) => `
+          <button class="journal-tab ${tab.id === state.activeJournalTab ? "is-active" : ""}" data-journal-tab="${tab.id}">
+            ${tab.label}
+          </button>
+        `,
+      )
+      .join("");
+
+    journalTabsContainer.querySelectorAll("[data-journal-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.activeJournalTab = button.dataset.journalTab;
+        state.activeJournalEntryId = getActiveJournalTab().entries[0].id;
+        renderJournalTabs();
+        renderJournalList();
+        updateJournalPanel();
+      });
+    });
+  }
+
+  function renderJournalList() {
+    const activeTab = getActiveJournalTab();
+
+    journalList.innerHTML = activeTab.entries
+      .map(
+        (entry) => `
+          <button class="journal-entry-button ${entry.id === state.activeJournalEntryId ? "is-active" : ""}" data-journal-entry="${entry.id}">
+            <strong>${entry.title}</strong>
+            <p>${entry.subtitle}</p>
+          </button>
+        `,
+      )
+      .join("");
+
+    journalList.querySelectorAll("[data-journal-entry]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.activeJournalEntryId = button.dataset.journalEntry;
+        renderJournalList();
+        updateJournalPanel();
+      });
+    });
+  }
+
+  function renderJournalHighlights() {
+    const activeQuest = getActiveQuest();
+    const activeHero = getActiveHero();
+    const currentNode = activeQuest.route[state.routeProgress[activeQuest.id] ?? 0];
+
+    journalHighlights.innerHTML = [
+      {
+        title: "Активная глава",
+        body: `${activeQuest.title} · ${currentNode.title}`,
+      },
+      {
+        title: "Лицо отряда",
+        body: `${activeHero.name} — ${activeHero.role}`,
+      },
+      {
+        title: "Ресурсный след",
+        body: `Люмен: ${state.resources.lumen} · Фрагменты: ${String(state.resources.fragments).padStart(2, "0")}`,
+      },
+    ]
+      .map(
+        (item) => `
+          <article class="journal-highlight-card">
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function updateJournalPanel() {
+    const activeTab = getActiveJournalTab();
+    const activeEntry = getActiveJournalEntry();
+
+    journalKicker.textContent = activeTab.kicker;
+    journalTitle.textContent = activeEntry.title;
+    journalBody.textContent = activeEntry.body;
+    journalMeta.textContent = activeEntry.meta;
+    journalStamps.innerHTML = activeEntry.stamps
+      .map((stamp) => `<span class="journal-stamp">${stamp}</span>`)
+      .join("");
+    renderJournalHighlights();
+  }
+
+  function renderShopGrid() {
+    shopGrid.innerHTML = shopItems
+      .map((item) => {
+        const priceLabel = item.currency === "fragments" ? `${item.price} фрагм.` : `${item.price} люм.`;
+
+        return `
+          <button class="shop-card ${item.id === state.activeShopItemId ? "is-selected" : ""}" data-shop-item="${item.id}">
+            <div class="shop-card-header">
+              <strong>${item.name}</strong>
+              <span class="shop-card-tag">${item.tag}</span>
+            </div>
+            <p>${item.description}</p>
+            <span class="shop-card-price">${priceLabel}</span>
+          </button>
+        `;
+      })
+      .join("");
+
+    shopGrid.querySelectorAll("[data-shop-item]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.activeShopItemId = button.dataset.shopItem;
+        renderShopGrid();
+        updateShopPanel();
+      });
+    });
+  }
+
+  function updateShopPanel() {
+    const item = getActiveShopItem();
+    const canAfford =
+      item.currency === "fragments"
+        ? state.resources.fragments >= item.price
+        : state.resources.lumen >= item.price;
+
+    shopItemName.textContent = item.name;
+    shopItemDesc.textContent = item.description;
+    shopItemMeta.innerHTML = [
+      ["Стоимость", item.currency === "fragments" ? `${item.price} фрагм.` : `${item.price} люм.`],
+      ["Остаток", item.stock],
+      ["Назначение", item.use],
+      ["Steam note", item.steam],
+    ]
+      .map(
+        ([label, value]) => `
+          <div class="shop-meta-item">
+            <span>${label}</span>
+            <strong>${value}</strong>
+          </div>
+        `,
+      )
+      .join("");
+
+    shopBuy.disabled = !canAfford;
+    shopBuy.textContent = canAfford ? "Добавить в поставку" : "Недостаточно ресурса";
+  }
+
+  function buyActiveItem() {
+    const item = getActiveShopItem();
+
+    if (item.currency === "fragments") {
+      if (state.resources.fragments < item.price) {
+        return;
+      }
+      state.resources.fragments -= item.price;
+    } else {
+      if (state.resources.lumen < item.price) {
+        return;
+      }
+      state.resources.lumen -= item.price;
+    }
+
+    renderResources();
+    updateShopPanel();
+    renderJournalHighlights();
+    addSessionLog("Поставка оформлена", `${item.name} отправлен в архив снабжения.`);
+  }
+
+  function renderUiScaleOptions() {
+    uiScaleOptionsContainer.innerHTML = uiScaleOptions
+      .map(
+        (option) => `
+          <button class="setting-option ${option.id === state.settings.uiScaleId ? "is-active" : ""}" data-ui-scale="${option.id}">
+            ${option.label}
+          </button>
+        `,
+      )
+      .join("");
+
+    uiScaleOptionsContainer.querySelectorAll("[data-ui-scale]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.settings.uiScaleId = button.dataset.uiScale;
+        applyUiSettings();
+        renderUiScaleOptions();
+        addSessionLog("UI обновлён", `Масштаб интерфейса переключён на ${button.textContent.trim()}.`);
+      });
+    });
+  }
+
+  function renderMenuChecklist() {
+    menuCheckList.innerHTML = steamChecklist
+      .map(
+        (item) => `
+          <article class="menu-check-item ${item.complete ? "is-complete" : ""}">
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function renderSessionLog() {
+    menuLogList.innerHTML = state.sessionLog
+      .map(
+        (entry) => `
+          <article class="menu-log-item">
+            <strong>${entry.title}</strong>
+            <p>${entry.body}</p>
+            <small>${entry.time}</small>
+          </article>
+        `,
+      )
+      .join("");
   }
 
   function setActiveScreen(screenName) {
@@ -610,18 +1128,49 @@
   });
 
   routeAdvanceButton.addEventListener("click", () => {
-    const activeQuest = questCards.find((quest) => quest.id === state.activeQuestId);
-    if (!activeQuest) {
-      return;
-    }
-
+    const activeQuest = getActiveQuest();
     const currentNodeIndex = state.routeProgress[activeQuest.id] ?? 0;
     if (currentNodeIndex >= activeQuest.route.length - 1) {
       return;
     }
 
+    const currentNode = activeQuest.route[currentNodeIndex];
+    const currentReward = getNodeReward(activeQuest, currentNodeIndex);
+    if (currentReward.lumen) {
+      state.resources.lumen += currentReward.lumen;
+    }
+    if (currentReward.fragments) {
+      state.resources.fragments += currentReward.fragments;
+    }
+    if (currentReward.ap) {
+      state.resources.ap = currentReward.ap;
+    }
+
     state.routeProgress[activeQuest.id] = currentNodeIndex + 1;
+    renderResources();
+    renderQuestCards();
     updateQuestOverview();
+    addSessionLog(currentNode.title, currentReward.note ?? "Маршрут продвинут.");
+  });
+
+  shopBuy.addEventListener("click", buyActiveItem);
+
+  toggleMotion.addEventListener("click", () => {
+    state.settings.reducedMotion = !state.settings.reducedMotion;
+    applyUiSettings();
+    addSessionLog(
+      "Доступность обновлена",
+      state.settings.reducedMotion ? "Анимация уменьшена для спокойного чтения интерфейса." : "Полная анимация возвращена.",
+    );
+  });
+
+  toggleContrast.addEventListener("click", () => {
+    state.settings.highContrast = !state.settings.highContrast;
+    applyUiSettings();
+    addSessionLog(
+      "Контраст обновлён",
+      state.settings.highContrast ? "Повышенный контраст включён." : "Контраст возвращён к мягкому режиму.",
+    );
   });
 
   window.addEventListener("keydown", (event) => {
@@ -634,12 +1183,61 @@
     if (event.key === "3") {
       setActiveScreen("party");
     }
+    if (event.key === "4") {
+      setActiveScreen("journal");
+    }
+    if (event.key === "5") {
+      setActiveScreen("shop");
+    }
+    if (event.key === "6") {
+      setActiveScreen("menu");
+    }
 
     if (state.activeScreen === "party" && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
       event.preventDefault();
       cycleHero(event.key === "ArrowRight" ? 1 : -1);
     }
   });
+
+  function renderGameToText() {
+    const activeQuest = getActiveQuest();
+    const activeJournalEntry = getActiveJournalEntry();
+    const activeShopItem = getActiveShopItem();
+    const currentNodeIndex = state.routeProgress[activeQuest.id] ?? 0;
+
+    return JSON.stringify({
+      mode: state.activeScreen,
+      note: "UI origin top-left, x grows right, y grows down.",
+      quest: {
+        id: activeQuest.id,
+        nodeIndex: currentNodeIndex,
+        nodeTitle: activeQuest.route[currentNodeIndex].title,
+      },
+      hero: {
+        id: state.activeHeroId,
+        name: getActiveHero().name,
+      },
+      journal: {
+        tab: state.activeJournalTab,
+        entry: activeJournalEntry.title,
+      },
+      shop: {
+        item: activeShopItem.name,
+        canAfford:
+          activeShopItem.currency === "fragments"
+            ? state.resources.fragments >= activeShopItem.price
+            : state.resources.lumen >= activeShopItem.price,
+      },
+      resources: state.resources,
+      settings: state.settings,
+    });
+  }
+
+  window.render_game_to_text = renderGameToText;
+  window.advanceTime = (ms) => {
+    state.clockMs += Math.max(0, Number(ms) || 0);
+    return renderGameToText();
+  };
 
   function startAmbientCanvas() {
     const canvas = document.getElementById("ambient-canvas");
@@ -679,6 +1277,11 @@
     }
 
     function animate() {
+      if (document.body.classList.contains("reduced-motion")) {
+        requestAnimationFrame(animate);
+        return;
+      }
+
       context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
       particles.forEach((particle) => {
@@ -722,10 +1325,20 @@
     });
   }
 
+  renderResources();
   renderQuestCards();
   updateQuestOverview();
   renderHeroList();
   updateHeroPanel();
+  renderJournalTabs();
+  renderJournalList();
+  updateJournalPanel();
+  renderShopGrid();
+  updateShopPanel();
+  renderUiScaleOptions();
+  renderMenuChecklist();
+  renderSessionLog();
+  applyUiSettings();
   const initialScreen = window.location.hash.replace("#", "");
   if (initialScreen) {
     setActiveScreen(initialScreen);
