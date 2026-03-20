@@ -932,6 +932,17 @@
   const battleSkillGrid = document.getElementById("battle-skill-grid");
   const battleCommit = document.getElementById("battle-commit");
   const battleBack = document.getElementById("battle-back");
+  const resultKicker = document.getElementById("result-kicker");
+  const resultTitle = document.getElementById("result-title");
+  const resultSubtitle = document.getElementById("result-subtitle");
+  const resultStatusPill = document.getElementById("result-status-pill");
+  const resultSummary = document.getElementById("result-summary");
+  const resultRewardList = document.getElementById("result-reward-list");
+  const resultNoteList = document.getElementById("result-note-list");
+  const resultNextTitle = document.getElementById("result-next-title");
+  const resultNextCopy = document.getElementById("result-next-copy");
+  const resultPrimary = document.getElementById("result-primary");
+  const resultSecondary = document.getElementById("result-secondary");
 
   const state = {
     activeScreen: "home",
@@ -1246,27 +1257,12 @@
           tone: "good",
         },
         {
-          title: "Маршруты и награды",
-          body: `${clearedNodes} из ${totalNodes} узлов отслеживаются, а награды выдаются только один раз.`,
+          title: "Игровые системы",
+          body: `${clearedNodes} из ${totalNodes} узлов отслеживаются, ${unlockedJournalEntries} из ${totalJournalEntries} записей открываются по прогрессу, а ${resolvedCombatNodes} из ${totalCombatNodes} боевых узлов могут фиксироваться как выигранные.`,
           tone: "good",
         },
         {
-          title: "Архив и дневник",
-          body: `${unlockedJournalEntries} из ${totalJournalEntries} записей открываются по прогрессу, а не смешаны с mission UI.`,
-          tone: "mid",
-        },
-        {
-          title: "Боевые encounter'ы",
-          body: `${resolvedCombatNodes} из ${totalCombatNodes} боевых узлов уже могут фиксироваться как выигранные.`,
-          tone: "mid",
-        },
-        {
-          title: "Meta-прогрессия",
-          body: "Сохранение ресурсов, экранов, маршрутов и архива работает, но усиления героев ещё не привязаны к результатам боёв.",
-          tone: "mid",
-        },
-        {
-          title: "Чего ещё не хватает",
+          title: "Следующий этап",
           body: "Нужны post-battle экран, больше encounter-вариантов, развитие героев и более глубокая экономическая петля.",
           tone: "low",
         },

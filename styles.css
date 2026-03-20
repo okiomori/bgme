@@ -811,7 +811,7 @@ button {
 
 .quest-layout {
   display: grid;
-  grid-template-columns: minmax(280px, 330px) 1fr;
+  grid-template-columns: minmax(320px, 380px) 1fr;
   gap: 22px;
 }
 
@@ -3246,7 +3246,7 @@ button {
   }
 
   .quest-layout {
-    grid-template-columns: minmax(330px, 380px) 1fr;
+    grid-template-columns: minmax(380px, 430px) 1fr;
   }
 
   .party-layout {
@@ -3284,7 +3284,7 @@ button {
   }
 
   .quest-layout {
-    grid-template-columns: minmax(360px, 420px) 1fr;
+    grid-template-columns: minmax(400px, 460px) 1fr;
   }
 
   .party-layout {

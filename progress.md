@@ -10,3 +10,19 @@ Original prompt: отлично теперь заполни все недост�
 - Added a player-facing guide document in docs/game-guide.md.
 - TODO: connect route nodes to real combat encounters and post-battle rewards.
 - TODO: add save/load so menu state persists across sessions.
+- Added an in-game Guide screen and wired it into `Menu -> Open guide` plus keyboard `8`.
+- Separated Quest and Journal responsibilities:
+  - Quests now show route logic, node type, objective, reward, and recommendation.
+  - Journal now behaves like an archive with unlock conditions and related-entry context.
+- Added route progression logic for Steam slice:
+  - route progress now tracks cleared nodes
+  - combat nodes block advancement until the encounter is won
+  - node rewards are claimed only once
+- Added battle state resolution:
+  - encounter victory marks the current combat node as resolved
+  - defeat allows retry without losing the route
+  - progress, archive state, settings, and resources save to localStorage
+- Verified syntax with `node --check src/main.js`.
+- Verified UI state via `develop-web-game` client (`render_game_to_text`) and full-page Playwright screenshots.
+- TODO: tie shop purchases and hero growth to persistent combat/meta outcomes.
+- TODO: add a dedicated post-battle reward/result screen instead of returning via log only.
