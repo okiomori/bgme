@@ -130,7 +130,10 @@
             </div>
             <div class="quest-foot">
               <span id="quest-cost">AP 0</span>
-              <button class="primary-button" id="route-advance">Войти в маршрут</button>
+              <div class="quest-actions">
+                <button class="secondary-button battle-preview-button" id="open-battle" data-screen-target="battle">Тактический экран</button>
+                <button class="primary-button" id="route-advance">Войти в маршрут</button>
+              </div>
             </div>
             <div class="route-section">
               <div class="route-map" id="route-map"></div>
@@ -140,6 +143,80 @@
 
           <section class="quest-carousel" aria-label="Выбор главы">
             <div class="quest-cards" id="quest-cards"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="battle">
+        <div class="screen-scape battle-scape" aria-hidden="true">
+          <div class="battle-arch"></div>
+          <div class="battle-water"></div>
+          <div class="battle-monolith"></div>
+        </div>
+
+        <div class="battle-layout">
+          <aside class="battle-sidebar ornate-panel">
+            <p class="eyebrow">Encounter</p>
+            <h2 id="battle-title">Немой колосс</h2>
+            <p class="battle-subtitle" id="battle-subtitle">Глава 1 · Сад немого стража</p>
+            <p class="battle-objective" id="battle-objective">
+              Сломайте два узла резонанса и сорвите тяжёлый телеграф босса до того, как арка обрушится на переднюю линию.
+            </p>
+            <div class="battle-party-list" id="battle-party"></div>
+            <div class="battle-meter">
+              <div class="battle-meter-copy">
+                <span>Резонанс маршрута</span>
+                <strong id="battle-resonance-value">42%</strong>
+              </div>
+              <div class="battle-meter-bar">
+                <div class="battle-meter-fill" id="battle-resonance-bar"></div>
+              </div>
+            </div>
+          </aside>
+
+          <section class="battle-arena ornate-panel">
+            <div class="battle-arena-top">
+              <div>
+                <p class="eyebrow">Тактическая сцена</p>
+                <h3 id="battle-phase">Фаза I · Сломанное святилище</h3>
+              </div>
+              <div class="battle-turn-pill">
+                <span>Ход</span>
+                <strong id="battle-turn">1</strong>
+              </div>
+            </div>
+
+            <div class="battle-field">
+              <div class="battle-lane battle-lane-allies" id="battle-allies"></div>
+              <div class="battle-centerline"></div>
+              <div class="battle-lane battle-lane-enemies" id="battle-enemies"></div>
+            </div>
+
+            <div class="battle-intent-row" id="battle-intents"></div>
+          </section>
+
+          <aside class="battle-tactics ornate-panel">
+            <p class="eyebrow">Очередь и цель</p>
+            <div class="battle-queue" id="battle-queue"></div>
+            <div class="battle-target-card">
+              <span class="design-label">Текущая цель</span>
+              <h3 id="battle-target-name">Немой колосс</h3>
+              <p id="battle-target-desc">Монументальный страж главы. Держит фронт и медленно наращивает давление по аркам.</p>
+            </div>
+            <div class="battle-log" id="battle-log"></div>
+          </aside>
+
+          <section class="battle-actions ornate-panel">
+            <div class="battle-acting-copy">
+              <p class="eyebrow">Активный ход</p>
+              <h3 id="battle-acting-name">Лиора</h3>
+              <p id="battle-acting-role">Проводница мха</p>
+            </div>
+            <div class="battle-skill-grid" id="battle-skill-grid"></div>
+            <div class="battle-actions-footer">
+              <button class="secondary-button" id="battle-back" data-screen-target="quests">К маршруту</button>
+              <button class="primary-button" id="battle-commit">Применить приём</button>
+            </div>
           </section>
         </div>
       </section>
