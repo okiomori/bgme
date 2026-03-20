@@ -542,6 +542,207 @@
     { id: "cinematic", label: "110%", value: 1.1 },
   ];
 
+  const battleSkillSets = {
+    liora: [
+      {
+        id: "lumen-marker",
+        name: "Люмен-маркер",
+        cost: "2 AP",
+        description: "Помечает шов брони цели и открывает окно для тяжёлого удара.",
+        damage: 160,
+        resonance: 8,
+        effect: "mark",
+      },
+      {
+        id: "soft-turn",
+        name: "Мягкий разворот",
+        cost: "3 AP",
+        description: "Снижает давление на фронт и добавляет защите команды мягкий щит.",
+        damage: 120,
+        resonance: 10,
+        effect: "guard",
+      },
+    ],
+    rian: [
+      {
+        id: "deaf-strike",
+        name: "Глухой удар",
+        cost: "3 AP",
+        description: "Ломает стойку и получает бонус по цели под меткой.",
+        damage: 260,
+        resonance: 6,
+        effect: "shatter",
+      },
+      {
+        id: "buttress-arch",
+        name: "Опорная арка",
+        cost: "2 AP",
+        description: "Укрепляет переднюю линию и поднимает защиту всего строя.",
+        damage: 90,
+        resonance: 12,
+        effect: "bulwark",
+      },
+    ],
+    saya: [
+      {
+        id: "red-dust",
+        name: "Красная пыльца",
+        cost: "2 AP",
+        description: "Оставляет слабость на выбранной цели и ускоряет добивание.",
+        damage: 180,
+        resonance: 8,
+        effect: "vulnerable",
+      },
+      {
+        id: "moth-eclipse",
+        name: "Молье затмение",
+        cost: "3 AP",
+        description: "Высокий урон по цели со слабостью или уже сбитым телеграфом.",
+        damage: 290,
+        resonance: 7,
+        effect: "reap",
+      },
+    ],
+    noel: [
+      {
+        id: "rain-map",
+        name: "Карта дождя",
+        cost: "2 AP",
+        description: "Сдвигает очередь врага и отталкивает его в более уязвимый ритм.",
+        damage: 150,
+        resonance: 11,
+        effect: "delay",
+      },
+      {
+        id: "blue-note",
+        name: "Синяя аннотация",
+        cost: "2 AP",
+        description: "Повышает резонанс маршрута и усиливает следующее действие отряда.",
+        damage: 110,
+        resonance: 16,
+        effect: "focus",
+      },
+    ],
+  };
+
+  function createBattleState() {
+    return {
+      title: "Немой колосс",
+      subtitle: "Глава 1 · Сад немого стража",
+      objective: "Сломайте два узла резонанса и сорвите тяжёлый телеграф босса до обрушения арки.",
+      phase: "Фаза I · Сломанное святилище",
+      turn: 1,
+      resonance: 42,
+      actingHeroId: "liora",
+      selectedSkillId: battleSkillSets.liora[0].id,
+      selectedTargetId: "colossus",
+      sourceQuestId: "story",
+      sourceNodeIndex: 0,
+      allies: [
+        { id: "liora", name: "Лиора", role: "Проводница мха", hp: 1583, maxHp: 1583, guard: 18, form: "guide" },
+        { id: "rian", name: "Риан", role: "Камнерез", hp: 1924, maxHp: 1924, guard: 32, form: "vanguard" },
+        { id: "saya", name: "Сайя", role: "Охотница", hp: 1326, maxHp: 1326, guard: 12, form: "hunter" },
+        { id: "noel", name: "Ноэль", role: "Архивистка", hp: 1418, maxHp: 1418, guard: 14, form: "archivist" },
+      ],
+      enemies: [
+        {
+          id: "colossus",
+          name: "Немой колосс",
+          role: "Босс главы",
+          hp: 4680,
+          maxHp: 4680,
+          armor: 3,
+          intent: "Удар аркой через два такта",
+          description: "Монументальный страж, медленно наращивающий давление по передней линии.",
+          form: "colossus",
+          marked: false,
+          vulnerable: false,
+        },
+        {
+          id: "cantor",
+          name: "Хор корней",
+          role: "Поддержка",
+          hp: 1240,
+          maxHp: 1240,
+          armor: 1,
+          intent: "Сцепление корней",
+          description: "Поддерживает босса и стягивает поле узкими коридорами.",
+          form: "cantor",
+          marked: false,
+          vulnerable: false,
+        },
+      ],
+      queue: ["liora", "noel", "colossus", "saya", "cantor", "rian"],
+      log: [
+        {
+          title: "Контакт установлен",
+          body: "Отряд входит в неф. Лиора первой берёт на себя темп резонанса.",
+        },
+        {
+          title: "Колосс просыпается",
+          body: "Камень начинает двигаться, а арка над ареной отвечает низким эхом.",
+        },
+      ],
+    };
+  }
+
+  const battleUnitPalette = {
+    guide: {
+      unit1: "#eef2eb",
+      unit2: "#b9d8d1",
+      unit3: "#47635d",
+      skin1: "#f3ece3",
+      skin2: "#d2c2b4",
+      weapon1: "#f0ece4",
+      weaponRot: "20deg",
+    },
+    vanguard: {
+      unit1: "#d9c7ab",
+      unit2: "#8a7f69",
+      unit3: "#3a362f",
+      skin1: "#e9d6c5",
+      skin2: "#ba9a82",
+      weapon1: "#afa78e",
+      weaponRot: "12deg",
+    },
+    hunter: {
+      unit1: "#f0d7d3",
+      unit2: "#915064",
+      unit3: "#231820",
+      skin1: "#f0dfd8",
+      skin2: "#cba291",
+      weapon1: "#dcc6c9",
+      weaponRot: "-26deg",
+    },
+    archivist: {
+      unit1: "#eef1ef",
+      unit2: "#a8c4d8",
+      unit3: "#46596a",
+      skin1: "#f4e8de",
+      skin2: "#d0baa9",
+      weapon1: "#e0e4eb",
+      weaponRot: "34deg",
+    },
+    colossus: {
+      unit1: "#f1eee7",
+      unit2: "#95adb1",
+      unit3: "#3a4448",
+      skin1: "#ece6dd",
+      skin2: "#c7b7a6",
+      weapon1: "#d5d4cd",
+      weaponRot: "18deg",
+    },
+    cantor: {
+      unit1: "#d8dbd1",
+      unit2: "#67806e",
+      unit3: "#1d2724",
+      skin1: "#d8cabc",
+      skin2: "#a29080",
+      weapon1: "#bfccb7",
+      weaponRot: "-16deg",
+    },
+  };
+
   const screenButtons = document.querySelectorAll("[data-screen-target]");
   const screens = document.querySelectorAll("[data-screen]");
   const railButtons = document.querySelectorAll(".rail-button");
@@ -555,6 +756,7 @@
   const routeMap = document.getElementById("route-map");
   const routeLog = document.getElementById("route-log");
   const routeAdvanceButton = document.getElementById("route-advance");
+  const openBattleButton = document.getElementById("open-battle");
   const heroList = document.getElementById("hero-list");
   const heroStatsContainer = document.getElementById("hero-stats");
   const heroName = document.getElementById("hero-name");
@@ -589,6 +791,26 @@
   const toggleContrast = document.getElementById("toggle-contrast");
   const menuCheckList = document.getElementById("menu-check-list");
   const menuLogList = document.getElementById("menu-log-list");
+  const battleTitle = document.getElementById("battle-title");
+  const battleSubtitle = document.getElementById("battle-subtitle");
+  const battleObjective = document.getElementById("battle-objective");
+  const battlePhase = document.getElementById("battle-phase");
+  const battleTurn = document.getElementById("battle-turn");
+  const battleParty = document.getElementById("battle-party");
+  const battleResonanceValue = document.getElementById("battle-resonance-value");
+  const battleResonanceBar = document.getElementById("battle-resonance-bar");
+  const battleAllies = document.getElementById("battle-allies");
+  const battleEnemies = document.getElementById("battle-enemies");
+  const battleIntents = document.getElementById("battle-intents");
+  const battleQueue = document.getElementById("battle-queue");
+  const battleTargetName = document.getElementById("battle-target-name");
+  const battleTargetDesc = document.getElementById("battle-target-desc");
+  const battleLog = document.getElementById("battle-log");
+  const battleActingName = document.getElementById("battle-acting-name");
+  const battleActingRole = document.getElementById("battle-acting-role");
+  const battleSkillGrid = document.getElementById("battle-skill-grid");
+  const battleCommit = document.getElementById("battle-commit");
+  const battleBack = document.getElementById("battle-back");
 
   const state = {
     activeScreen: "home",
@@ -620,6 +842,7 @@
       },
     ],
     clockMs: 0,
+    battle: createBattleState(),
     routeProgress: Object.fromEntries(questCards.map((quest) => [quest.id, 0])),
   };
 
