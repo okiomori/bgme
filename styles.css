@@ -36,12 +36,29 @@ body {
 body {
   margin: 0;
   overflow: hidden;
+  font-size: calc(16px * var(--ui-scale-factor, 1));
   font-family: "Segoe UI", "Trebuchet MS", sans-serif;
   color: var(--text-main);
   background:
     radial-gradient(circle at 15% 15%, rgba(141, 181, 158, 0.17), transparent 30%),
     radial-gradient(circle at 80% 12%, rgba(182, 166, 120, 0.17), transparent 24%),
     linear-gradient(180deg, #1f312d 0%, #101917 45%, #081010 100%);
+}
+
+body.reduced-motion #ambient-canvas {
+  display: none;
+}
+
+body.reduced-motion * {
+  transition: none !important;
+  animation: none !important;
+}
+
+body.high-contrast {
+  --text-main: #fff7e9;
+  --text-soft: rgba(255, 247, 233, 0.88);
+  --line: rgba(255, 232, 191, 0.34);
+  --gold-soft: #ffe4a8;
 }
 
 body::before {
@@ -1774,6 +1791,432 @@ button {
   border-radius: 22px;
 }
 
+.journal-nav,
+.journal-book,
+.journal-side,
+.shopkeeper-panel,
+.shop-catalog,
+.shop-detail,
+.menu-settings,
+.menu-system,
+.menu-log {
+  padding: 24px 22px;
+  border-radius: 28px;
+}
+
+.journal-scape {
+  background:
+    linear-gradient(180deg, rgba(138, 164, 110, 0.16), rgba(36, 54, 44, 0.08) 36%, rgba(7, 11, 10, 0.72) 100%),
+    linear-gradient(0deg, rgba(7, 10, 10, 0.84), transparent 34%);
+}
+
+.journal-torii {
+  position: absolute;
+  left: 30%;
+  bottom: 18%;
+  width: 280px;
+  height: 300px;
+  border-left: 16px solid rgba(130, 84, 42, 0.66);
+  border-right: 16px solid rgba(130, 84, 42, 0.66);
+  background:
+    linear-gradient(180deg, rgba(146, 102, 58, 0.7), rgba(84, 51, 26, 0.42));
+  clip-path: polygon(0 16%, 100% 16%, 100% 100%, 82% 100%, 82% 28%, 18% 28%, 18% 100%, 0 100%);
+  opacity: 0.76;
+}
+
+.journal-torii-back {
+  left: 54%;
+  bottom: 28%;
+  width: 180px;
+  height: 220px;
+  opacity: 0.46;
+}
+
+.journal-lantern {
+  position: absolute;
+  left: 24%;
+  bottom: 44%;
+  width: 60px;
+  height: 90px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 211, 144, 0.6), rgba(255, 156, 84, 0.22) 48%, transparent 74%),
+    linear-gradient(180deg, rgba(74, 58, 48, 0.78), rgba(17, 17, 16, 0.26));
+  box-shadow: 0 0 40px rgba(255, 178, 102, 0.18);
+}
+
+.journal-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(250px, 290px) 1fr minmax(260px, 300px);
+  gap: 22px;
+  height: 100%;
+  padding: 26px;
+}
+
+.journal-nav,
+.journal-side {
+  display: grid;
+  gap: 16px;
+  align-self: stretch;
+  min-height: 0;
+}
+
+.journal-tab-list {
+  display: flex;
+  gap: 10px;
+}
+
+.journal-tab,
+.setting-option,
+.toggle-button {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-soft);
+}
+
+.journal-tab.is-active,
+.setting-option.is-active,
+.toggle-button.is-active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(207, 193, 160, 0.08));
+  color: var(--text-main);
+}
+
+.journal-entry-list,
+.journal-highlight-list,
+.menu-check-list,
+.menu-log-list {
+  display: grid;
+  gap: 10px;
+  min-height: 0;
+  overflow: auto;
+}
+
+.journal-entry-button,
+.journal-highlight-card,
+.menu-check-item,
+.menu-log-item {
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.028);
+  text-align: left;
+}
+
+.journal-entry-button.is-active {
+  border-color: rgba(240, 221, 172, 0.24);
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.12);
+}
+
+.journal-entry-button strong,
+.journal-highlight-card strong,
+.menu-check-item strong,
+.menu-log-item strong {
+  display: block;
+  font-size: 0.98rem;
+}
+
+.journal-entry-button p,
+.journal-highlight-card p,
+.menu-check-item p,
+.menu-log-item p {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.journal-book {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.82fr);
+  gap: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(254, 249, 234, 0.08), rgba(73, 67, 51, 0.08)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.journal-page {
+  padding: 28px 26px;
+}
+
+.journal-page-secondary {
+  border-left: 1px solid rgba(240, 221, 172, 0.12);
+}
+
+.journal-page h2 {
+  margin-top: 12px;
+  font-size: clamp(1.9rem, 2.5vw, 2.6rem);
+}
+
+.journal-page p:not(.eyebrow) {
+  margin-top: 14px;
+  color: var(--text-soft);
+  line-height: 1.72;
+}
+
+.journal-stamp-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.journal-stamp {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  color: var(--gold-soft);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.shop-scape {
+  background:
+    linear-gradient(180deg, rgba(114, 135, 102, 0.18), rgba(41, 55, 47, 0.08) 40%, rgba(8, 11, 10, 0.78) 100%),
+    linear-gradient(0deg, rgba(7, 10, 10, 0.84), transparent 36%);
+}
+
+.shop-arch {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 8%;
+  height: 80%;
+  border-radius: 180px 180px 0 0;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.shop-shelf-light {
+  position: absolute;
+  right: 16%;
+  top: 18%;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 230, 176, 0.26), transparent 68%);
+  filter: blur(8px);
+}
+
+.shop-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(250px, 290px) 1fr minmax(280px, 330px);
+  gap: 22px;
+  height: 100%;
+  padding: 26px;
+}
+
+.shopkeeper-panel,
+.shop-detail {
+  display: grid;
+  gap: 14px;
+  align-self: stretch;
+}
+
+.shopkeeper-portrait {
+  position: relative;
+  min-height: 240px;
+  border-radius: 24px;
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.1), transparent 16%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(16, 20, 18, 0.62));
+  overflow: hidden;
+}
+
+.shopkeeper-hair,
+.shopkeeper-body {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.shopkeeper-hair {
+  top: 16%;
+  width: 46%;
+  height: 62%;
+  background:
+    linear-gradient(180deg, rgba(228, 236, 231, 0.96), rgba(148, 173, 148, 0.54) 28%, rgba(45, 55, 46, 0.14));
+  clip-path: polygon(40% 0, 60% 0, 80% 16%, 88% 80%, 66% 100%, 48% 84%, 28% 100%, 12% 82%, 20% 18%);
+}
+
+.shopkeeper-body {
+  bottom: 0;
+  width: 40%;
+  height: 58%;
+  background: linear-gradient(180deg, rgba(245, 238, 219, 0.92), rgba(112, 112, 90, 0.54), rgba(17, 18, 18, 0.96));
+  clip-path: polygon(32% 0, 68% 0, 90% 20%, 100% 78%, 72% 100%, 28% 100%, 0 78%, 10% 20%);
+}
+
+.shopkeeper-panel p:last-child {
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.shop-catalog {
+  min-height: 0;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.shop-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.026);
+  text-align: left;
+}
+
+.shop-card.is-selected {
+  border-color: rgba(240, 221, 172, 0.26);
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.14);
+}
+
+.shop-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.shop-card-tag {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  color: var(--gold-soft);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.shop-card p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.shop-card-price {
+  color: var(--gold-soft);
+  font-weight: 600;
+}
+
+.shop-meta-list {
+  display: grid;
+  gap: 10px;
+}
+
+.shop-meta-item {
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.026);
+}
+
+.shop-meta-item span {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.shop-meta-item strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--gold-soft);
+}
+
+.menu-scape {
+  background:
+    linear-gradient(180deg, rgba(118, 133, 110, 0.14), rgba(31, 43, 36, 0.08) 38%, rgba(7, 10, 10, 0.8) 100%),
+    linear-gradient(0deg, rgba(7, 10, 10, 0.82), transparent 36%);
+}
+
+.menu-room {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: 16%;
+  height: 54%;
+  border-radius: 180px 180px 0 0;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+}
+
+.menu-fire {
+  position: absolute;
+  left: 48%;
+  bottom: 22%;
+  width: 180px;
+  height: 180px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 198, 126, 0.28), transparent 70%);
+  filter: blur(10px);
+}
+
+.menu-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(320px, 1.1fr) minmax(260px, 0.86fr) minmax(260px, 0.84fr);
+  gap: 22px;
+  height: 100%;
+  padding: 26px;
+}
+
+.menu-settings,
+.menu-system,
+.menu-log {
+  display: grid;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.menu-settings h2 {
+  margin-top: 0;
+}
+
+.setting-block {
+  display: grid;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.028);
+}
+
+.setting-options,
+.toggle-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.menu-check-item.is-complete strong::before {
+  content: "✓ ";
+  color: var(--gold-soft);
+}
+
+.menu-log-item small {
+  display: block;
+  margin-top: 6px;
+  color: var(--gold-soft);
+}
+
 .bottom-dock {
   display: flex;
   align-items: center;
@@ -1821,7 +2264,10 @@ button {
 
   .home-layout,
   .quest-layout,
-  .party-layout {
+  .party-layout,
+  .journal-layout,
+  .shop-layout,
+  .menu-layout {
     grid-template-columns: 1fr;
   }
 

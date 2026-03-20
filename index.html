@@ -26,15 +26,15 @@
       <div class="resource-strip">
         <div class="resource-pill">
           <span>AP</span>
-          <strong>15 / 15</strong>
+          <strong id="resource-ap">15 / 15</strong>
         </div>
         <div class="resource-pill">
           <span>Фрагменты</span>
-          <strong>03</strong>
+          <strong id="resource-fragments">03</strong>
         </div>
         <div class="resource-pill">
           <span>Люмен</span>
-          <strong>420</strong>
+          <strong id="resource-lumen">420</strong>
         </div>
       </div>
     </header>
@@ -53,7 +53,7 @@
           <span class="rail-icon">✦</span>
           <span>Отряд</span>
         </button>
-        <button class="rail-button" disabled>
+        <button class="rail-button" data-screen-target="journal">
           <span class="rail-icon">☷</span>
           <span>Дневник</span>
         </button>
@@ -215,15 +215,124 @@
           </section>
         </div>
       </section>
+
+      <section class="screen" data-screen="journal">
+        <div class="screen-scape journal-scape" aria-hidden="true">
+          <div class="journal-torii"></div>
+          <div class="journal-torii journal-torii-back"></div>
+          <div class="journal-lantern"></div>
+        </div>
+
+        <div class="journal-layout">
+          <aside class="journal-nav ornate-panel">
+            <p class="eyebrow">Дневник экспедиции</p>
+            <div class="journal-tab-list" id="journal-tabs"></div>
+            <div class="journal-entry-list" id="journal-list"></div>
+          </aside>
+
+          <section class="journal-book ornate-panel">
+            <div class="journal-page">
+              <p class="eyebrow" id="journal-kicker">Запись</p>
+              <h2 id="journal-title">Разломанный вестибюль</h2>
+              <p id="journal-body">
+                Святилище не рухнуло. Оно просто стало говорить корнями и каплями воды.
+              </p>
+            </div>
+            <div class="journal-page journal-page-secondary">
+              <p class="eyebrow">Полевая заметка</p>
+              <p id="journal-meta">
+                Короткий путь к мосту открыт, если сначала прочитать рисунки архитектора.
+              </p>
+              <div class="journal-stamp-list" id="journal-stamps"></div>
+            </div>
+          </section>
+
+          <aside class="journal-side ornate-panel">
+            <p class="eyebrow">Активная глава</p>
+            <h3>Сад немого стража</h3>
+            <div class="journal-highlight-list" id="journal-highlights"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="shop">
+        <div class="screen-scape shop-scape" aria-hidden="true">
+          <div class="shop-arch"></div>
+          <div class="shop-shelf-light"></div>
+        </div>
+
+        <div class="shop-layout">
+          <section class="shopkeeper-panel ornate-panel">
+            <div class="shopkeeper-portrait">
+              <div class="shopkeeper-hair"></div>
+              <div class="shopkeeper-body"></div>
+            </div>
+            <p class="eyebrow">Оранжерейщик Эзра</p>
+            <h2>Тихая лавка святилища</h2>
+            <p>
+              Здесь появляются материалы, которые выглядят как часть мира, а не как абстрактные mobile-иконки.
+            </p>
+          </section>
+
+          <section class="shop-catalog ornate-panel">
+            <div class="shop-grid" id="shop-grid"></div>
+          </section>
+
+          <aside class="shop-detail ornate-panel">
+            <p class="eyebrow">Выбранный предмет</p>
+            <h3 id="shop-item-name">Семя витражного мха</h3>
+            <p id="shop-item-desc">
+              Катализатор для мягких люменных усилений, особенно полезен Лиоре и Ноэль.
+            </p>
+            <div class="shop-meta-list" id="shop-item-meta"></div>
+            <button class="primary-button" id="shop-buy">Добавить в поставку</button>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="menu">
+        <div class="screen-scape menu-scape" aria-hidden="true">
+          <div class="menu-room"></div>
+          <div class="menu-fire"></div>
+        </div>
+
+        <div class="menu-layout">
+          <section class="menu-settings ornate-panel">
+            <p class="eyebrow">Настройки похода</p>
+            <h2>Системное меню</h2>
+            <div class="setting-block">
+              <span class="design-label">Масштаб UI</span>
+              <div class="setting-options" id="ui-scale-options"></div>
+            </div>
+            <div class="setting-block">
+              <span class="design-label">Доступность</span>
+              <div class="toggle-list">
+                <button class="toggle-button" id="toggle-motion">Снизить анимацию</button>
+                <button class="toggle-button" id="toggle-contrast">Повысить контраст</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="menu-system ornate-panel">
+            <p class="eyebrow">Steam checklist</p>
+            <div class="menu-check-list" id="menu-check-list"></div>
+          </section>
+
+          <section class="menu-log ornate-panel">
+            <p class="eyebrow">Журнал сессии</p>
+            <div class="menu-log-list" id="menu-log-list"></div>
+          </section>
+        </div>
+      </section>
     </main>
 
     <nav class="bottom-dock ornate-panel" aria-label="Основная навигация">
       <button class="dock-button is-active" data-screen-target="home">Святилище</button>
       <button class="dock-button" data-screen-target="quests">Квесты</button>
       <button class="dock-button" data-screen-target="party">Состав</button>
-      <button class="dock-button" disabled>Дневник</button>
-      <button class="dock-button" disabled>Лавка</button>
-      <button class="dock-button" disabled>Меню</button>
+      <button class="dock-button" data-screen-target="journal">Дневник</button>
+      <button class="dock-button" data-screen-target="shop">Лавка</button>
+      <button class="dock-button" data-screen-target="menu">Меню</button>
     </nav>
   </div>
 
