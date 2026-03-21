@@ -1174,6 +1174,12 @@
   const endingHomeButton = document.getElementById("ending-home");
   const endingResetButton = document.getElementById("ending-reset");
 
+  const applyStaticHotkeyBadges = () => {
+    document.querySelectorAll(".dock-button").forEach((button, index) => {
+      button.dataset.hotkey = String(index + 1);
+    });
+  };
+
   const state = {
     activeScreen: "title",
     activeQuestId: questCards[0].id,
@@ -2288,7 +2294,11 @@
     const campaignTrack = getCampaignTrack();
 
     titleNewButton.dataset.hotkey = "Enter";
-    titleContinueButton.dataset.hotkey = "C";
+    if (canContinue) {
+      titleContinueButton.dataset.hotkey = "C";
+    } else {
+      delete titleContinueButton.dataset.hotkey;
+    }
     titleGuideButton.dataset.hotkey = "8";
 
     titleContinueButton.disabled = !canContinue;
@@ -2368,7 +2378,7 @@
 
     titleStatList.innerHTML = [
       { label: "Главы кампании", value: `${getCompletedCampaignCount()} / ${campaignQuestOrder.length}` },
-      { label: "Усилено героев", value: `${heroes.filter((hero) => getHeroLevel(hero.id) > 1).length} / ${heroes.length}` },
+      { label: "Усилено героев", value: `${completedHeroCount} / ${heroes.length}` },
       { label: "Открыто маршрутов", value: `${unlockedQuestCount} / ${questCards.length}` },
     ]
       .map(
@@ -2386,9 +2396,17 @@
     const outcome = state.result.outcome;
     const isVictory = outcome === "victory";
     const rewardRows = state.result.rewards.length ? state.result.rewards : ["Новых наград нет"];
-    const burstRows = isVictory
-      ? ["Route stable", "Reward secured", state.result.grade]
-      : ["Formation broken", "Retry available", state.result.grade];
+    const fallbackMetrics = isVictory
+      ? [
+          { label: "Статус", value: "Route stable", body: "Узел удержан и может быть закреплён." },
+          { label: "Награда", value: "Reward secured", body: "Трофеи готовы перейти в общий запас." },
+          { label: "Ранг", value: state.result.grade, body: "Сцена получила итоговую оценку." },
+        ]
+      : [
+          { label: "Статус", value: "Formation broken", body: "Строй сорван, но маршрут не потерян." },
+          { label: "Повтор", value: "Retry available", body: "Можно сразу вернуться в бой." },
+          { label: "Ранг", value: state.result.grade, body: "Попытка всё равно записана в хронику." },
+        ];
 
     resultKicker.textContent = isVictory ? "Итог encounter" : "Срыв encounter";
     resultTitle.textContent = state.result.title || "Итог столкновения";
@@ -2397,7 +2415,8 @@
     resultGrade.textContent = state.result.grade;
     resultPrimary.dataset.hotkey = "Enter";
     resultSecondary.dataset.hotkey = isVictory ? "2" : "1";
-    resultBurstList.innerHTML = (state.result.metrics.length ? state.result.metrics : burstRows.map((item) => ({ label: "Поле", value: item, body: "Итог encounter записан в хронику." })))
+
+    resultBurstList.innerHTML = (state.result.metrics.length ? state.result.metrics : fallbackMetrics)
       .map(
         (item) => `
           <article class="results-burst-card">
@@ -2408,12 +2427,19 @@
         `,
       )
       .join("");
+
     resultRewardList.innerHTML = rewardRows
-      .map((item) => `<article class="results-card"><strong>${item}</strong><p>Награда сразу уходит в общее progression-состояние после подтверждения.</p></article>`)
+      .map((item) => `<article class="results-card"><strong>${item}</strong><p>${getRewardItemCopy(item)}</p></article>`)
       .join("");
+
     resultNoteList.innerHTML = state.result.notes
-      .map((item) => `<article class="results-card"><strong>Поле</strong><p>${item}</p></article>`)
+      .map((item, index) => `<article class="results-card"><strong>Поле ${index + 1}</strong><p>${item}</p></article>`)
       .join("");
+
+    resultNextList.innerHTML = (state.result.quickActions.length ? state.result.quickActions : ["Enter · продолжить цикл."])
+      .map((item) => `<article class="results-quick-card"><strong>${item}</strong></article>`)
+      .join("");
+
     resultNextTitle.textContent = state.result.nextTitle || "Следующий шаг";
     resultNextCopy.textContent = state.result.nextCopy || "Вернитесь в святилище и продолжайте цикл.";
     resultPrimary.textContent = isVictory ? (state.result.claimPending ? "Забрать награду" : "К маршруту") : "Повторить encounter";
@@ -2433,6 +2459,7 @@
       title: quest.title,
       subtitle: `${quest.subtitle} остался позади`,
       summary: "Отряд закрыл главу, вернул часть памяти святилища и вынес трофеи в общий цикл подготовки.",
+      track: getCampaignTrack(),
       stats: [
         `${quest.route.length} узлов закрыто`,
         `${quest.route.filter((node) => isCombatNode(node)).length} боевых encounter'а завершено`,
@@ -2440,6 +2467,17 @@
       ],
       rewards: rewards.map((reward) => formatRewardHeadline(reward)),
       unlocks: unlocked,
+      nextActions: nextQuestId
+        ? [
+            "Enter · открыть следующую главу и сразу продолжить кампанию.",
+            "3 · зайти в состав и инвестировать новые материалы.",
+            "5 · проверить лавку перед следующим рейсом.",
+          ]
+        : [
+            "Enter · вернуться в святилище после полного цикла.",
+            "8 · открыть руководство и оценить готовность среза.",
+            "N · после финала можно запустить новый цикл.",
+          ],
       nextQuestId,
       nextTitle: nextQuestId ? getQuestById(nextQuestId).title : "Святилище отвечает тишиной",
       nextCopy: nextQuestId
@@ -2453,17 +2491,36 @@
     chapterTitle.textContent = state.chapter.title || "Глава завершена";
     chapterSubtitle.textContent = state.chapter.subtitle || "Маршрут закрыт";
     chapterSummary.textContent = state.chapter.summary || "Отряд удержал строй и закрыл маршрут.";
+    chapterPrimary.dataset.hotkey = "Enter";
+    chapterSecondary.dataset.hotkey = "1";
+
+    chapterTrackList.innerHTML = (state.chapter.track.length ? state.chapter.track : getCampaignTrack())
+      .map(
+        (item) => `
+          <article class="chapter-track-card is-${item.state}">
+            <span>Глава ${item.order}</span>
+            <strong>${item.title}</strong>
+            <p>${item.subtitle}</p>
+            <em>${item.label}</em>
+          </article>
+        `,
+      )
+      .join("");
+
     chapterStatList.innerHTML = (state.chapter.stats.length ? state.chapter.stats : ["Статистика обновится после первой закрытой главы."])
-      .map((item) => `<article class="chapter-card"><strong>${item}</strong></article>`)
+      .map((item) => `<article class="chapter-card"><strong>${item}</strong><p>Итог сразу записан в desktop-отчёт экспедиции.</p></article>`)
       .join("");
     chapterRewardList.innerHTML = (state.chapter.rewards.length ? state.chapter.rewards : ["Награды будут перечислены после завершения главы."])
-      .map((item) => `<article class="chapter-card"><strong>${item}</strong></article>`)
+      .map((item) => `<article class="chapter-card"><strong>${item}</strong><p>Трофеи закреплены в общем запасе святилища.</p></article>`)
       .join("");
     chapterUnlockList.innerHTML = (state.chapter.unlocks.length ? state.chapter.unlocks : ["Новых маршрутов пока не открылось."])
-      .map((item) => `<article class="chapter-card"><strong>${item}</strong></article>`)
+      .map((item) => `<article class="chapter-card"><strong>${item}</strong><p>Следующая точка кампании уже синхронизирована с хабом.</p></article>`)
       .join("");
     chapterNextTitle.textContent = state.chapter.nextTitle || "Следующий выход";
     chapterNextCopy.textContent = state.chapter.nextCopy || "Продолжайте подготовку в святилище.";
+    chapterNextList.innerHTML = (state.chapter.nextActions.length ? state.chapter.nextActions : ["Enter · продолжить поход."])
+      .map((item) => `<article class="results-quick-card"><strong>${item}</strong></article>`)
+      .join("");
     chapterPrimary.textContent = state.chapter.nextQuestId ? "Открыть следующую главу" : "К святилищу";
     chapterSecondary.textContent = "Вернуться в святилище";
   }
@@ -2473,6 +2530,8 @@
     const totalLumen = totalRewards.reduce((sum, reward) => sum + (reward.lumen ?? 0), 0);
     const totalFragments = totalRewards.reduce((sum, reward) => sum + (reward.fragments ?? 0), 0);
 
+    endingHomeButton.dataset.hotkey = "Enter";
+    endingResetButton.dataset.hotkey = "N";
     endingKicker.textContent = "Эпилог";
     endingTitle.textContent = "Святилище снова заговорило";
     endingSummary.textContent =
@@ -2490,6 +2549,13 @@
       .join("");
     endingNextTitle.textContent = "После финала";
     endingNextCopy.textContent = "Можно вернуться в святилище для свободной полировки или начать новый цикл с чистого старта.";
+    endingNextList.innerHTML = [
+      "Enter · вернуться в хаб и осмотреть сохранённое состояние демо.",
+      "N · сбросить цикл и пройти кампанию заново с нуля.",
+      "8 · открыть руководство и сверить текущую готовность vertical slice.",
+    ]
+      .map((item) => `<article class="results-quick-card"><strong>${item}</strong></article>`)
+      .join("");
   }
 
   function refreshProgressionUi() {
@@ -3548,6 +3614,8 @@
   });
 
   window.addEventListener("keydown", (event) => {
+    const loweredKey = event.key.toLowerCase();
+
     if (state.activeScreen === "title" && event.key === "Enter") {
       event.preventDefault();
       if (titleContinueButton.disabled) {
@@ -3555,6 +3623,21 @@
       } else {
         continueGame();
       }
+      return;
+    }
+    if (state.activeScreen === "title" && loweredKey === "n") {
+      event.preventDefault();
+      startNewGame();
+      return;
+    }
+    if (state.activeScreen === "title" && loweredKey === "c" && !titleContinueButton.disabled) {
+      event.preventDefault();
+      continueGame();
+      return;
+    }
+    if (state.activeScreen === "title" && loweredKey === "g") {
+      event.preventDefault();
+      setActiveScreen("guide");
       return;
     }
     if (state.activeScreen === "results" && event.key === "Enter") {
@@ -3570,6 +3653,11 @@
     if (state.activeScreen === "ending" && event.key === "Enter") {
       event.preventDefault();
       endingHomeButton.click();
+      return;
+    }
+    if (state.activeScreen === "ending" && loweredKey === "n") {
+      event.preventDefault();
+      startNewGame();
       return;
     }
 
@@ -3777,6 +3865,7 @@
 
   loadState();
   ensureValidJournalSelection();
+  applyStaticHotkeyBadges();
   refreshProgressionUi();
   renderUiScaleOptions();
   renderBattle();

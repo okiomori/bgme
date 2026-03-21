@@ -26,3 +26,13 @@ Original prompt: отлично теперь заполни все недост�
 - 2026-03-21: note about tooling: the bundled `develop-web-game` client still captures only the ambient canvas in its PNG output for this project, so visual verification was done with direct Playwright screenshots in addition to the required client run.
 - 2026-03-21: synced the title-screen `Continue` state with actual save presence so a clean boot no longer claims there is a save when there is not.
 - Current status: the vertical slice is now fully finishable as a Steam-style demo loop.
+- 2026-03-21: final PC polish pass completed for the Steam demo release candidate.
+- 2026-03-21: expanded the title screen with a readable demo-loop panel, keyboard reference, and campaign-track status cards.
+- 2026-03-21: upgraded the results, chapter-complete, and ending screens with denser desktop cards, explicit next-step actions, and visible hotkey badges.
+- 2026-03-21: added static hotkey badges to rail, dock, and primary action buttons to make keyboard-first PC navigation self-explanatory.
+- 2026-03-21: captured fresh desktop verification images:
+  - `output/polish-title-full.png`
+  - `output/polish-results-final.png`
+  - `output/polish-chapter-final.png`
+  - `output/polish-ending-final.png`
+- 2026-03-21: reran the required `develop-web-game` client against the polished build and verified the final layouts with direct Playwright screenshots.
