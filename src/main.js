@@ -648,6 +648,136 @@
 
   const STORAGE_KEY = "bgme-state-v3";
 
+  const screenLabels = {
+    home: "Дом",
+    quests: "Экспедиции",
+    battle: "Бой",
+    results: "Итоги",
+    party: "Отряд",
+    journal: "Дневник",
+    shop: "Лавка",
+    menu: "Меню",
+    guide: "Руководство",
+  };
+
+  const creatorBriefs = {
+    home: {
+      topic: "Первое впечатление",
+      question: "Что игрок должен почувствовать за первые десять секунд?",
+      body: "На первом экране не нужно объяснять всё. Нужно дать атмосферу, масштаб и ясный первый шаг.",
+      checklist: [
+        "Оставить один главный акцент вместо россыпи равных окон.",
+        "Проверить, что кнопка начала экспедиции видна сразу.",
+        "Не перегружать главный экран текстом и второстепенными метриками.",
+      ],
+      hint: "Главный экран должен продавать мир и тон. Не системы.",
+    },
+    quests: {
+      topic: "Читаемость маршрута",
+      question: "Игрок понимает, куда идти дальше без объяснений?",
+      body: "Экран экспедиций должен быть тактическим и спокойным: текущий узел, риск, награда и следующее действие должны считываться за секунды.",
+      checklist: [
+        "Выделить текущий узел сильнее всех остальных.",
+        "Показывать одно основное действие, а не три равносильных.",
+        "Не смешивать архив, состав и бой в одном блоке.",
+      ],
+      hint: "Маршрут хорош тогда, когда взгляд сразу находит: где я, что дальше, что получу.",
+    },
+    battle: {
+      topic: "Ритм боя",
+      question: "Что игрок обязан понять уже на первом ходу?",
+      body: "Для демо достаточно одного ясного тактического цикла: цель, навык, эффект, ответ врага. Всё остальное можно наращивать позже.",
+      checklist: [
+        "Сделать очередность и текущую цель максимально читаемыми.",
+        "Убедиться, что активный герой и выбранный навык не спорят друг с другом.",
+        "Показывать результат действия без лишнего визуального шума.",
+      ],
+      hint: "Хороший бой сначала объясняет, потом впечатляет.",
+    },
+    results: {
+      topic: "Награда и вывод",
+      question: "После боя игрок понимает, что он выиграл кроме самого боя?",
+      body: "Экран итогов должен связывать бой с прогрессией: ресурсы, архив, следующий шаг и ощущение завершённости узла.",
+      checklist: [
+        "Показать одну главную награду крупно.",
+        "Сделать следующий шаг очевидным: забрать и вернуться или повторить.",
+        "Не распылять внимание на слишком много мелких карточек.",
+      ],
+      hint: "Итог боя должен ощущаться как маленькая победа, а не как служебное окно.",
+    },
+    party: {
+      topic: "Приоритеты",
+      question: "Что мы пока сознательно не делаем?",
+      body: "Чтобы проект не расползался, нужно честно назвать, что пока не входит в демо. Это не слабость, а инструмент фокуса.",
+      checklist: [
+        "Что не войдёт в ближайший месяц.",
+        "Что можно оставить как текстовую заглушку.",
+        "Что нужно доделать обязательно перед показом другим.",
+      ],
+      hint: "Персонажи: смотрите на силуэт, материалы и акцент. Не на количество деталей, а на то, насколько герой запоминается за секунду.",
+    },
+    journal: {
+      topic: "Понятность лора",
+      question: "Дневник помогает миру или мешает маршруту?",
+      body: "Дневник должен быть местом для контекста, а не вторым экраном квестов. Лор хорош, когда он раскрывает мир и не спорит с задачей игрока.",
+      checklist: [
+        "Оставить в записи только один смысловой фокус.",
+        "Связать запись с тем, как она была открыта.",
+        "Не превращать каждую страницу в стену текста.",
+      ],
+      hint: "Одна сильная заметка лучше трёх средних абзацев.",
+    },
+    shop: {
+      topic: "Ценность награды",
+      question: "Игрок понимает, зачем ему этот предмет прямо сейчас?",
+      body: "Лавка для демо должна не просто продавать предмет, а объяснять, на какого героя и на какой следующий бой он влияет.",
+      checklist: [
+        "Подсветить одного лучшего адресата для предмета.",
+        "Показывать пользу простым языком, а не только названием ресурса.",
+        "Не раздувать ассортимент, если половина позиций не нужна в демо.",
+      ],
+      hint: "У предмета должен быть адресат, цель и понятная польза.",
+    },
+    menu: {
+      topic: "Управление демо",
+      question: "Создателю и игроку здесь одинаково удобно?",
+      body: "Системное меню должно быть коротким и надёжным: настройки, guide и всё, что помогает не теряться во время показа.",
+      checklist: [
+        "Упростить путь к руководству и сохранённому прогрессу.",
+        "Не прятать полезные creator-инструменты слишком глубоко.",
+        "Проверить, что клавиатурная навигация работает без мыши.",
+      ],
+      hint: "Хорошее меню не отвлекает, а быстро возвращает в игру.",
+    },
+    guide: {
+      topic: "Фокус проекта",
+      question: "Здесь честно показано состояние игры или всё ещё смешаны два разных статуса?",
+      body: "Guide нужен не для самоуспокоения, а для ясности: что уже собрано, что ещё сыро и какой следующий шаг самый выгодный.",
+      checklist: [
+        "Развести состояние проекта и прогресс текущего сейва.",
+        "Писать коротко и конкретно, без туманных формулировок.",
+        "Не делать из guide ещё один квестовый экран.",
+      ],
+      hint: "Guide полезен тогда, когда помогает принять решение, а не просто красиво выглядит.",
+    },
+  };
+
+  function createInitialCreatorState() {
+    return {
+      isOpen: false,
+      draftQuestion: "",
+      projectAnswer: "",
+      privateNotes: "",
+      messages: [
+        {
+          role: "assistant",
+          title: "Старт creator-кабинета",
+          body: "Здесь можно писать вопросы простыми словами. Ответы приходят сразу локально в проекте и помогают не теряться в приоритетах.",
+        },
+      ],
+    };
+  }
+
   const battleSkillSets = {
     liora: [
       {
@@ -943,6 +1073,25 @@
   const resultNextCopy = document.getElementById("result-next-copy");
   const resultPrimary = document.getElementById("result-primary");
   const resultSecondary = document.getElementById("result-secondary");
+  const creatorCabin = document.getElementById("creator-cabin");
+  const creatorBackdrop = document.getElementById("creator-backdrop");
+  const creatorClose = document.getElementById("creator-close");
+  const creatorCurrentScreen = document.getElementById("creator-current-screen");
+  const creatorTopic = document.getElementById("creator-topic");
+  const creatorProjectState = document.getElementById("creator-project-state");
+  const creatorSaveProgress = document.getElementById("creator-save-progress");
+  const creatorBriefQuestion = document.getElementById("creator-brief-question");
+  const creatorBriefBody = document.getElementById("creator-brief-body");
+  const creatorChecklist = document.getElementById("creator-checklist");
+  const creatorScreenHint = document.getElementById("creator-screen-hint");
+  const creatorChatLog = document.getElementById("creator-chat-log");
+  const creatorQuestionInput = document.getElementById("creator-question-input");
+  const creatorSend = document.getElementById("creator-send");
+  const creatorProjectAnswer = document.getElementById("creator-project-answer");
+  const creatorPrivateNotes = document.getElementById("creator-private-notes");
+  const creatorLivePill = document.getElementById("creator-live-pill");
+  const creatorPromptButtons = document.querySelectorAll("[data-creator-prompt]");
+  const brandMark = document.querySelector(".brand-mark");
 
   const state = {
     activeScreen: "home",
@@ -979,6 +1128,7 @@
     resolvedBattles: {},
     claimedNodeRewards: {},
     routeProgress: Object.fromEntries(questCards.map((quest) => [quest.id, 0])),
+    creator: createInitialCreatorState(),
   };
 
   function getActiveQuest() {
@@ -1043,6 +1193,12 @@
       routeProgress: state.routeProgress,
       resolvedBattles: state.resolvedBattles,
       claimedNodeRewards: state.claimedNodeRewards,
+      creator: {
+        draftQuestion: state.creator.draftQuestion,
+        projectAnswer: state.creator.projectAnswer,
+        privateNotes: state.creator.privateNotes,
+        messages: state.creator.messages,
+      },
     };
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
@@ -1074,6 +1230,16 @@
       if (parsed.claimedNodeRewards) state.claimedNodeRewards = { ...parsed.claimedNodeRewards };
       if (Array.isArray(parsed.sessionLog) && parsed.sessionLog.length) {
         state.sessionLog = parsed.sessionLog.slice(0, 6);
+      }
+      if (parsed.creator) {
+        state.creator = {
+          ...state.creator,
+          ...parsed.creator,
+          isOpen: false,
+          messages: Array.isArray(parsed.creator.messages) && parsed.creator.messages.length
+            ? parsed.creator.messages.slice(-12)
+            : state.creator.messages,
+        };
       }
     } catch {
       window.localStorage.removeItem(STORAGE_KEY);
@@ -1268,6 +1434,199 @@
         },
       ],
     };
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function getSaveProgressPercent() {
+    const totalNodes = questCards.reduce((sum, quest) => sum + quest.route.length, 0);
+    const clearedNodes = questCards.reduce((sum, quest) => sum + getQuestProgress(quest.id), 0);
+    if (!totalNodes) {
+      return 0;
+    }
+    return Math.round((clearedNodes / totalNodes) * 100);
+  }
+
+  function getCreatorBrief() {
+    return creatorBriefs[state.activeScreen] ?? creatorBriefs.party;
+  }
+
+  function renderCreatorChecklist(items) {
+    creatorChecklist.innerHTML = items
+      .map(
+        (item) => `
+          <article class="creator-check-item">
+            <strong>${escapeHtml(item)}</strong>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function renderCreatorMessages() {
+    creatorChatLog.innerHTML = state.creator.messages
+      .map(
+        (message) => `
+          <article class="creator-message is-${message.role}">
+            <strong>${escapeHtml(message.title)}</strong>
+            <p>${escapeHtml(message.body)}</p>
+          </article>
+        `,
+      )
+      .join("");
+
+    creatorChatLog.scrollTop = creatorChatLog.scrollHeight;
+  }
+
+  function updateCreatorBrief() {
+    const brief = getCreatorBrief();
+    const readiness = getReadinessReport();
+
+    creatorCurrentScreen.textContent = screenLabels[state.activeScreen] ?? state.activeScreen;
+    creatorTopic.textContent = brief.topic;
+    creatorProjectState.textContent = `${readiness.percent}%`;
+    creatorSaveProgress.textContent = `${getSaveProgressPercent()}%`;
+    creatorBriefQuestion.textContent = brief.question;
+    creatorBriefBody.textContent = brief.body;
+    creatorScreenHint.textContent = brief.hint;
+    renderCreatorChecklist(brief.checklist);
+  }
+
+  function renderCreatorCabin() {
+    creatorCabin.setAttribute("aria-hidden", state.creator.isOpen ? "false" : "true");
+    document.body.classList.toggle("creator-open", state.creator.isOpen);
+    creatorQuestionInput.value = state.creator.draftQuestion;
+    creatorProjectAnswer.value = state.creator.projectAnswer;
+    creatorPrivateNotes.value = state.creator.privateNotes;
+    creatorLivePill.textContent = state.creator.isOpen ? "Локальный ответчик готов" : "Кабинет скрыт";
+    updateCreatorBrief();
+    renderCreatorMessages();
+  }
+
+  function openCreatorCabin(prefillQuestion = "") {
+    state.creator.isOpen = true;
+    if (prefillQuestion) {
+      state.creator.draftQuestion = prefillQuestion;
+    }
+    renderCreatorCabin();
+    saveState();
+    window.requestAnimationFrame(() => {
+      creatorQuestionInput.focus();
+      if (prefillQuestion) {
+        creatorQuestionInput.setSelectionRange(creatorQuestionInput.value.length, creatorQuestionInput.value.length);
+      }
+    });
+  }
+
+  function closeCreatorCabin() {
+    if (!state.creator.isOpen) {
+      return;
+    }
+    state.creator.isOpen = false;
+    renderCreatorCabin();
+    saveState();
+  }
+
+  function pushCreatorMessage(role, title, body) {
+    state.creator.messages.push({ role, title, body });
+    state.creator.messages = state.creator.messages.slice(-12);
+  }
+
+  function getCreatorFocusSuggestion() {
+    if (state.activeScreen === "party") {
+      return `Сейчас мы на экране отряда. Самый полезный фокус здесь: сделать каждого героя узнаваемым по силуэту и не пытаться сразу дорисовать всё до финального арта.`;
+    }
+    if (state.activeScreen === "quests") {
+      return `Сейчас мы на экране экспедиций. Самый полезный фокус: чтобы текущий узел, награда и следующее действие читались за один взгляд.`;
+    }
+    if (state.activeScreen === "battle") {
+      return `Сейчас мы на боевом экране. Самый полезный фокус: ясность хода, цели и результата действия, а не избыточные украшения.`;
+    }
+    return `Сейчас мы на экране ${screenLabels[state.activeScreen] ?? state.activeScreen}. Полезнее всего улучшать один смысловой слой, а не всё сразу.`;
+  }
+
+  function buildCreatorReply(question) {
+    const normalized = question.toLowerCase();
+    const activeHero = getActiveHero();
+    const readiness = getReadinessReport();
+    const saveProgress = getSaveProgressPercent();
+
+    if (normalized.includes("закры") || normalized.includes("кабинет") || normalized.includes("окош")) {
+      return {
+        title: "Кабинет автора",
+        body: "Теперь кабинет должен закрываться тремя способами: по крестику, по клику вне панели и по клавише Esc. Если он снова зависнет, это уже будет отдельный баг интерфейса, а не отсутствие логики закрытия.",
+      };
+    }
+
+    if (normalized.includes("реальном времени") || normalized.includes("чат") || normalized.includes("сообщ")) {
+      return {
+        title: "Как работает ответ внутри игры",
+        body: "Сейчас внутри самой игры работает локальный помощник: он отвечает сразу и сохраняет переписку в браузере. Настоящий облачный чат с живым Codex потребует отдельный сервер и API-слой, поэтому для демо мы сознательно держим это как приватный offline-инструмент автора.",
+      };
+    }
+
+    if (normalized.includes("портрет") || normalized.includes("силуэт") || normalized.includes("персонаж")) {
+      return {
+        title: `Художественный фокус: ${activeHero.name}`,
+        body: `${activeHero.name} лучше усиливать не деталями, а тремя вещами: более узнаваемой формой силуэта, одним материалом-акцентом и одним световым якорем. Для ближайшего прохода достаточно сделать так, чтобы герой считывался даже в маленьком превью без чтения текста.`,
+      };
+    }
+
+    if (normalized.includes("сыро") || normalized.includes("выгляд")) {
+      return {
+        title: "Почему экран может казаться сырым",
+        body: "Обычно экран выглядит сыро не из-за недостатка деталей, а из-за слабой иерархии. Значит, мы сначала усиливаем один главный акцент, убираем лишние равносильные блоки и выравниваем ритм отступов. Только потом добавляем декоративный слой.",
+      };
+    }
+
+    if (normalized.includes("месяц") || normalized.includes("заглуш") || normalized.includes("не делаем") || normalized.includes("приоритет")) {
+      return {
+        title: "Фокус на ближайший месяц",
+        body: `В ближайший месяц разумно не расползаться в полноценную игру. Можно оставить текстовыми заглушками глубокий лор, поздние главы и расширенный набор врагов. Перед показом другим обязательно довести: читаемый маршрут, цельный экран отряда, понятный бой и законченный цикл награды.`,
+      };
+    }
+
+    if (normalized.includes("steam") || normalized.includes("пк") || normalized.includes("desktop")) {
+      return {
+        title: "Приоритет для ПК-версии",
+        body: "Для Steam важнее всего крупная иерархия, спокойная композиция и уверенная клавиатурная навигация. Если сомневаетесь между красивым и понятным, для демо сначала выбираем понятное и только потом наращиваем красоту.",
+      };
+    }
+
+    if (normalized.includes("бой") || normalized.includes("encounter") || normalized.includes("квест")) {
+      return {
+        title: "Игровая логика",
+        body: `${getCreatorFocusSuggestion()} Сейчас состояние проекта ${readiness.percent}%, а прогресс этого сейва ${saveProgress}%. Значит, лучший следующий шаг — не расширять систему, а укреплять один текущий игровой цикл до состояния уверенного показа.`,
+      };
+    }
+
+    return {
+      title: "Ответ по модернизации",
+      body: `${getCreatorFocusSuggestion()} Если говорить совсем просто, то сейчас проекту полезнее один сильный приоритет, чем пять средних. Напишите, что именно вас смущает сильнее всего на экране, и мы разложим это на понятные шаги без сложных технических терминов.`,
+    };
+  }
+
+  function submitCreatorQuestion(prefill = "") {
+    const question = (prefill || creatorQuestionInput.value).trim();
+    if (!question) {
+      creatorLivePill.textContent = "Сначала напишите вопрос";
+      return;
+    }
+
+    pushCreatorMessage("user", "Ваш вопрос", question);
+    const reply = buildCreatorReply(question);
+    pushCreatorMessage("assistant", reply.title, reply.body);
+    state.creator.draftQuestion = "";
+    creatorLivePill.textContent = "Ответ обновлён";
+    renderCreatorCabin();
+    saveState();
   }
 
   function formatClock() {
@@ -2323,6 +2682,9 @@
     dockButtons.forEach((button) => {
       button.classList.toggle("is-active", button.dataset.screenTarget === navScreen);
     });
+    if (state.creator.isOpen) {
+      updateCreatorBrief();
+    }
     saveState();
   }
 
@@ -2337,6 +2699,60 @@
         setActiveScreen(screenTarget);
       }
     });
+  });
+
+  let creatorBrandTapCount = 0;
+  let creatorBrandTapTimer = 0;
+
+  if (brandMark) {
+    brandMark.addEventListener("click", () => {
+      creatorBrandTapCount += 1;
+      window.clearTimeout(creatorBrandTapTimer);
+      if (creatorBrandTapCount >= 3) {
+        creatorBrandTapCount = 0;
+        openCreatorCabin();
+        return;
+      }
+      creatorBrandTapTimer = window.setTimeout(() => {
+        creatorBrandTapCount = 0;
+      }, 700);
+    });
+  }
+
+  creatorBackdrop.addEventListener("click", closeCreatorCabin);
+  creatorClose.addEventListener("click", closeCreatorCabin);
+  creatorSend.addEventListener("click", () => {
+    submitCreatorQuestion();
+  });
+
+  creatorPromptButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const prompt = button.dataset.creatorPrompt ?? "";
+      openCreatorCabin(prompt);
+      submitCreatorQuestion(prompt);
+    });
+  });
+
+  creatorQuestionInput.addEventListener("input", () => {
+    state.creator.draftQuestion = creatorQuestionInput.value;
+    saveState();
+  });
+
+  creatorQuestionInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      submitCreatorQuestion();
+    }
+  });
+
+  creatorProjectAnswer.addEventListener("input", () => {
+    state.creator.projectAnswer = creatorProjectAnswer.value;
+    saveState();
+  });
+
+  creatorPrivateNotes.addEventListener("input", () => {
+    state.creator.privateNotes = creatorPrivateNotes.value;
+    saveState();
   });
 
   routeAdvanceButton.addEventListener("click", () => {
@@ -2398,6 +2814,26 @@
   });
 
   window.addEventListener("keydown", (event) => {
+    const isCreatorShortcut = (event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === "m";
+
+    if (isCreatorShortcut) {
+      event.preventDefault();
+      if (state.creator.isOpen) {
+        closeCreatorCabin();
+      } else {
+        openCreatorCabin();
+      }
+      return;
+    }
+
+    if (state.creator.isOpen) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeCreatorCabin();
+      }
+      return;
+    }
+
     if (event.key === "1") {
       setActiveScreen("home");
     }
@@ -2475,6 +2911,12 @@
         result: state.battle.result,
         acting: getBattleActingHero().name,
         target: getBattleTarget().name,
+      },
+      creator: {
+        open: state.creator.isOpen,
+        topic: getCreatorBrief().topic,
+        messageCount: state.creator.messages.length,
+        lastMessage: state.creator.messages.at(-1)?.title ?? null,
       },
       resources: state.resources,
       settings: state.settings,
@@ -2591,6 +3033,7 @@
   renderGuideSections();
   updateGuidePanel();
   renderBattle();
+  renderCreatorCabin();
   applyUiSettings();
   const initialScreen = window.location.hash.replace("#", "");
   if (initialScreen === "battle") {

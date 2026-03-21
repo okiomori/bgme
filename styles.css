@@ -1373,12 +1373,20 @@ button {
   --weapon: rgba(252, 247, 236, 0.9);
   --companion: rgba(210, 245, 231, 0.8);
   --sigil: rgba(230, 242, 233, 0.18);
+  --backwash-1: rgba(223, 244, 235, 0.18);
+  --backwash-2: rgba(92, 124, 111, 0.2);
+  --motif-1: rgba(239, 247, 238, 0.12);
+  --motif-2: rgba(180, 212, 198, 0.14);
+  --veil: rgba(255, 255, 255, 0.12);
 }
 
 .portrait-aura,
 .portrait-ring,
 .portrait-sigil,
-.portrait-companion {
+.portrait-companion,
+.portrait-backwash,
+.portrait-motif,
+.portrait-veil {
   position: absolute;
 }
 
@@ -1397,6 +1405,28 @@ button {
   box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.015);
 }
 
+.portrait-backwash {
+  inset: 9% 14% 12%;
+  background:
+    radial-gradient(circle at 48% 28%, var(--backwash-1), transparent 24%),
+    radial-gradient(circle at 36% 58%, var(--backwash-2), transparent 30%),
+    linear-gradient(180deg, transparent 0 18%, rgba(255, 255, 255, 0.06) 32%, transparent 50%);
+  filter: blur(14px);
+  opacity: 0.92;
+}
+
+.portrait-motif {
+  inset: auto 18% 7% 18%;
+  height: 56%;
+  border-radius: 42% 58% 24% 24% / 20% 20% 18% 18%;
+  background:
+    radial-gradient(circle at 50% 28%, var(--motif-1), transparent 28%),
+    linear-gradient(180deg, var(--motif-2), rgba(255, 255, 255, 0.02) 56%, rgba(7, 9, 9, 0.14) 100%);
+  border: 1px solid rgba(240, 221, 172, 0.08);
+  clip-path: polygon(20% 0, 80% 0, 100% 24%, 90% 72%, 66% 100%, 34% 100%, 10% 72%, 0 24%);
+  opacity: 0.5;
+}
+
 .portrait-ornament {
   position: absolute;
   inset: 8%;
@@ -1407,6 +1437,7 @@ button {
 .portrait-figure {
   position: absolute;
   inset: 6% 16% 0;
+  filter: drop-shadow(0 24px 36px rgba(0, 0, 0, 0.28));
 }
 
 .portrait-sigil {
@@ -1426,6 +1457,16 @@ button {
     radial-gradient(circle at center, var(--companion) 0%, rgba(255, 255, 255, 0.18) 28%, transparent 70%);
   filter: blur(1px);
   opacity: 0.9;
+}
+
+.portrait-veil {
+  inset: 0;
+  background:
+    linear-gradient(112deg, transparent 0 40%, rgba(255, 255, 255, 0.02) 46%, var(--veil) 50%, transparent 58%),
+    radial-gradient(circle at 30% 16%, rgba(255, 255, 255, 0.1), transparent 18%);
+  mix-blend-mode: screen;
+  opacity: 0.62;
+  pointer-events: none;
 }
 
 .portrait-head,
@@ -1695,6 +1736,11 @@ button {
   --weapon: rgba(247, 244, 232, 0.96);
   --companion: rgba(224, 255, 243, 0.86);
   --sigil: rgba(214, 245, 233, 0.2);
+  --backwash-1: rgba(214, 247, 238, 0.24);
+  --backwash-2: rgba(116, 172, 154, 0.2);
+  --motif-1: rgba(240, 251, 247, 0.14);
+  --motif-2: rgba(185, 232, 221, 0.18);
+  --veil: rgba(237, 255, 248, 0.16);
 }
 
 #portrait-shell[data-hero="rian"] {
@@ -1713,6 +1759,11 @@ button {
   --weapon: rgba(223, 217, 195, 0.9);
   --companion: rgba(191, 214, 176, 0.62);
   --sigil: rgba(203, 215, 181, 0.16);
+  --backwash-1: rgba(199, 224, 173, 0.18);
+  --backwash-2: rgba(111, 96, 67, 0.2);
+  --motif-1: rgba(235, 230, 203, 0.12);
+  --motif-2: rgba(161, 147, 108, 0.18);
+  --veil: rgba(255, 240, 214, 0.08);
 }
 
 #portrait-shell[data-hero="saya"] {
@@ -1731,6 +1782,11 @@ button {
   --weapon: rgba(246, 231, 214, 0.9);
   --companion: rgba(220, 112, 120, 0.68);
   --sigil: rgba(211, 122, 136, 0.14);
+  --backwash-1: rgba(217, 120, 138, 0.2);
+  --backwash-2: rgba(68, 20, 30, 0.24);
+  --motif-1: rgba(247, 209, 214, 0.1);
+  --motif-2: rgba(120, 38, 56, 0.18);
+  --veil: rgba(255, 236, 238, 0.07);
 }
 
 #portrait-shell[data-hero="noel"] {
@@ -1749,6 +1805,11 @@ button {
   --weapon: rgba(233, 241, 248, 0.92);
   --companion: rgba(182, 215, 245, 0.74);
   --sigil: rgba(176, 212, 241, 0.16);
+  --backwash-1: rgba(190, 225, 247, 0.22);
+  --backwash-2: rgba(78, 115, 150, 0.2);
+  --motif-1: rgba(235, 245, 252, 0.12);
+  --motif-2: rgba(156, 196, 228, 0.18);
+  --veil: rgba(242, 249, 255, 0.12);
 }
 
 #portrait-shell[data-hero="rian"] .portrait-hair {
@@ -2420,6 +2481,256 @@ button {
   line-height: 1.55;
 }
 
+body.creator-open .shell {
+  filter: saturate(0.92) blur(2px);
+}
+
+.creator-cabin {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+}
+
+body.creator-open .creator-cabin {
+  display: block;
+}
+
+.creator-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background:
+    linear-gradient(180deg, rgba(4, 7, 7, 0.54), rgba(4, 7, 7, 0.82)),
+    radial-gradient(circle at center, rgba(151, 180, 139, 0.08), transparent 36%);
+  cursor: pointer;
+}
+
+.creator-panel {
+  position: relative;
+  z-index: 1;
+  width: min(1680px, calc(100vw - 72px));
+  max-height: calc(100vh - 56px);
+  margin: 28px auto;
+  padding: 24px;
+  border-radius: 32px;
+  display: grid;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.creator-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.creator-heading {
+  display: grid;
+  gap: 8px;
+}
+
+.creator-heading h2 {
+  margin: 0;
+  font-size: clamp(1.9rem, 2.5vw, 2.5rem);
+}
+
+.creator-subcopy {
+  margin: 0;
+  max-width: 740px;
+  color: var(--text-soft);
+  line-height: 1.55;
+}
+
+.creator-close {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 221, 172, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 1.5rem;
+}
+
+.creator-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.creator-brief,
+.creator-console {
+  min-height: 0;
+  display: grid;
+  gap: 16px;
+  overflow: auto;
+}
+
+.creator-stats-grid,
+.creator-note-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.creator-stat-card,
+.creator-brief-card {
+  padding: 16px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.creator-stat-card span,
+.creator-label {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.creator-stat-card strong {
+  display: block;
+  margin-top: 10px;
+  color: var(--gold-soft);
+  font-size: 1.16rem;
+}
+
+.creator-brief-card h3 {
+  margin: 10px 0 0;
+  font-size: 1.22rem;
+  font-family: "Palatino Linotype", Georgia, serif;
+}
+
+.creator-brief-card p:not(.eyebrow):not(.creator-subcopy) {
+  margin: 10px 0 0;
+  color: var(--text-soft);
+  line-height: 1.62;
+}
+
+.creator-checklist,
+.creator-chat-log {
+  display: grid;
+  gap: 10px;
+}
+
+.creator-check-item,
+.creator-message {
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.creator-check-item strong,
+.creator-message strong {
+  display: block;
+}
+
+.creator-check-item p,
+.creator-message p {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  line-height: 1.55;
+}
+
+.creator-chat-card {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(180px, 1fr) auto auto;
+  gap: 14px;
+}
+
+.creator-chat-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.creator-quick-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.creator-chip {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--gold-soft);
+  cursor: pointer;
+}
+
+.creator-chat-log {
+  min-height: 0;
+  overflow: auto;
+  align-content: start;
+}
+
+.creator-message.is-user {
+  border-color: rgba(169, 215, 252, 0.14);
+  background:
+    linear-gradient(180deg, rgba(169, 215, 252, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.creator-message.is-assistant {
+  border-color: rgba(193, 242, 228, 0.14);
+  background:
+    linear-gradient(180deg, rgba(193, 242, 228, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.creator-textarea {
+  width: 100%;
+  min-height: 132px;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(7, 10, 10, 0.34);
+  color: var(--text-main);
+  resize: vertical;
+}
+
+.creator-question-input {
+  min-height: 108px;
+  margin-top: 0;
+}
+
+.creator-textarea:focus-visible,
+.creator-close:focus-visible,
+.creator-chip:focus-visible {
+  outline: 2px solid rgba(240, 221, 172, 0.32);
+  outline-offset: 2px;
+}
+
+.creator-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.creator-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(193, 242, 228, 0.16);
+  background: rgba(193, 242, 228, 0.08);
+  color: var(--gold-soft);
+  font-size: 0.82rem;
+}
+
 .bottom-dock {
   display: flex;
   align-items: center;
@@ -2592,6 +2903,12 @@ button {
   inset: 6% 30% 24%;
 }
 
+#portrait-shell[data-hero="liora"] .portrait-motif {
+  inset: auto 23% 8% 23%;
+  height: 58%;
+  clip-path: polygon(28% 0, 72% 0, 92% 18%, 82% 72%, 62% 100%, 38% 100%, 18% 72%, 8% 18%);
+}
+
 #portrait-shell[data-hero="liora"] .portrait-cloak {
   inset: 18% 27% 8%;
 }
@@ -2605,6 +2922,12 @@ button {
 
 #portrait-shell[data-hero="rian"] .portrait-head {
   width: 17%;
+}
+
+#portrait-shell[data-hero="rian"] .portrait-motif {
+  inset: auto 16% 4% 16%;
+  height: 60%;
+  clip-path: polygon(22% 0, 78% 0, 100% 22%, 88% 86%, 62% 100%, 38% 100%, 12% 86%, 0 22%);
 }
 
 #portrait-shell[data-hero="rian"] .portrait-hair {
@@ -2651,6 +2974,12 @@ button {
   clip-path: polygon(32% 0, 62% 0, 80% 10%, 86% 24%, 78% 54%, 88% 92%, 66% 100%, 42% 72%, 20% 100%, 10% 66%, 14% 22%);
 }
 
+#portrait-shell[data-hero="saya"] .portrait-motif {
+  inset: auto 12% 8% 16%;
+  height: 56%;
+  clip-path: polygon(30% 0, 70% 0, 100% 24%, 78% 48%, 92% 100%, 58% 82%, 26% 100%, 0 58%, 12% 20%);
+}
+
 #portrait-shell[data-hero="saya"] .portrait-cloak {
   inset: 18% 18% 8%;
   clip-path: polygon(28% 0, 72% 0, 92% 18%, 78% 46%, 100% 76%, 70% 100%, 38% 72%, 0 100%, 18% 44%, 10% 16%);
@@ -2675,6 +3004,12 @@ button {
 #portrait-shell[data-hero="noel"] .portrait-hair {
   inset: 8% 30% 24%;
   clip-path: polygon(34% 0, 60% 0, 78% 10%, 84% 24%, 88% 92%, 70% 100%, 54% 72%, 40% 100%, 18% 86%, 18% 24%, 24% 10%);
+}
+
+#portrait-shell[data-hero="noel"] .portrait-motif {
+  inset: auto 18% 8% 18%;
+  height: 54%;
+  clip-path: polygon(18% 8%, 82% 0, 100% 22%, 84% 100%, 18% 92%, 0 32%);
 }
 
 #portrait-shell[data-hero="noel"] .portrait-cloak {
@@ -3313,6 +3648,10 @@ button {
     overflow: auto;
   }
 
+  body.creator-open .shell {
+    filter: none;
+  }
+
   .shell {
     height: auto;
     min-height: calc(100vh - 32px);
@@ -3337,8 +3676,28 @@ button {
   .journal-layout,
   .guide-layout,
   .shop-layout,
-  .menu-layout {
+  .menu-layout,
+  .creator-grid,
+  .creator-note-grid,
+  .creator-stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .creator-panel {
+    width: min(calc(100vw - 20px), 1280px);
+    max-height: none;
+    margin: 10px auto;
+    padding: 16px;
+  }
+
+  .creator-chat-header,
+  .creator-action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .creator-quick-row {
+    justify-content: flex-start;
   }
 
   .intro-card {

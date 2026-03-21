@@ -306,9 +306,12 @@
             <div class="portrait-frame" id="portrait-shell" data-hero="liora">
               <div class="portrait-aura"></div>
               <div class="portrait-ring"></div>
+              <div class="portrait-backwash"></div>
+              <div class="portrait-motif"></div>
               <div class="portrait-ornament"></div>
               <div class="portrait-companion"></div>
               <div class="portrait-sigil"></div>
+              <div class="portrait-veil"></div>
               <div class="portrait-figure">
                 <div class="portrait-head"></div>
                 <div class="portrait-hair"></div>
@@ -515,6 +518,120 @@
       <button class="dock-button" data-screen-target="shop">Лавка</button>
       <button class="dock-button" data-screen-target="menu">Меню</button>
     </nav>
+  </div>
+
+  <div class="creator-cabin" id="creator-cabin" aria-hidden="true">
+    <button class="creator-backdrop" id="creator-backdrop" type="button" aria-label="Закрыть кабинет"></button>
+    <section class="creator-panel ornate-panel" role="dialog" aria-modal="true" aria-labelledby="creator-title">
+      <header class="creator-header">
+        <div class="creator-heading">
+          <p class="eyebrow">BGME Creator Brief</p>
+          <h2 id="creator-title">Приватный кабинет автора</h2>
+          <p class="creator-subcopy">
+            Скрытый режим для автора проекта. Открывается тройным кликом по логотипу или сочетанием
+            <strong>Ctrl + Shift + M</strong>.
+          </p>
+        </div>
+        <button class="creator-close" id="creator-close" type="button" aria-label="Закрыть кабинет">×</button>
+      </header>
+
+      <div class="creator-grid">
+        <section class="creator-brief">
+          <div class="creator-stats-grid">
+            <article class="creator-stat-card">
+              <span>Текущий экран</span>
+              <strong id="creator-current-screen">party</strong>
+            </article>
+            <article class="creator-stat-card">
+              <span>Тема</span>
+              <strong id="creator-topic">Приоритеты</strong>
+            </article>
+            <article class="creator-stat-card">
+              <span>Состояние проекта</span>
+              <strong id="creator-project-state">62%</strong>
+            </article>
+            <article class="creator-stat-card">
+              <span>Прогресс сейва</span>
+              <strong id="creator-save-progress">0%</strong>
+            </article>
+          </div>
+
+          <article class="creator-brief-card">
+            <p class="eyebrow">Вопрос от Codex</p>
+            <h3 id="creator-brief-question">Что мы сейчас хотим довести до уровня показа другим?</h3>
+            <p id="creator-brief-body">
+              Чтобы проект не расползался, важно каждый раз выбирать один фокус. Это не ограничение, а способ
+              спокойно собирать сильное демо по шагам.
+            </p>
+          </article>
+
+          <article class="creator-brief-card">
+            <p class="eyebrow">Что нужно решить</p>
+            <div class="creator-checklist" id="creator-checklist"></div>
+          </article>
+
+          <article class="creator-brief-card">
+            <p class="eyebrow">Подсказка по текущему экрану</p>
+            <p id="creator-screen-hint">
+              Персонажи: смотрите на силуэт, материалы и акцент. Не на количество деталей, а на то,
+              насколько герой запоминается за секунду.
+            </p>
+          </article>
+        </section>
+
+        <section class="creator-console">
+          <article class="creator-brief-card creator-chat-card">
+            <div class="creator-chat-header">
+              <div>
+                <p class="eyebrow">Мои вопросы к Codex</p>
+                <p class="creator-subcopy">Можно писать простыми словами. Я отвечу сразу внутри проекта.</p>
+              </div>
+              <div class="creator-quick-row" id="creator-quick-row">
+                <button class="creator-chip" type="button" data-creator-prompt="Что обязательно доделать перед показом другим?">Перед показом</button>
+                <button class="creator-chip" type="button" data-creator-prompt="Как улучшить художественность портретов на экране отряда?">Портреты</button>
+                <button class="creator-chip" type="button" data-creator-prompt="Что можно оставить текстовой заглушкой на ближайший месяц?">Заглушки</button>
+              </div>
+            </div>
+
+            <div class="creator-chat-log" id="creator-chat-log"></div>
+
+            <label class="creator-label" for="creator-question-input">Сообщение для Codex</label>
+            <textarea
+              class="creator-textarea creator-question-input"
+              id="creator-question-input"
+              rows="4"
+              placeholder="Например: почему экран выглядит сыро и что исправить первым?"
+            ></textarea>
+            <div class="creator-action-row">
+              <span class="creator-live-pill" id="creator-live-pill">Локальный ответчик готов</span>
+              <button class="primary-button" id="creator-send" type="button">Отправить вопрос</button>
+            </div>
+          </article>
+
+          <div class="creator-note-grid">
+            <article class="creator-brief-card">
+              <label class="creator-label" for="creator-project-answer">Мой ответ для проекта</label>
+              <textarea
+                class="creator-textarea"
+                id="creator-project-answer"
+                rows="6"
+                placeholder="Сюда можно записывать решения простыми словами: что делаем сейчас, что откладываем, что обязательно показать."
+              ></textarea>
+            </article>
+
+            <article class="creator-brief-card">
+              <label class="creator-label" for="creator-private-notes">Приватные заметки</label>
+              <textarea
+                class="creator-textarea"
+                id="creator-private-notes"
+                rows="6"
+                placeholder="Любые ваши заметки. Они сохраняются локально только в этом браузере."
+              ></textarea>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
   </div>
 
   <script src="src/main.js" defer></script>
