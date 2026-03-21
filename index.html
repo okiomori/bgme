@@ -6,7 +6,7 @@
   <title>Последняя Ступень</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-screen="home">
+<body data-screen="title">
   <canvas id="ambient-canvas" aria-hidden="true"></canvas>
   <div class="fog-layer" aria-hidden="true"></div>
 
@@ -59,7 +59,44 @@
         </button>
       </aside>
 
-      <section class="screen is-active" data-screen="home">
+      <section class="screen is-active" data-screen="title">
+        <div class="screen-scape title-scape" aria-hidden="true">
+          <div class="title-monolith"></div>
+          <div class="title-arch"></div>
+          <div class="title-mist"></div>
+        </div>
+
+        <div class="title-layout">
+          <section class="title-hero ornate-panel">
+            <p class="eyebrow">Steam-first tactical party-RPG</p>
+            <h2>Последняя Ступень</h2>
+            <p class="title-copy">
+              Заросшие руины отвечают только тем, кто идет вперед медленно и удерживает строй. Ведите отряд через главы, забирайте награды, усиливайте героев и завершите первый полный цикл святилища.
+            </p>
+            <div class="title-actions">
+              <button class="primary-button" id="title-new">Новая экспедиция</button>
+              <button class="secondary-button" id="title-continue">Продолжить</button>
+              <button class="secondary-button" id="title-guide">Открыть руководство</button>
+            </div>
+            <div class="title-tags">
+              <span>Campaign loop</span>
+              <span>Desktop / Steam</span>
+              <span>Moss-gothic</span>
+            </div>
+          </section>
+
+          <aside class="title-status ornate-panel">
+            <p class="eyebrow">Статус похода</p>
+            <strong class="title-status-heading" id="title-status-heading">Святилище готово к новому циклу</strong>
+            <p class="title-status-copy" id="title-status-copy">
+              Сохранения еще нет. Начните первую экспедицию или откройте руководство, чтобы увидеть полный поток демо.
+            </p>
+            <div class="title-stat-list" id="title-stat-list"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="home">
         <div class="screen-scape home-scape" aria-hidden="true">
           <div class="home-ruin home-ruin-back"></div>
           <div class="home-ruin home-ruin-front"></div>
@@ -239,6 +276,85 @@
         </div>
       </section>
 
+      <section class="screen" data-screen="results">
+        <div class="screen-scape results-scape" aria-hidden="true">
+          <div class="results-sigil"></div>
+          <div class="results-mist"></div>
+        </div>
+
+        <div class="results-layout">
+          <aside class="results-summary ornate-panel">
+            <p class="eyebrow" id="result-kicker">Итог encounter</p>
+            <h2 id="result-title">Узел подавлен</h2>
+            <p class="results-subtitle" id="result-subtitle">Хроника руин · Слепые корнееды</p>
+            <div class="results-pill-row">
+              <span class="results-pill" id="result-status-pill">Победа</span>
+              <span class="results-grade" id="result-grade">Rank A</span>
+            </div>
+            <div class="results-burst-list" id="result-burst-list"></div>
+          </aside>
+
+          <section class="results-breakdown ornate-panel">
+            <div class="results-section">
+              <p class="eyebrow">Награды</p>
+              <div class="results-reward-list" id="result-reward-list"></div>
+            </div>
+            <div class="results-section">
+              <p class="eyebrow">Разбор сцены</p>
+              <div class="results-note-list" id="result-note-list"></div>
+            </div>
+          </section>
+
+          <aside class="results-next ornate-panel">
+            <p class="eyebrow">Следующее действие</p>
+            <h3 id="result-next-title">Забрать награду и вернуться к маршруту</h3>
+            <p id="result-next-copy">После зачистки encounter подберите награду, зафиксируйте прогресс главы и выберите следующий шаг.</p>
+            <div class="results-action-stack">
+              <button class="primary-button" id="result-primary">Забрать награду</button>
+              <button class="secondary-button" id="result-secondary">К маршруту</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="chapter">
+        <div class="screen-scape chapter-scape" aria-hidden="true">
+          <div class="chapter-gate"></div>
+          <div class="chapter-light"></div>
+        </div>
+
+        <div class="chapter-layout">
+          <section class="chapter-summary ornate-panel">
+            <p class="eyebrow" id="chapter-kicker">Глава завершена</p>
+            <h2 id="chapter-title">Хроника руин</h2>
+            <p class="chapter-subtitle" id="chapter-subtitle">Собор листвы остался позади</p>
+            <p class="chapter-summary-copy" id="chapter-summary">Отряд закрыл главу, вернул часть памяти святилища и открыл следующий маршрут.</p>
+          </section>
+
+          <section class="chapter-board ornate-panel">
+            <div class="chapter-board-section">
+              <p class="eyebrow">Итоги похода</p>
+              <div class="chapter-stat-list" id="chapter-stat-list"></div>
+            </div>
+            <div class="chapter-board-section">
+              <p class="eyebrow">Награды и открытия</p>
+              <div class="chapter-reward-list" id="chapter-reward-list"></div>
+              <div class="chapter-unlock-list" id="chapter-unlock-list"></div>
+            </div>
+          </section>
+
+          <aside class="chapter-next ornate-panel">
+            <p class="eyebrow">Следующий выход</p>
+            <h3 id="chapter-next-title">К следующей главе</h3>
+            <p id="chapter-next-copy">Святилище ответило на первый проход. Теперь можно углубиться в следующий маршрут или подготовить отряд.</p>
+            <div class="chapter-action-stack">
+              <button class="primary-button" id="chapter-primary">Открыть следующую главу</button>
+              <button class="secondary-button" id="chapter-secondary">Вернуться в святилище</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
       <section class="screen" data-screen="party">
         <div class="screen-scape party-scape" aria-hidden="true">
           <div class="party-window party-window-left"></div>
@@ -309,7 +425,19 @@
             <div class="swatch-list" id="hero-swatches"></div>
             <div class="stat-list" id="hero-stats"></div>
             <div class="material-list" id="material-list"></div>
-            <button class="primary-button upgrade-button">Подготовить к экспедиции</button>
+            <section class="hero-upgrade-panel">
+              <div class="hero-upgrade-head">
+                <span class="design-label">Усиление героя</span>
+                <strong id="hero-upgrade-level">Узел I</strong>
+              </div>
+              <h3 id="hero-upgrade-title">Следующее созвучие</h3>
+              <p class="hero-upgrade-summary" id="hero-upgrade-summary">
+                Награды маршрутов и поставки из лавки переводятся в реальное усиление состава.
+              </p>
+              <div class="hero-upgrade-bonus-list" id="hero-upgrade-bonuses"></div>
+              <div class="hero-upgrade-cost-list" id="hero-upgrade-costs"></div>
+              <button class="primary-button upgrade-button" id="hero-upgrade-button">Усилить героя</button>
+            </section>
           </section>
         </div>
       </section>
@@ -459,6 +587,44 @@
             <p class="eyebrow">Статус среза</p>
             <h3 id="guide-status-title">Vertical Slice</h3>
             <div class="guide-status-list" id="guide-status-list"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="ending">
+        <div class="screen-scape ending-scape" aria-hidden="true">
+          <div class="ending-halo"></div>
+          <div class="ending-ruin"></div>
+        </div>
+
+        <div class="ending-layout">
+          <section class="ending-hero ornate-panel">
+            <p class="eyebrow" id="ending-kicker">Эпилог</p>
+            <h2 id="ending-title">Святилище снова заговорило</h2>
+            <p class="ending-summary" id="ending-summary">
+              Отряд закрыл первый полный цикл и вернул миру часть памяти. Это конец демо-кампании и начало более большой игры.
+            </p>
+          </section>
+
+          <section class="ending-journal ornate-panel">
+            <div class="ending-journal-section">
+              <p class="eyebrow">Итоги цикла</p>
+              <div class="ending-stat-list" id="ending-stat-list"></div>
+            </div>
+            <div class="ending-journal-section">
+              <p class="eyebrow">Команда и мир</p>
+              <div class="ending-credit-list" id="ending-credit-list"></div>
+            </div>
+          </section>
+
+          <aside class="ending-actions ornate-panel">
+            <p class="eyebrow">После финала</p>
+            <h3 id="ending-next-title">Вернуться в святилище или начать новый цикл</h3>
+            <p id="ending-next-copy">Останьтесь в сохранении для свободной полировки или запустите новую экспедицию с начала.</p>
+            <div class="ending-action-stack">
+              <button class="primary-button" id="ending-home">В Святилище</button>
+              <button class="secondary-button" id="ending-reset">Новый цикл</button>
+            </div>
           </aside>
         </div>
       </section>

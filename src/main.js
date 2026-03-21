@@ -646,7 +646,193 @@
     colossus: { source: "Архив стражей", related: ["Хроника руин", "Корень памяти"] },
   };
 
-  const STORAGE_KEY = "bgme-state-v3";
+  const questUnlockRules = {
+    story: { type: "always" },
+    trial: { type: "always" },
+    gathering: { type: "progress", questId: "story", minNode: 3 },
+    raid: { type: "complete", questId: "story" },
+    event: { type: "all-complete", questIds: ["story", "gathering", "raid"] },
+  };
+
+  const campaignQuestOrder = ["story", "gathering", "raid", "event"];
+
+  const materialCatalog = {
+    "moss-seed": { name: "Семя витражного мха", short: "Мох" },
+    "compass-silver": { name: "Серебро компаса", short: "Компас" },
+    "moth-ash": { name: "Пепел моли", short: "Пепел" },
+    "monolith-core": { name: "Ядро монолита", short: "Ядро" },
+    "lumen-stone": { name: "Люмен-камень", short: "Люмен" },
+    "archive-ink": { name: "Чернила архива", short: "Чернила" },
+  };
+
+  const questRewardTables = {
+    story: [
+      { lumen: 12, materials: [{ id: "archive-ink", amount: 1 }], note: "Первый узел отмечен в архиве, отряд восстановил ориентир." },
+      { fragments: 1, materials: [{ id: "moss-seed", amount: 1 }], note: "Лорный след открывает более точный маршрут и первые катализаторы." },
+      { lumen: 20, materials: [{ id: "lumen-stone", amount: 1 }], note: "Стычка завершена, из нефа вынесен обработанный люмен." },
+      { ap: "15 / 15", materials: [{ id: "archive-ink", amount: 1 }], note: "Оранжерея дала передышку и новое архивное наблюдение." },
+      { fragments: 2, materials: [{ id: "monolith-core", amount: 1 }], note: "Колосс пал. Отряд забирает осколок монолита и ключ к дальним выходам." },
+    ],
+    gathering: [
+      { lumen: 10, materials: [{ id: "moss-seed", amount: 1 }], note: "Сборный маршрут приносит мох и первый тихий доход." },
+      { lumen: 14, materials: [{ id: "archive-ink", amount: 1 }], note: "Распавшийся питомник открывает новую карту для архива." },
+      { lumen: 18, materials: [{ id: "moss-seed", amount: 1 }], note: "Вылазка удержана без срыва. Найден новый катализатор поддержки." },
+      { ap: "15 / 15", materials: [{ id: "lumen-stone", amount: 1 }], note: "Карманная роща дала восстановление и люмен-камень." },
+      { fragments: 1, materials: [{ id: "moth-ash", amount: 1 }], note: "Складной мост закрыт. Стали доступны более мрачные материалы." },
+    ],
+    raid: [
+      { lumen: 16, materials: [{ id: "monolith-core", amount: 1 }], note: "Нижний слой открывает первые тяжелые компоненты для фронта." },
+      { fragments: 1, materials: [{ id: "monolith-core", amount: 1 }], note: "Псалтырь рассыпается на каменные слои и дает редкий фрагмент." },
+      { lumen: 22, materials: [{ id: "lumen-stone", amount: 1 }], note: "Глухой склад дает прирост ресурсов и силы фронта." },
+      { lumen: 18, materials: [{ id: "archive-ink", amount: 1 }], note: "Сломанный контрфорс возвращает в архив утерянную хронику." },
+      { fragments: 2, materials: [{ id: "monolith-core", amount: 1 }], note: "Нижний хранитель пал. Отряд выносит из погреба самый тяжелый трофей." },
+    ],
+    trial: [
+      { lumen: 8, note: "Шаг тренировки записан в хронике." },
+      { lumen: 10, materials: [{ id: "lumen-stone", amount: 1 }], note: "Люмен-связка дала полезный тактический отклик." },
+      { fragments: 1, note: "Тренировка пролома закрыла первый ритуал." },
+      { lumen: 12, materials: [{ id: "moth-ash", amount: 1 }], note: "Красная метка добавила охотнице новый след." },
+      { lumen: 18, fragments: 1, note: "Чертог резонанса закрыт, состав получает стабильный темп." },
+    ],
+    event: [
+      { lumen: 14, materials: [{ id: "moth-ash", amount: 1 }], note: "Хор во мху оставляет мрачное эхо и пыльцу." },
+      { fragments: 1, materials: [{ id: "compass-silver", amount: 1 }], note: "Две реликвии дают новый поворот маршруту и редкий архивный сплав." },
+      { lumen: 22, materials: [{ id: "moth-ash", amount: 1 }], note: "Стая шелкокрылов рассыпалась на пепел и открыла путь к лору." },
+      { lumen: 18, materials: [{ id: "archive-ink", amount: 1 }], note: "Страница без чернил открыла последний темп мира." },
+      { fragments: 3, materials: [{ id: "compass-silver", amount: 1 }, { id: "moth-ash", amount: 1 }], note: "Аномалия сорвана. Святилище получает финальный сигнал к пробуждению." },
+    ],
+  };
+
+  const heroMaterialLoadouts = {
+    liora: [
+      { id: "moss-seed", description: "Катализатор поддержки и навигационных меток." },
+      { id: "lumen-stone", description: "Световой узел для мягкого усиления отряда." },
+      { id: "archive-ink", description: "Цепляет маршруты и записи в один поток." },
+    ],
+    rian: [
+      { id: "monolith-core", description: "Тяжелое ядро для фронтового пролома." },
+      { id: "lumen-stone", description: "Стабилизирует удар и щит." },
+      { id: "archive-ink", description: "Возвращает память о старых опорах." },
+    ],
+    saya: [
+      { id: "moth-ash", description: "Пыльца для меток распада и охоты." },
+      { id: "lumen-stone", description: "Дает всплеск в финале хода." },
+      { id: "compass-silver", description: "Точно ведет по темным маршрутам." },
+    ],
+    noel: [
+      { id: "compass-silver", description: "Открывает новый узел контроля и картографии." },
+      { id: "archive-ink", description: "Укрепляет архивные аннотации." },
+      { id: "moss-seed", description: "Дает мягкую поддержку всему маршруту." },
+    ],
+  };
+
+  const heroUpgradeTracks = {
+    liora: [
+      { title: "Люменная надпись", summary: "Лиора держит маршрут стабильнее и раньше открывает окно для команды.", bonuses: ["HP +120", "Резонанс +4", "Щит отряда +2"], cost: { lumen: 40, materials: [{ id: "moss-seed", amount: 1 }] } },
+      { title: "Круг маяков", summary: "Поддержка закрепляется на всем строе.", bonuses: ["HP +140", "Точность навыков +1 такт", "Резонанс +6"], cost: { lumen: 75, materials: [{ id: "moss-seed", amount: 1 }, { id: "archive-ink", amount: 1 }] } },
+      { title: "Свет святилища", summary: "Лиора держит проходы открытыми даже под давлением босса.", bonuses: ["HP +170", "Щит +4", "Резонанс +8"], cost: { lumen: 110, fragments: 1, materials: [{ id: "moss-seed", amount: 2 }, { id: "lumen-stone", amount: 1 }] } },
+    ],
+    rian: [
+      { title: "Опора нефа", summary: "Риан удерживает линию дольше и тише.", bonuses: ["HP +150", "Щит +4", "Удар +15"], cost: { lumen: 48, materials: [{ id: "monolith-core", amount: 1 }] } },
+      { title: "Каменная арка", summary: "Фронтовик закрепляет темп всего отряда.", bonuses: ["HP +180", "Щит +6", "Удар +20"], cost: { lumen: 82, materials: [{ id: "monolith-core", amount: 1 }, { id: "lumen-stone", amount: 1 }] } },
+      { title: "Главная опора", summary: "Риан превращается в неподвижный якорь для пролома.", bonuses: ["HP +220", "Щит +8", "Удар +24"], cost: { lumen: 120, fragments: 1, materials: [{ id: "monolith-core", amount: 2 }] } },
+    ],
+    saya: [
+      { title: "Пыльца распада", summary: "Сайя раньше вешает слабости и чище закрывает цель.", bonuses: ["HP +90", "Удар +18", "Крит +2%"], cost: { lumen: 38, materials: [{ id: "moth-ash", amount: 1 }] } },
+      { title: "Крыло в тумане", summary: "Охотница входит в финальную фазу быстрее.", bonuses: ["HP +120", "Удар +22", "Крит +4%"], cost: { lumen: 74, materials: [{ id: "moth-ash", amount: 1 }, { id: "compass-silver", amount: 1 }] } },
+      { title: "Красный распев", summary: "Сайя превращает добивание в финальный пролом.", bonuses: ["HP +150", "Удар +28", "Крит +6%"], cost: { lumen: 108, fragments: 1, materials: [{ id: "moth-ash", amount: 2 }, { id: "lumen-stone", amount: 1 }] } },
+    ],
+    noel: [
+      { title: "Точная карта", summary: "Ноэль больше влияет на очередь и поток боя.", bonuses: ["HP +100", "Резонанс +5", "Удар +12"], cost: { lumen: 44, materials: [{ id: "compass-silver", amount: 1 }] } },
+      { title: "Дождевая аннотация", summary: "Архивистка стягивает ритм encounter в пользу отряда.", bonuses: ["HP +120", "Резонанс +7", "Удар +16"], cost: { lumen: 78, materials: [{ id: "compass-silver", amount: 1 }, { id: "archive-ink", amount: 1 }] } },
+      { title: "Атлас пробуждения", summary: "Ноэль держит карту боя открытой для всей команды.", bonuses: ["HP +150", "Резонанс +9", "Удар +20"], cost: { lumen: 115, fragments: 1, materials: [{ id: "compass-silver", amount: 2 }] } },
+    ],
+  };
+
+  const endingCredits = [
+    { title: "Команда", body: "Лиора, Риан, Сайя и Ноэль пронесли первый цикл через руины." },
+    { title: "Мир", body: "Собор листвы, тихие оранжереи, погреб стражей и хор мольб собраны в один цельный loop." },
+    { title: "Демо", body: "Вертикальный срез теперь можно пройти от старта до финала на ПК." },
+  ];
+
+  function createInitialResources() {
+    return {
+      ap: "15 / 15",
+      fragments: 3,
+      lumen: 420,
+    };
+  }
+
+  function createInitialSettings() {
+    return {
+      uiScaleId: "default",
+      reducedMotion: false,
+      highContrast: false,
+    };
+  }
+
+  function createInitialSessionLog() {
+    return [
+      {
+        title: "Интерфейс синхронизирован",
+        body: "Новые окна получают данные из общего состояния и не остаются пустыми.",
+        time: "20:06",
+      },
+      {
+        title: "Референсы собраны",
+        body: "Архив, лавка и меню сведены к большим зеленым сценам без мобильной дробности.",
+        time: "20:12",
+      },
+    ];
+  }
+
+  function createInitialMaterialInventory() {
+    return Object.fromEntries(Object.keys(materialCatalog).map((id) => [id, 0]));
+  }
+
+  function createInitialHeroProgress() {
+    return Object.fromEntries(heroes.map((hero) => [hero.id, { level: 1 }]));
+  }
+
+  function createInitialResultState() {
+    return {
+      outcome: "idle",
+      questId: null,
+      nodeIndex: null,
+      title: "",
+      subtitle: "",
+      grade: "Rank C",
+      rewards: [],
+      notes: [],
+      nextTitle: "",
+      nextCopy: "",
+      claimPending: false,
+    };
+  }
+
+  function createInitialChapterState() {
+    return {
+      questId: null,
+      title: "",
+      subtitle: "",
+      summary: "",
+      stats: [],
+      rewards: [],
+      unlocks: [],
+      nextQuestId: null,
+      nextTitle: "",
+      nextCopy: "",
+    };
+  }
+
+  function createInitialGameState() {
+    return {
+      hasStarted: false,
+      endingSeen: false,
+    };
+  }
+
+  const STORAGE_KEY = "bgme-state-v4";
 
   const battleSkillSets = {
     liora: [
@@ -932,25 +1118,61 @@
   const battleSkillGrid = document.getElementById("battle-skill-grid");
   const battleCommit = document.getElementById("battle-commit");
   const battleBack = document.getElementById("battle-back");
+  const titleNewButton = document.getElementById("title-new");
+  const titleContinueButton = document.getElementById("title-continue");
+  const titleGuideButton = document.getElementById("title-guide");
+  const titleStatusHeading = document.getElementById("title-status-heading");
+  const titleStatusCopy = document.getElementById("title-status-copy");
+  const titleStatList = document.getElementById("title-stat-list");
+  const resultKicker = document.getElementById("result-kicker");
+  const resultTitle = document.getElementById("result-title");
+  const resultSubtitle = document.getElementById("result-subtitle");
+  const resultStatusPill = document.getElementById("result-status-pill");
+  const resultGrade = document.getElementById("result-grade");
+  const resultBurstList = document.getElementById("result-burst-list");
+  const resultRewardList = document.getElementById("result-reward-list");
+  const resultNoteList = document.getElementById("result-note-list");
+  const resultNextTitle = document.getElementById("result-next-title");
+  const resultNextCopy = document.getElementById("result-next-copy");
+  const resultPrimary = document.getElementById("result-primary");
+  const resultSecondary = document.getElementById("result-secondary");
+  const chapterKicker = document.getElementById("chapter-kicker");
+  const chapterTitle = document.getElementById("chapter-title");
+  const chapterSubtitle = document.getElementById("chapter-subtitle");
+  const chapterSummary = document.getElementById("chapter-summary");
+  const chapterStatList = document.getElementById("chapter-stat-list");
+  const chapterRewardList = document.getElementById("chapter-reward-list");
+  const chapterUnlockList = document.getElementById("chapter-unlock-list");
+  const chapterNextTitle = document.getElementById("chapter-next-title");
+  const chapterNextCopy = document.getElementById("chapter-next-copy");
+  const chapterPrimary = document.getElementById("chapter-primary");
+  const chapterSecondary = document.getElementById("chapter-secondary");
+  const heroUpgradeLevel = document.getElementById("hero-upgrade-level");
+  const heroUpgradeTitle = document.getElementById("hero-upgrade-title");
+  const heroUpgradeSummary = document.getElementById("hero-upgrade-summary");
+  const heroUpgradeBonuses = document.getElementById("hero-upgrade-bonuses");
+  const heroUpgradeCosts = document.getElementById("hero-upgrade-costs");
+  const heroUpgradeButton = document.getElementById("hero-upgrade-button");
+  const endingKicker = document.getElementById("ending-kicker");
+  const endingTitle = document.getElementById("ending-title");
+  const endingSummary = document.getElementById("ending-summary");
+  const endingStatList = document.getElementById("ending-stat-list");
+  const endingCreditList = document.getElementById("ending-credit-list");
+  const endingNextTitle = document.getElementById("ending-next-title");
+  const endingNextCopy = document.getElementById("ending-next-copy");
+  const endingHomeButton = document.getElementById("ending-home");
+  const endingResetButton = document.getElementById("ending-reset");
 
   const state = {
-    activeScreen: "home",
+    activeScreen: "title",
     activeQuestId: questCards[0].id,
     activeHeroId: heroes[0].id,
     activeJournalTab: journalTabs[0].id,
     activeJournalEntryId: journalTabs[0].entries[0].id,
     activeShopItemId: shopItems[0].id,
     activeGuideSectionId: guideSections[0].id,
-    resources: {
-      ap: "15 / 15",
-      fragments: 3,
-      lumen: 420,
-    },
-    settings: {
-      uiScaleId: "default",
-      reducedMotion: false,
-      highContrast: false,
-    },
+    resources: createInitialResources(),
+    settings: createInitialSettings(),
     sessionLog: [
       {
         title: "Интерфейс синхронизирован",
@@ -968,6 +1190,11 @@
     resolvedBattles: {},
     claimedNodeRewards: {},
     routeProgress: Object.fromEntries(questCards.map((quest) => [quest.id, 0])),
+    materialInventory: createInitialMaterialInventory(),
+    heroProgress: createInitialHeroProgress(),
+    result: createInitialResultState(),
+    chapter: createInitialChapterState(),
+    game: createInitialGameState(),
   };
 
   function getActiveQuest() {
@@ -993,6 +1220,150 @@
 
   function getActiveGuideSection() {
     return guideSections.find((section) => section.id === state.activeGuideSectionId) ?? guideSections[0];
+  }
+
+  function getMaterialCount(materialId) {
+    return state.materialInventory[materialId] ?? 0;
+  }
+
+  function addMaterials(materials = []) {
+    materials.forEach((material) => {
+      if (!material?.id || !material.amount) {
+        return;
+      }
+      state.materialInventory[material.id] = getMaterialCount(material.id) + material.amount;
+    });
+  }
+
+  function spendMaterials(materials = []) {
+    materials.forEach((material) => {
+      if (!material?.id || !material.amount) {
+        return;
+      }
+      state.materialInventory[material.id] = Math.max(0, getMaterialCount(material.id) - material.amount);
+    });
+  }
+
+  function getHeroLevel(heroId) {
+    return state.heroProgress[heroId]?.level ?? 1;
+  }
+
+  function getHeroUpgradeTrack(heroId) {
+    return heroUpgradeTracks[heroId] ?? [];
+  }
+
+  function getNextHeroUpgrade(heroId) {
+    const level = getHeroLevel(heroId);
+    return getHeroUpgradeTrack(heroId)[level - 1] ?? null;
+  }
+
+  function getHeroScaling(heroId) {
+    const level = Math.max(1, getHeroLevel(heroId));
+    const tier = level - 1;
+    const scaling = {
+      liora: { hp: 120, guard: 2, damage: 18, resonance: 4 },
+      rian: { hp: 155, guard: 4, damage: 15, resonance: 2 },
+      saya: { hp: 95, guard: 1, damage: 19, resonance: 3 },
+      noel: { hp: 105, guard: 1, damage: 14, resonance: 5 },
+    }[heroId] ?? { hp: 100, guard: 2, damage: 12, resonance: 3 };
+
+    return {
+      hpBonus: scaling.hp * tier,
+      guardBonus: scaling.guard * tier,
+      damageBonus: scaling.damage * tier,
+      resonanceBonus: scaling.resonance * tier,
+    };
+  }
+
+  function applyHeroProgressToBattleState(battle) {
+    battle.allies = battle.allies.map((ally) => {
+      const scaling = getHeroScaling(ally.id);
+      const previousMaxHp = ally.maxHp || 1;
+      const hpRatio = Math.max(0, Math.min(1, ally.hp / previousMaxHp));
+      const maxHp = ally.maxHp + scaling.hpBonus;
+      const hp = Math.max(1, Math.round(maxHp * hpRatio));
+      return {
+        ...ally,
+        hp,
+        maxHp,
+        guard: ally.guard + scaling.guardBonus,
+      };
+    });
+
+    return battle;
+  }
+
+  function isQuestComplete(questId) {
+    return getQuestProgress(questId) >= getQuestById(questId).route.length;
+  }
+
+  function getQuestUnlockInfo(questId) {
+    const quest = getQuestById(questId);
+    const rule = questUnlockRules[questId];
+
+    if (!rule || rule.type === "always") {
+      return { unlocked: true, label: quest.status };
+    }
+
+    if (rule.type === "progress") {
+      const unlocked = getQuestProgress(rule.questId) >= rule.minNode;
+      const sourceQuest = getQuestById(rule.questId);
+      const node = sourceQuest.route[Math.min(rule.minNode, sourceQuest.route.length - 1)];
+      return {
+        unlocked,
+        label: unlocked ? "Открыто" : `После узла «${node.title}»`,
+      };
+    }
+
+    if (rule.type === "complete") {
+      const unlocked = isQuestComplete(rule.questId);
+      const sourceQuest = getQuestById(rule.questId);
+      return {
+        unlocked,
+        label: unlocked ? "Открыто" : `После главы «${sourceQuest.title}»`,
+      };
+    }
+
+    if (rule.type === "all-complete") {
+      const unlocked = rule.questIds.every((id) => isQuestComplete(id));
+      return {
+        unlocked,
+        label: unlocked ? "Открыто" : "После закрытия всех базовых глав",
+      };
+    }
+
+    return { unlocked: true, label: quest.status };
+  }
+
+  function getCompletedCampaignCount() {
+    return campaignQuestOrder.filter((questId) => isQuestComplete(questId)).length;
+  }
+
+  function getNextCampaignQuestId(currentQuestId) {
+    const currentIndex = campaignQuestOrder.indexOf(currentQuestId);
+    if (currentIndex === -1) {
+      return null;
+    }
+
+    for (let index = currentIndex + 1; index < campaignQuestOrder.length; index += 1) {
+      const candidateId = campaignQuestOrder[index];
+      if (getQuestUnlockInfo(candidateId).unlocked) {
+        return candidateId;
+      }
+    }
+
+    return null;
+  }
+
+  function isCampaignComplete() {
+    return campaignQuestOrder.every((questId) => isQuestComplete(questId));
+  }
+
+  function collectAllCampaignRewards() {
+    return campaignQuestOrder.flatMap((questId) => {
+      const quest = getQuestById(questId);
+      return quest.route.map((_, nodeIndex) => getNodeReward(quest, nodeIndex));
+    });
   }
 
   function getNodeKey(questId, nodeIndex) {
@@ -1029,9 +1400,15 @@
       resources: state.resources,
       settings: state.settings,
       sessionLog: state.sessionLog,
+      battle: state.battle,
       routeProgress: state.routeProgress,
       resolvedBattles: state.resolvedBattles,
       claimedNodeRewards: state.claimedNodeRewards,
+      materialInventory: state.materialInventory,
+      heroProgress: state.heroProgress,
+      result: state.result,
+      chapter: state.chapter,
+      game: state.game,
     };
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
@@ -1058,11 +1435,30 @@
       if (parsed.activeGuideSectionId) state.activeGuideSectionId = parsed.activeGuideSectionId;
       if (parsed.resources) state.resources = { ...state.resources, ...parsed.resources };
       if (parsed.settings) state.settings = { ...state.settings, ...parsed.settings };
+      if (parsed.battle) state.battle = { ...state.battle, ...parsed.battle };
       if (parsed.routeProgress) state.routeProgress = { ...state.routeProgress, ...parsed.routeProgress };
       if (parsed.resolvedBattles) state.resolvedBattles = { ...parsed.resolvedBattles };
       if (parsed.claimedNodeRewards) state.claimedNodeRewards = { ...parsed.claimedNodeRewards };
+      if (parsed.materialInventory) {
+        state.materialInventory = { ...state.materialInventory, ...parsed.materialInventory };
+      }
+      if (parsed.heroProgress) {
+        state.heroProgress = { ...state.heroProgress, ...parsed.heroProgress };
+      }
+      if (parsed.result) {
+        state.result = { ...state.result, ...parsed.result };
+      }
+      if (parsed.chapter) {
+        state.chapter = { ...state.chapter, ...parsed.chapter };
+      }
+      if (parsed.game) {
+        state.game = { ...state.game, ...parsed.game };
+      }
       if (Array.isArray(parsed.sessionLog) && parsed.sessionLog.length) {
         state.sessionLog = parsed.sessionLog.slice(0, 6);
+      }
+      if (state.activeScreen !== "title") {
+        state.game.hasStarted = true;
       }
     } catch {
       window.localStorage.removeItem(STORAGE_KEY);
@@ -1078,7 +1474,12 @@
       { fragments: 2, note: "Узел завершён, добыт редкий след главы." },
     ];
 
-    return quest.route[nodeIndex].reward ?? fallbackRewards[nodeIndex] ?? { note: "Маршрут продвинут." };
+    return (
+      quest.route[nodeIndex].reward ??
+      questRewardTables[quest.id]?.[nodeIndex] ??
+      fallbackRewards[nodeIndex] ??
+      { note: "Маршрут продвинут." }
+    );
   }
 
   function getQuestBlueprint(questId) {
@@ -1130,6 +1531,13 @@
     if (reward.ap) {
       parts.push("восстановление AP");
     }
+    if (Array.isArray(reward.materials) && reward.materials.length) {
+      parts.push(
+        reward.materials
+          .map((material) => `${material.amount} ${materialCatalog[material.id]?.name ?? material.id}`)
+          .join(" · "),
+      );
+    }
     if (reward.note) {
       parts.push(reward.note);
     }
@@ -1146,6 +1554,13 @@
     }
     if (reward.ap) {
       parts.push("восстановление AP");
+    }
+    if (Array.isArray(reward.materials) && reward.materials.length) {
+      parts.push(
+        reward.materials
+          .map((material) => `${material.amount} ${materialCatalog[material.id]?.short ?? material.id}`)
+          .join(", "),
+      );
     }
     return parts.join(" · ") || "Архивный след и прогресс главы.";
   }
@@ -1216,6 +1631,9 @@
     if (reward.ap) {
       state.resources.ap = reward.ap;
     }
+    if (Array.isArray(reward.materials)) {
+      addMaterials(reward.materials);
+    }
 
     state.claimedNodeRewards[rewardKey] = true;
     renderResources();
@@ -1235,7 +1653,19 @@
       0,
     );
     const resolvedCombatNodes = Object.keys(state.resolvedBattles).length;
-    const percent = 62;
+    const upgradedHeroes = heroes.filter((hero) => getHeroLevel(hero.id) > 1).length;
+    const completedCampaign = getCompletedCampaignCount();
+    const hasEnding = state.game.endingSeen || isCampaignComplete();
+    const percent = Math.min(
+      100,
+      48 +
+        Math.round((clearedNodes / Math.max(1, totalNodes)) * 18) +
+        Math.round((resolvedCombatNodes / Math.max(1, totalCombatNodes)) * 12) +
+        Math.round((unlockedJournalEntries / Math.max(1, totalJournalEntries)) * 8) +
+        upgradedHeroes * 3 +
+        completedCampaign * 3 +
+        (hasEnding ? 5 : 0),
+    );
 
     return {
       percent,
@@ -1253,22 +1683,24 @@
         {
           title: "Архив и дневник",
           body: `${unlockedJournalEntries} из ${totalJournalEntries} записей открываются по прогрессу, а не смешаны с mission UI.`,
-          tone: "mid",
+          tone: unlockedJournalEntries >= Math.ceil(totalJournalEntries * 0.5) ? "good" : "mid",
         },
         {
           title: "Боевые encounter'ы",
           body: `${resolvedCombatNodes} из ${totalCombatNodes} боевых узлов уже могут фиксироваться как выигранные.`,
-          tone: "mid",
+          tone: resolvedCombatNodes >= Math.ceil(totalCombatNodes * 0.5) ? "good" : "mid",
         },
         {
           title: "Meta-прогрессия",
-          body: "Сохранение ресурсов, экранов, маршрутов и архива работает, но усиления героев ещё не привязаны к результатам боёв.",
-          tone: "mid",
+          body: `${upgradedHeroes} из ${heroes.length} героев уже можно усиливать через трофеи маршрутов и поставки лавки.`,
+          tone: upgradedHeroes > 0 ? "good" : "mid",
         },
         {
-          title: "Чего ещё не хватает",
-          body: "Нужны post-battle экран, больше encounter-вариантов, развитие героев и более глубокая экономическая петля.",
-          tone: "low",
+          title: "Финал демо",
+          body: hasEnding
+            ? "Титульный вход, chapter complete и эпилог уже собираются в завершённый desktop-цикл."
+            : "До полного demo-loop осталось закрыть все главы кампании и увидеть эпилог.",
+          tone: hasEnding ? "good" : "mid",
         },
       ],
     };
@@ -1309,11 +1741,28 @@
 
   function renderQuestCards() {
     questCardsContainer.innerHTML = questCards
-      .map(
-        (card) => `
-          <button class="quest-card ${
-            card.id === state.activeQuestId ? "is-selected" : ""
-          }" data-quest-id="${card.id}" data-accent="${card.accent}">
+      .map((card) => {
+        const unlockInfo = getQuestUnlockInfo(card.id);
+        const progress = getQuestProgress(card.id);
+        const isComplete = isQuestComplete(card.id);
+        const cardStatus = !unlockInfo.unlocked
+          ? "Закрыто"
+          : isComplete
+            ? "Очищено"
+            : progress > 0
+              ? "В экспедиции"
+              : card.status;
+        const classes = [
+          "quest-card",
+          card.id === state.activeQuestId ? "is-selected" : "",
+          !unlockInfo.unlocked ? "is-locked" : "",
+          isComplete ? "is-complete" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
+
+        return `
+          <button class="${classes}" data-quest-id="${card.id}" data-accent="${card.accent}" ${!unlockInfo.unlocked ? "data-locked=true" : ""}>
             <div class="quest-card-inner">
               <span class="quest-label">${card.label}</span>
               <div class="quest-title-stack">
@@ -1322,21 +1771,24 @@
               </div>
               <div class="quest-card-footer">
                 <div>
-                  <div>${card.cost}</div>
-                  <div class="quest-progress">${Math.min(getQuestProgress(card.id), card.route.length)} / ${card.route.length}</div>
+                  <div>${unlockInfo.unlocked ? card.cost : unlockInfo.label}</div>
+                  <div class="quest-progress">${Math.min(progress, card.route.length)} / ${card.route.length}</div>
                 </div>
                 <span class="quest-status ${
-                  card.status === "Закрыто" ? "locked" : ""
-                }">${card.status}</span>
+                  !unlockInfo.unlocked ? "locked" : isComplete ? "is-complete" : ""
+                }">${cardStatus}</span>
               </div>
             </div>
           </button>
-        `,
-      )
+        `;
+      })
       .join("");
 
     questCardsContainer.querySelectorAll("[data-quest-id]").forEach((button) => {
       button.addEventListener("click", () => {
+        if (button.dataset.locked === "true") {
+          return;
+        }
         state.activeQuestId = button.dataset.questId;
         renderQuestCards();
         updateQuestOverview();
@@ -1348,34 +1800,49 @@
   function updateQuestOverview() {
     const activeQuest = getActiveQuest();
     const blueprint = getQuestBlueprint(activeQuest.id);
+    const unlockInfo = getQuestUnlockInfo(activeQuest.id);
     const { progress, isCompleted, nodeIndex, node: currentNode, reward: currentReward, resolved } = getQuestNodeContext(activeQuest);
-    const combatLocked = Boolean(currentNode && isCombatNode(currentNode) && !resolved);
+    const combatLocked = Boolean(unlockInfo.unlocked && currentNode && isCombatNode(currentNode) && !resolved);
 
     questTitle.textContent = activeQuest.title;
-    questDescription.textContent = activeQuest.description;
-    questStatus.textContent = isCompleted ? "Очищено" : progress > 0 ? "В экспедиции" : activeQuest.status;
+    questDescription.textContent = unlockInfo.unlocked
+      ? activeQuest.description
+      : `Маршрут пока запечатан. ${unlockInfo.label}.`;
+    questStatus.textContent = !unlockInfo.unlocked ? "Закрыто" : isCompleted ? "Очищено" : progress > 0 ? "В экспедиции" : activeQuest.status;
     questProgress.textContent = `${Math.min(progress, activeQuest.route.length)} / ${activeQuest.route.length}`;
     questCost.textContent = activeQuest.cost;
-    questNodeType.textContent = isCompleted ? "Маршрут очищен" : getNodeTypeLabel(currentNode, resolved);
-    questObjective.textContent = isCompleted
+    questNodeType.textContent = !unlockInfo.unlocked ? "Маршрут запечатан" : isCompleted ? "Маршрут очищен" : getNodeTypeLabel(currentNode, resolved);
+    questObjective.textContent = !unlockInfo.unlocked
+      ? `Сначала выполните условие открытия: ${unlockInfo.label}.`
+      : isCompleted
       ? "Глава закрыта. Можно переходить к следующему маршруту или использовать encounter как showcase-сцену."
       : `${blueprint.objective} Узел: «${currentNode.title}».`;
-    questReward.textContent = isCompleted ? "Основные награды уже собраны." : formatRewardHeadline(currentReward);
-    questRecommendation.textContent = isCompleted
+    questReward.textContent = !unlockInfo.unlocked
+      ? "Награды появятся после открытия главы."
+      : isCompleted
+        ? "Основные награды уже собраны."
+        : formatRewardHeadline(currentReward);
+    questRecommendation.textContent = !unlockInfo.unlocked
+      ? "Вернитесь к текущей главе или усилите отряд, чтобы быстрее дойти до следующего выхода."
+      : isCompleted
       ? "Соберите следующий маршрут или вернитесь в архив за деталями мира."
       : combatLocked
         ? `${blueprint.recommendation} Сначала бой.`
         : blueprint.recommendation;
-    routeAdvanceButton.disabled = isCompleted || combatLocked;
-    routeAdvanceButton.textContent = isCompleted
+    routeAdvanceButton.disabled = !unlockInfo.unlocked || isCompleted || combatLocked;
+    routeAdvanceButton.textContent = !unlockInfo.unlocked
+      ? "Маршрут закрыт"
+      : isCompleted
       ? "Маршрут завершён"
       : combatLocked
         ? "Сначала выиграйте бой"
         : progress === 0
           ? "Войти в маршрут"
           : "Завершить узел";
-    openBattleButton.disabled = isCompleted;
-    openBattleButton.textContent = isCompleted
+    openBattleButton.disabled = !unlockInfo.unlocked || isCompleted;
+    openBattleButton.textContent = !unlockInfo.unlocked
+      ? "Недоступно"
+      : isCompleted
       ? "Глава очищена"
       : isCombatNode(currentNode)
         ? resolved
@@ -1404,7 +1871,14 @@
       })
       .join("");
 
-    routeLog.innerHTML = isCompleted
+    routeLog.innerHTML = !unlockInfo.unlocked
+      ? `
+        <span class="route-node-step">Условие открытия</span>
+        <strong class="route-node-title">${activeQuest.title}</strong>
+        <p>${unlockInfo.label}. После этого маршрут появится в общем цикле святилища.</p>
+        <p>${blueprint.recommendation}</p>
+      `
+      : isCompleted
       ? `
         <span class="route-node-step">Маршрут завершён</span>
         <strong class="route-node-title">${activeQuest.title}</strong>
@@ -1450,36 +1924,155 @@
   }
 
   function renderHeroStats(hero) {
-    heroStatsContainer.innerHTML = hero.stats
-      .map(
-        ([label, value]) => `
+    const scaling = getHeroScaling(hero.id);
+    const statRows = [["Узел созвучия", `${getHeroLevel(hero.id)}/${getHeroUpgradeTrack(hero.id).length + 1}`], ...hero.stats];
+
+    heroStatsContainer.innerHTML = statRows
+      .map(([label, value], index) => {
+        const bonus =
+          index === 1 && scaling.hpBonus ? ` +${scaling.hpBonus}` :
+          index === 2 && scaling.damageBonus ? ` +${scaling.damageBonus}` :
+          index === 3 && scaling.guardBonus ? ` +${scaling.guardBonus}` :
+          "";
+
+        return `
           <div class="stat-row">
             <span>${label}</span>
-            <strong>${value}</strong>
+            <strong>${value}${bonus}</strong>
           </div>
-        `,
-      )
+        `;
+      })
       .join("");
   }
 
   function renderMaterials(hero) {
-    materialList.innerHTML = hero.materials
-      .map(
-        (material) => `
+    const heroMaterials = heroMaterialLoadouts[hero.id] ?? [];
+
+    materialList.innerHTML = heroMaterials
+      .map((material) => {
+        const inventoryCount = getMaterialCount(material.id);
+        const nextUpgrade = getNextHeroUpgrade(hero.id);
+        const requiredCount =
+          nextUpgrade?.cost.materials?.find((entry) => entry.id === material.id)?.amount ?? 0;
+        const materialName = materialCatalog[material.id]?.name ?? material.id;
+
+        return `
           <div class="material-card">
             <div class="material-icon"></div>
             <div class="material-copy">
-              <h3>${material.name}</h3>
+              <h3>${materialName}</h3>
               <p>${material.description}</p>
             </div>
             <div class="material-control">
-              <span class="material-count">${material.count}</span>
+              <span class="material-count">${inventoryCount}${requiredCount ? ` / ${requiredCount}` : ""}</span>
               <div class="material-plus">+</div>
             </div>
           </div>
-        `,
-      )
+        `;
+      })
       .join("");
+  }
+
+  function canAffordUpgrade(upgrade) {
+    if (!upgrade) {
+      return false;
+    }
+
+    if (state.resources.lumen < (upgrade.cost.lumen ?? 0)) {
+      return false;
+    }
+    if (state.resources.fragments < (upgrade.cost.fragments ?? 0)) {
+      return false;
+    }
+
+    return (upgrade.cost.materials ?? []).every((material) => getMaterialCount(material.id) >= material.amount);
+  }
+
+  function renderHeroUpgradePanel() {
+    const hero = getActiveHero();
+    const level = getHeroLevel(hero.id);
+    const nextUpgrade = getNextHeroUpgrade(hero.id);
+
+    heroUpgradeLevel.textContent = `Узел ${level}`;
+
+    if (!nextUpgrade) {
+      heroUpgradeTitle.textContent = "Поток завершён";
+      heroUpgradeSummary.textContent = "Этот герой уже прошёл весь текущий demo-трек усилений.";
+      heroUpgradeBonuses.innerHTML = '<div class="hero-upgrade-card"><strong>Максимум</strong><p>Дальнейшие уровни откроются в полной игре.</p></div>';
+      heroUpgradeCosts.innerHTML = '<div class="hero-cost-card"><strong>Новых трат нет</strong><p>Можно переключиться на другого героя или идти в следующую главу.</p></div>';
+      heroUpgradeButton.disabled = true;
+      heroUpgradeButton.textContent = "Максимум";
+      return;
+    }
+
+    heroUpgradeTitle.textContent = nextUpgrade.title;
+    heroUpgradeSummary.textContent = nextUpgrade.summary;
+    heroUpgradeBonuses.innerHTML = nextUpgrade.bonuses
+      .map((bonus) => `<article class="hero-upgrade-card"><strong>${bonus}</strong><p>${hero.name} получает новый запас для следующей вылазки.</p></article>`)
+      .join("");
+
+    const costCards = [];
+    if (nextUpgrade.cost.lumen) {
+      costCards.push({
+        label: "Люмен",
+        amount: nextUpgrade.cost.lumen,
+        available: state.resources.lumen,
+      });
+    }
+    if (nextUpgrade.cost.fragments) {
+      costCards.push({
+        label: "Фрагменты",
+        amount: nextUpgrade.cost.fragments,
+        available: state.resources.fragments,
+      });
+    }
+    (nextUpgrade.cost.materials ?? []).forEach((material) => {
+      costCards.push({
+        label: materialCatalog[material.id]?.name ?? material.id,
+        amount: material.amount,
+        available: getMaterialCount(material.id),
+      });
+    });
+
+    heroUpgradeCosts.innerHTML = costCards
+      .map((cost) => {
+        const missing = cost.available < cost.amount;
+        return `
+          <article class="hero-cost-card ${missing ? "is-missing" : ""}">
+            <strong>${cost.label}</strong>
+            <p>${cost.available} / ${cost.amount}</p>
+          </article>
+        `;
+      })
+      .join("");
+
+    heroUpgradeButton.disabled = !canAffordUpgrade(nextUpgrade);
+    heroUpgradeButton.textContent = canAffordUpgrade(nextUpgrade) ? "Усилить героя" : "Недостаточно трофеев";
+  }
+
+  function upgradeActiveHero() {
+    const hero = getActiveHero();
+    const nextUpgrade = getNextHeroUpgrade(hero.id);
+    if (!nextUpgrade || !canAffordUpgrade(nextUpgrade)) {
+      return;
+    }
+
+    state.resources.lumen -= nextUpgrade.cost.lumen ?? 0;
+    state.resources.fragments -= nextUpgrade.cost.fragments ?? 0;
+    spendMaterials(nextUpgrade.cost.materials ?? []);
+    state.heroProgress[hero.id] = {
+      level: getHeroLevel(hero.id) + 1,
+    };
+
+    renderResources();
+    updateHeroPanel();
+    renderShopGrid();
+    updateShopPanel();
+    renderMenuChecklist();
+    renderGuideSections();
+    updateGuidePanel();
+    addSessionLog("Герой усилен", `${hero.name} получает узел «${nextUpgrade.title}» и входит в следующий выход сильнее.`);
+    saveState();
   }
 
   function renderSwatches(hero) {
@@ -1520,6 +2113,7 @@
     renderSwatches(activeHero);
     renderHeroStats(activeHero);
     renderMaterials(activeHero);
+    renderHeroUpgradePanel();
     renderJournalHighlights();
   }
 
@@ -1529,6 +2123,281 @@
     state.activeHeroId = heroes[nextIndex].id;
     renderHeroList();
     updateHeroPanel();
+  }
+
+  function calculateBattleGrade(outcome) {
+    if (outcome !== "victory") {
+      return "Rank D";
+    }
+
+    const livingAllies = state.battle.allies.filter((ally) => ally.hp > 0).length;
+    const turnScore = Math.max(0, 40 - Math.max(0, state.battle.turn - 1) * 4);
+    const formationScore = livingAllies * 10;
+    const resonanceScore = Math.round(state.battle.resonance / 8);
+    const score = turnScore + formationScore + resonanceScore;
+
+    if (score >= 82) return "Rank S";
+    if (score >= 68) return "Rank A";
+    if (score >= 54) return "Rank B";
+    if (score >= 40) return "Rank C";
+    return "Rank D";
+  }
+
+  function prepareBattleResult(outcome) {
+    const quest = getQuestById(state.battle.sourceQuestId);
+    const nodeIndex = state.battle.sourceNodeIndex;
+    const node = quest.route[nodeIndex];
+    const reward = node ? getNodeReward(quest, nodeIndex) : { note: "Узел маршрута закрыт." };
+    const claimPending = outcome === "victory" && !state.claimedNodeRewards[getNodeKey(quest.id, nodeIndex)];
+    const livingAllies = state.battle.allies.filter((ally) => ally.hp > 0).length;
+    const grade = calculateBattleGrade(outcome);
+    const rewards = outcome === "victory"
+      ? [
+          reward.lumen ? `${reward.lumen} люмена` : null,
+          reward.fragments ? `${reward.fragments} фрагм.` : null,
+          reward.ap ? "восстановление AP" : null,
+          ...(reward.materials ?? []).map((material) => `${material.amount} ${materialCatalog[material.id]?.name ?? material.id}`),
+        ].filter(Boolean)
+      : ["Маршрут не потерян", "Можно сразу повторить encounter"];
+    const notes = outcome === "victory"
+      ? [
+          `Живых героев после столкновения: ${livingAllies}/${state.battle.allies.length}.`,
+          `Резонанс маршрута зафиксирован на ${state.battle.resonance}%.`,
+          reward.note ?? "Награда готова к выдаче.",
+        ]
+      : [
+          "Отряд отступил, но текущий маршрут не сброшен.",
+          "Повторный вход в encounter доступен без потери прогресса главы.",
+          "Перед новым заходом можно усилить состав или открыть дневник.",
+        ];
+
+    state.result = {
+      outcome,
+      questId: quest.id,
+      nodeIndex,
+      title: outcome === "victory" ? "Узел подавлен" : "Отряд отступил",
+      subtitle: `${quest.title} · ${node?.title ?? "Финальный узел"}`,
+      grade,
+      rewards,
+      notes,
+      nextTitle: outcome === "victory" ? "Забрать награду и продолжить маршрут" : "Повторить encounter или перегруппироваться",
+      nextCopy:
+        outcome === "victory"
+          ? "Награда закрепит прогресс узла, обновит инвентарь и, если глава закрыта, откроет chapter complete."
+          : "Можно сразу вернуться в бой или выйти в святилище, чтобы усилить отряд и перечитать архив.",
+      claimPending,
+    };
+  }
+
+  function renderTitleScreen() {
+    const hasProgress = getCompletedCampaignCount() > 0 || Object.values(state.routeProgress).some((progress) => progress > 0);
+    const unlockedQuestCount = questCards.filter((quest) => getQuestUnlockInfo(quest.id).unlocked).length;
+
+    titleContinueButton.disabled = !state.game.hasStarted && !hasProgress;
+    titleStatusHeading.textContent = hasProgress ? "Поход уже записан в архив" : "Святилище готово к новому циклу";
+    titleStatusCopy.textContent = hasProgress
+      ? `Открыто глав: ${unlockedQuestCount}/${questCards.length}. Можно продолжить текущий цикл или начать новый.`
+      : "Сохранения ещё нет. Начните первую экспедицию или откройте руководство, чтобы увидеть весь desktop-loop демо.";
+
+    titleStatList.innerHTML = [
+      { label: "Главы кампании", value: `${getCompletedCampaignCount()} / ${campaignQuestOrder.length}` },
+      { label: "Усилено героев", value: `${heroes.filter((hero) => getHeroLevel(hero.id) > 1).length} / ${heroes.length}` },
+      { label: "Открыто маршрутов", value: `${unlockedQuestCount} / ${questCards.length}` },
+    ]
+      .map(
+        (item) => `
+          <article class="title-stat-item">
+            <span>${item.label}</span>
+            <strong>${item.value}</strong>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function renderResults() {
+    const outcome = state.result.outcome;
+    const isVictory = outcome === "victory";
+    const rewardRows = state.result.rewards.length ? state.result.rewards : ["Новых наград нет"];
+    const burstRows = isVictory
+      ? ["Route stable", "Reward secured", state.result.grade]
+      : ["Formation broken", "Retry available", state.result.grade];
+
+    resultKicker.textContent = isVictory ? "Итог encounter" : "Срыв encounter";
+    resultTitle.textContent = state.result.title || "Итог столкновения";
+    resultSubtitle.textContent = state.result.subtitle || "Текущий маршрут";
+    resultStatusPill.textContent = isVictory ? "Победа" : "Отступление";
+    resultGrade.textContent = state.result.grade;
+    resultBurstList.innerHTML = burstRows.map((item) => `<span class="results-pill">${item}</span>`).join("");
+    resultRewardList.innerHTML = rewardRows
+      .map((item) => `<article class="results-card"><strong>${item}</strong><p>Награда сразу уходит в общее progression-состояние после подтверждения.</p></article>`)
+      .join("");
+    resultNoteList.innerHTML = state.result.notes
+      .map((item) => `<article class="results-card"><strong>Поле</strong><p>${item}</p></article>`)
+      .join("");
+    resultNextTitle.textContent = state.result.nextTitle || "Следующий шаг";
+    resultNextCopy.textContent = state.result.nextCopy || "Вернитесь в святилище и продолжайте цикл.";
+    resultPrimary.textContent = isVictory ? (state.result.claimPending ? "Забрать награду" : "К маршруту") : "Повторить encounter";
+    resultSecondary.textContent = isVictory ? "К маршруту" : "В святилище";
+  }
+
+  function prepareChapterState(questId) {
+    const quest = getQuestById(questId);
+    const rewards = quest.route.map((_, nodeIndex) => getNodeReward(quest, nodeIndex));
+    const nextQuestId = getNextCampaignQuestId(questId);
+    const unlocked = questCards
+      .filter((card) => card.id !== questId && getQuestUnlockInfo(card.id).unlocked && !isQuestComplete(card.id))
+      .map((card) => card.title);
+
+    state.chapter = {
+      questId,
+      title: quest.title,
+      subtitle: `${quest.subtitle} остался позади`,
+      summary: "Отряд закрыл главу, вернул часть памяти святилища и вынес трофеи в общий цикл подготовки.",
+      stats: [
+        `${quest.route.length} узлов закрыто`,
+        `${quest.route.filter((node) => isCombatNode(node)).length} боевых encounter'а завершено`,
+        `${heroes.filter((hero) => getHeroLevel(hero.id) > 1).length} героя уже усилены`,
+      ],
+      rewards: rewards.map((reward) => formatRewardHeadline(reward)),
+      unlocks: unlocked,
+      nextQuestId,
+      nextTitle: nextQuestId ? getQuestById(nextQuestId).title : "Святилище отвечает тишиной",
+      nextCopy: nextQuestId
+        ? "Следующий маршрут уже открыт и готов к новому заходу."
+        : "Кампания почти закрыта. Можно вернуться в святилище или дойти до эпилога.",
+    };
+  }
+
+  function renderChapterScreen() {
+    chapterKicker.textContent = "Глава завершена";
+    chapterTitle.textContent = state.chapter.title || "Глава завершена";
+    chapterSubtitle.textContent = state.chapter.subtitle || "Маршрут закрыт";
+    chapterSummary.textContent = state.chapter.summary || "Отряд удержал строй и закрыл маршрут.";
+    chapterStatList.innerHTML = (state.chapter.stats.length ? state.chapter.stats : ["Статистика обновится после первой закрытой главы."])
+      .map((item) => `<article class="chapter-card"><strong>${item}</strong></article>`)
+      .join("");
+    chapterRewardList.innerHTML = (state.chapter.rewards.length ? state.chapter.rewards : ["Награды будут перечислены после завершения главы."])
+      .map((item) => `<article class="chapter-card"><strong>${item}</strong></article>`)
+      .join("");
+    chapterUnlockList.innerHTML = (state.chapter.unlocks.length ? state.chapter.unlocks : ["Новых маршрутов пока не открылось."])
+      .map((item) => `<article class="chapter-card"><strong>${item}</strong></article>`)
+      .join("");
+    chapterNextTitle.textContent = state.chapter.nextTitle || "Следующий выход";
+    chapterNextCopy.textContent = state.chapter.nextCopy || "Продолжайте подготовку в святилище.";
+    chapterPrimary.textContent = state.chapter.nextQuestId ? "Открыть следующую главу" : "К святилищу";
+    chapterSecondary.textContent = "Вернуться в святилище";
+  }
+
+  function renderEndingScreen() {
+    const totalRewards = collectAllCampaignRewards();
+    const totalLumen = totalRewards.reduce((sum, reward) => sum + (reward.lumen ?? 0), 0);
+    const totalFragments = totalRewards.reduce((sum, reward) => sum + (reward.fragments ?? 0), 0);
+
+    endingKicker.textContent = "Эпилог";
+    endingTitle.textContent = "Святилище снова заговорило";
+    endingSummary.textContent =
+      "Отряд закрыл первый полный цикл, собрал архивный след и довёл desktop-демо до финала с наградами, апгрейдами и chapter loop.";
+    endingStatList.innerHTML = [
+      { label: "Главы кампании", value: `${getCompletedCampaignCount()} / ${campaignQuestOrder.length}` },
+      { label: "Всего люмена", value: String(totalLumen) },
+      { label: "Всего фрагментов", value: String(totalFragments) },
+      { label: "Усилено героев", value: `${heroes.filter((hero) => getHeroLevel(hero.id) > 1).length} / ${heroes.length}` },
+    ]
+      .map((item) => `<article class="ending-card"><strong>${item.label}</strong><p>${item.value}</p></article>`)
+      .join("");
+    endingCreditList.innerHTML = endingCredits
+      .map((item) => `<article class="ending-card"><strong>${item.title}</strong><p>${item.body}</p></article>`)
+      .join("");
+    endingNextTitle.textContent = "После финала";
+    endingNextCopy.textContent = "Можно вернуться в святилище для свободной полировки или начать новый цикл с чистого старта.";
+  }
+
+  function refreshProgressionUi() {
+    ensureValidJournalSelection();
+    renderResources();
+    renderQuestCards();
+    updateQuestOverview();
+    renderHeroList();
+    updateHeroPanel();
+    renderJournalTabs();
+    renderJournalList();
+    updateJournalPanel();
+    renderShopGrid();
+    updateShopPanel();
+    renderMenuChecklist();
+    renderSessionLog();
+    renderGuideSections();
+    updateGuidePanel();
+    renderTitleScreen();
+    renderResults();
+    renderChapterScreen();
+    renderEndingScreen();
+  }
+
+  function finalizeVictoryProgression() {
+    const quest = getQuestById(state.result.questId);
+    const nodeIndex = state.result.nodeIndex;
+    const nextProgress = Math.min((state.routeProgress[quest.id] ?? 0) + 1, quest.route.length);
+
+    if (state.result.claimPending) {
+      claimNodeReward(quest, nodeIndex);
+      state.result.claimPending = false;
+    }
+
+    state.routeProgress[quest.id] = nextProgress;
+    addSessionLog(quest.route[nodeIndex]?.title ?? quest.title, getNodeReward(quest, nodeIndex).note ?? "Узел закрыт.");
+    refreshProgressionUi();
+
+    if (isQuestComplete(quest.id) && campaignQuestOrder.includes(quest.id)) {
+      prepareChapterState(quest.id);
+      renderChapterScreen();
+      if (isCampaignComplete()) {
+        state.game.endingSeen = true;
+        renderEndingScreen();
+        setActiveScreen("ending");
+      } else {
+        setActiveScreen("chapter");
+      }
+      saveState();
+      return;
+    }
+
+    setActiveScreen("quests");
+    saveState();
+  }
+
+  function startNewGame() {
+    state.activeScreen = "title";
+    state.activeQuestId = questCards[0].id;
+    state.activeHeroId = heroes[0].id;
+    state.activeJournalTab = journalTabs[0].id;
+    state.activeJournalEntryId = journalTabs[0].entries[0].id;
+    state.activeShopItemId = shopItems[0].id;
+    state.activeGuideSectionId = guideSections[0].id;
+    state.resources = createInitialResources();
+    state.settings = { ...state.settings, ...createInitialSettings() };
+    state.sessionLog = createInitialSessionLog();
+    state.clockMs = 0;
+    state.battle = applyHeroProgressToBattleState(createBattleState());
+    state.resolvedBattles = {};
+    state.claimedNodeRewards = {};
+    state.routeProgress = Object.fromEntries(questCards.map((quest) => [quest.id, 0]));
+    state.materialInventory = createInitialMaterialInventory();
+    state.heroProgress = createInitialHeroProgress();
+    state.result = createInitialResultState();
+    state.chapter = createInitialChapterState();
+    state.game = { hasStarted: true, endingSeen: false };
+    refreshProgressionUi();
+    setActiveScreen("quests");
+    saveState();
+  }
+
+  function continueGame() {
+    state.game.hasStarted = true;
+    refreshProgressionUi();
+    setActiveScreen(state.activeScreen === "title" ? "quests" : state.activeScreen);
+    saveState();
   }
 
   function renderJournalTabs() {
@@ -1756,10 +2625,14 @@
       state.resources.lumen -= item.price;
     }
 
+    addMaterials([{ id: item.id, amount: 1 }]);
     renderResources();
+    renderMaterials(getActiveHero());
+    renderHeroUpgradePanel();
+    renderShopGrid();
     updateShopPanel();
     renderJournalHighlights();
-    addSessionLog("Поставка оформлена", `${item.name} отправлен в архив снабжения.`);
+    addSessionLog("Поставка оформлена", `${item.name} отправлен в архив снабжения и добавлен в запас святилища.`);
   }
 
   function renderUiScaleOptions() {
@@ -1874,12 +2747,15 @@
 
   function prepareBattleFromQuest() {
     const activeQuest = getActiveQuest();
+    if (!getQuestUnlockInfo(activeQuest.id).unlocked) {
+      return;
+    }
     const { isCompleted, nodeIndex: currentNodeIndex, node: currentNode, resolved } = getQuestNodeContext(activeQuest);
     if (isCompleted || !currentNode) {
       return;
     }
 
-    const nextBattle = createBattleState();
+    const nextBattle = applyHeroProgressToBattleState(createBattleState());
 
     nextBattle.title = currentNode.title;
     nextBattle.subtitle = `${activeQuest.title} · ${currentNode.label}`;
@@ -1978,6 +2854,7 @@
 
     state.battle = nextBattle;
     renderBattle();
+    saveState();
   }
 
   function renderBattleParty() {
@@ -2167,12 +3044,13 @@
       body: "Узел зачищен. Теперь вернитесь в Экспедиции и завершите узел маршрута, чтобы забрать награду.",
     });
     state.battle.log = state.battle.log.slice(0, 6);
+    prepareBattleResult("victory");
     renderBattle();
-    renderQuestCards();
-    updateQuestOverview();
-    renderGuideSections();
-    updateGuidePanel();
     addSessionLog("Encounter завершён", `${state.battle.title} выигран. Маршрут можно продвинуть дальше.`);
+    renderResults();
+    refreshProgressionUi();
+    setActiveScreen("results");
+    saveState();
   }
 
   function resolveBattleDefeat() {
@@ -2182,8 +3060,12 @@
       body: "Отряд не удержал строй. Encounter можно перезапустить без потери текущего маршрута.",
     });
     state.battle.log = state.battle.log.slice(0, 6);
+    prepareBattleResult("defeat");
     renderBattle();
     addSessionLog("Encounter сорван", `${state.battle.title} требует повторной попытки.`);
+    renderResults();
+    setActiveScreen("results");
+    saveState();
   }
 
   function resolveEnemyTurn() {
@@ -2228,7 +3110,9 @@
 
   function commitBattleAction() {
     if (state.battle.result === "victory") {
-      setActiveScreen("quests");
+      prepareBattleResult("victory");
+      renderResults();
+      setActiveScreen("results");
       return;
     }
 
@@ -2241,11 +3125,12 @@
     const actingHero = getBattleActingHero();
     const target = getBattleTarget();
     const skill = getBattleSkillSet(actingHero.id).find((item) => item.id === state.battle.selectedSkillId);
+    const heroScaling = getHeroScaling(actingHero.id);
     if (!target || !skill) {
       return;
     }
 
-    let damage = skill.damage;
+    let damage = skill.damage + heroScaling.damageBonus;
     if (skill.effect === "shatter" && target.marked) {
       damage += 120;
       target.marked = false;
@@ -2256,7 +3141,7 @@
     }
 
     target.hp = Math.max(0, target.hp - damage);
-    state.battle.resonance = Math.min(100, state.battle.resonance + skill.resonance);
+    state.battle.resonance = Math.min(100, state.battle.resonance + skill.resonance + heroScaling.resonanceBonus);
 
     if (skill.effect === "mark") {
       target.marked = true;
@@ -2309,7 +3194,24 @@
   }
 
   function setActiveScreen(screenName) {
-    const navScreen = screenName === "battle" ? "quests" : screenName === "guide" ? "menu" : screenName;
+    const validScreenNames = new Set(Array.from(screens, (screen) => screen.dataset.screen));
+    const fallbackScreen = state.game.hasStarted ? "home" : "title";
+    if (!validScreenNames.has(screenName)) {
+      screenName = fallbackScreen;
+    }
+
+    const navScreen = ["battle", "results", "chapter"].includes(screenName)
+      ? "quests"
+      : screenName === "guide"
+        ? "menu"
+        : ["title", "ending"].includes(screenName)
+          ? ""
+          : screenName;
+
+    if (!["title", "ending"].includes(screenName)) {
+      state.game.hasStarted = true;
+    }
+
     state.activeScreen = screenName;
     document.body.dataset.screen = screenName;
     if (window.location.hash !== `#${screenName}`) {
@@ -2345,6 +3247,9 @@
 
   routeAdvanceButton.addEventListener("click", () => {
     const activeQuest = getActiveQuest();
+    if (!getQuestUnlockInfo(activeQuest.id).unlocked) {
+      return;
+    }
     const { progress, isCompleted, nodeIndex: currentNodeIndex, node: currentNode, resolved } = getQuestNodeContext(activeQuest);
     if (isCompleted || !currentNode) {
       return;
@@ -2358,30 +3263,83 @@
 
     const rewardWasClaimed = claimNodeReward(activeQuest, currentNodeIndex);
     state.routeProgress[activeQuest.id] = Math.min(progress + 1, activeQuest.route.length);
-    ensureValidJournalSelection();
-    renderResources();
-    renderQuestCards();
-    updateQuestOverview();
-    renderJournalTabs();
-    renderJournalList();
-    updateJournalPanel();
-    renderGuideSections();
-    updateGuidePanel();
+    refreshProgressionUi();
     addSessionLog(
       currentNode.title,
       rewardWasClaimed ? getNodeReward(activeQuest, currentNodeIndex).note ?? "Узел закрыт." : "Узел закрыт без дополнительной награды.",
     );
+
+    if (isQuestComplete(activeQuest.id) && campaignQuestOrder.includes(activeQuest.id)) {
+      prepareChapterState(activeQuest.id);
+      renderChapterScreen();
+      if (isCampaignComplete()) {
+        state.game.endingSeen = true;
+        renderEndingScreen();
+        setActiveScreen("ending");
+      } else {
+        setActiveScreen("chapter");
+      }
+      saveState();
+      return;
+    }
+
+    saveState();
   });
 
   openBattleButton.addEventListener("click", () => {
     prepareBattleFromQuest();
+    setActiveScreen("battle");
   });
 
   shopBuy.addEventListener("click", buyActiveItem);
+  heroUpgradeButton.addEventListener("click", upgradeActiveHero);
   battleCommit.addEventListener("click", commitBattleAction);
   battleBack.addEventListener("click", () => {
     setActiveScreen("quests");
   });
+  titleNewButton.addEventListener("click", startNewGame);
+  titleContinueButton.addEventListener("click", continueGame);
+  titleGuideButton.addEventListener("click", () => {
+    renderTitleScreen();
+    setActiveScreen("guide");
+  });
+  resultPrimary.addEventListener("click", () => {
+    if (state.result.outcome === "victory") {
+      finalizeVictoryProgression();
+      return;
+    }
+    prepareBattleFromQuest();
+    setActiveScreen("battle");
+  });
+  resultSecondary.addEventListener("click", () => {
+    if (state.result.outcome === "victory") {
+      setActiveScreen("quests");
+      saveState();
+      return;
+    }
+    setActiveScreen("home");
+    saveState();
+  });
+  chapterPrimary.addEventListener("click", () => {
+    if (state.chapter.nextQuestId) {
+      state.activeQuestId = state.chapter.nextQuestId;
+      renderQuestCards();
+      updateQuestOverview();
+      setActiveScreen("quests");
+    } else {
+      setActiveScreen("home");
+    }
+    saveState();
+  });
+  chapterSecondary.addEventListener("click", () => {
+    setActiveScreen("home");
+    saveState();
+  });
+  endingHomeButton.addEventListener("click", () => {
+    setActiveScreen("home");
+    saveState();
+  });
+  endingResetButton.addEventListener("click", startNewGame);
 
   toggleMotion.addEventListener("click", () => {
     state.settings.reducedMotion = !state.settings.reducedMotion;
@@ -2402,6 +3360,31 @@
   });
 
   window.addEventListener("keydown", (event) => {
+    if (state.activeScreen === "title" && event.key === "Enter") {
+      event.preventDefault();
+      if (titleContinueButton.disabled) {
+        startNewGame();
+      } else {
+        continueGame();
+      }
+      return;
+    }
+    if (state.activeScreen === "results" && event.key === "Enter") {
+      event.preventDefault();
+      resultPrimary.click();
+      return;
+    }
+    if (state.activeScreen === "chapter" && event.key === "Enter") {
+      event.preventDefault();
+      chapterPrimary.click();
+      return;
+    }
+    if (state.activeScreen === "ending" && event.key === "Enter") {
+      event.preventDefault();
+      endingHomeButton.click();
+      return;
+    }
+
     if (event.key === "1") {
       setActiveScreen("home");
     }
@@ -2426,6 +3409,9 @@
     }
     if (event.key === "8") {
       setActiveScreen("guide");
+    }
+    if (event.key === "0") {
+      setActiveScreen("title");
     }
 
     if (state.activeScreen === "party" && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
