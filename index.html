@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Последняя Ступень</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2318231f'/%3E%3Cpath d='M32 10c8 8 14 14 14 22 0 10-6 18-14 22-8-4-14-12-14-22 0-8 6-14 14-22Z' fill='%23d8d1c1'/%3E%3Cpath d='M32 18c5 6 8 10 8 15 0 6-3 11-8 14-5-3-8-8-8-14 0-5 3-9 8-15Z' fill='%2377b18f'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260321p">
+  <link rel="stylesheet" href="styles.css?v=20260321s">
 </head>
 <body data-screen="title">
   <canvas id="ambient-canvas" aria-hidden="true"></canvas>
@@ -395,14 +395,21 @@
               <div class="portrait-aura"></div>
               <div class="portrait-ring"></div>
               <div class="portrait-ornament"></div>
+              <div class="portrait-light"></div>
+              <div class="portrait-orbit"></div>
               <div class="portrait-companion"></div>
               <div class="portrait-sigil"></div>
               <div class="portrait-figure">
+                <div class="portrait-back-hair"></div>
+                <div class="portrait-crown"></div>
                 <div class="portrait-head"></div>
                 <div class="portrait-hair"></div>
                 <div class="portrait-cloak"></div>
+                <div class="portrait-trail portrait-trail-left"></div>
+                <div class="portrait-trail portrait-trail-right"></div>
                 <div class="portrait-arm portrait-arm-left"></div>
                 <div class="portrait-arm portrait-arm-right"></div>
+                <div class="portrait-emblem"></div>
                 <div class="portrait-body"></div>
                 <div class="portrait-legs"></div>
                 <div class="portrait-weapon"></div>
@@ -576,6 +583,7 @@
         <div class="screen-scape guide-scape" aria-hidden="true">
           <div class="guide-arch"></div>
           <div class="guide-glow"></div>
+          <div class="guide-rings"></div>
         </div>
 
         <div class="guide-layout">
@@ -585,23 +593,40 @@
           </aside>
 
           <section class="guide-book ornate-panel">
-            <div class="guide-page">
+            <article class="guide-hero-panel">
               <p class="eyebrow" id="guide-kicker">Введение</p>
               <h2 id="guide-title">Последняя Ступень</h2>
               <p id="guide-summary">
                 Steam-first tactical party-RPG о походах через заросшие руины и боях со стражами живой архитектуры.
               </p>
-            </div>
-            <div class="guide-page guide-page-secondary">
+              <div class="guide-tag-list" id="guide-tag-list"></div>
+            </article>
+            <article class="guide-highlight-panel">
+              <p class="eyebrow" id="guide-highlight-kicker">Desktop frame</p>
+              <div class="guide-highlight-grid" id="guide-highlight-grid"></div>
+            </article>
+            <article class="guide-loop-panel">
               <p class="eyebrow">Ключевые правила</p>
               <div class="guide-point-list" id="guide-point-list"></div>
-            </div>
+            </article>
+            <article class="guide-focus-panel">
+              <p class="eyebrow">Р§С‚Рѕ РґРµР»Р°С‚СЊ РґР°Р»СЊС€Рµ</p>
+              <div class="guide-action-list" id="guide-action-list"></div>
+            </article>
           </section>
 
           <aside class="guide-side ornate-panel">
             <p class="eyebrow">Статус среза</p>
-            <h3 id="guide-status-title">Vertical Slice</h3>
-            <div class="guide-status-list" id="guide-status-list"></div>
+            <section class="guide-side-block">
+              <p class="eyebrow">PROJECT STATUS</p>
+              <h3 id="guide-project-title">Steam demo</h3>
+              <div class="guide-status-list" id="guide-project-list"></div>
+            </section>
+            <section class="guide-side-block">
+              <p class="eyebrow">SAVE PROGRESS</p>
+              <h3 id="guide-status-title">Current run</h3>
+              <div class="guide-status-list" id="guide-status-list"></div>
+            </section>
           </aside>
         </div>
       </section>
@@ -656,6 +681,94 @@
     </nav>
   </div>
 
-  <script src="src/main.js?v=20260321p" defer></script>
+  <div class="creator-hint-chip" id="creator-hint-chip" hidden>
+    <div class="creator-hint-copy">
+      <strong id="creator-hint-title">Авторская подсказка</strong>
+      <p id="creator-hint-body">Скрытая подсказка для автора проекта.</p>
+    </div>
+    <button class="secondary-button creator-hint-open" id="creator-hint-open" type="button">Открыть</button>
+  </div>
+
+  <section class="creator-cabin" id="creator-cabin" hidden aria-label="Кабинет автора">
+    <div class="creator-cabin-backdrop" id="creator-cabin-backdrop"></div>
+    <aside class="creator-cabin-panel ornate-panel">
+      <header class="creator-cabin-header">
+        <div>
+          <p class="eyebrow" id="creator-kicker">Режим автора</p>
+          <h2 id="creator-title">Кабинет автора</h2>
+          <p class="creator-lead" id="creator-lead">Скрытое пространство для ваших вопросов, ответов и заметок по развитию игры.</p>
+        </div>
+        <div class="creator-header-actions">
+          <button class="secondary-button" id="creator-copy-brief" type="button">Скопировать бриф</button>
+          <button class="secondary-button" id="creator-close" type="button">Закрыть</button>
+        </div>
+      </header>
+
+      <div class="creator-cabin-layout">
+        <aside class="creator-cabin-nav">
+          <div class="creator-topic-list" id="creator-topic-list"></div>
+          <div class="creator-toggle-block">
+            <p class="design-label" id="creator-toggle-label">Авторские подсказки</p>
+            <button class="toggle-button" id="creator-hints-toggle" type="button">Подсказки включены</button>
+          </div>
+          <div class="creator-glossary-list" id="creator-glossary-list"></div>
+        </aside>
+
+        <section class="creator-cabin-main">
+          <article class="creator-card">
+            <p class="eyebrow" id="creator-question-kicker">Вопрос от Codex</p>
+            <h3 id="creator-question-title">Тема</h3>
+            <p id="creator-question-body">Здесь будет вопрос по проекту.</p>
+            <div class="creator-mini-list" id="creator-question-points"></div>
+          </article>
+
+          <article class="creator-card">
+            <p class="eyebrow" id="creator-help-kicker">Простыми словами</p>
+            <div class="creator-mini-list" id="creator-help-list"></div>
+          </article>
+
+          <article class="creator-card">
+            <p class="eyebrow" id="creator-note-kicker">Мои вопросы к Codex</p>
+            <textarea class="creator-textarea" id="creator-ask-input" placeholder="Например: как сделать этот экран понятнее, что здесь выглядит слабо, какой из героев сейчас самый удачный?"></textarea>
+          </article>
+
+          <article class="creator-card">
+            <p class="eyebrow" id="creator-answer-kicker">Мой ответ для проекта</p>
+            <textarea class="creator-textarea" id="creator-answer-input" placeholder="Например: главный акцент демо — бой с колоссом; Лиора должна ощущаться как тихая святость и свет сквозь мох."></textarea>
+          </article>
+
+          <article class="creator-card creator-card-wide">
+            <p class="eyebrow" id="creator-private-kicker">Приватные заметки</p>
+            <textarea class="creator-textarea creator-textarea-large" id="creator-private-notes" placeholder="Сюда можно писать что угодно: идеи по миру, слабые места, планы на неделю, сомнения по визуалу, мысли для следующего разговора со мной."></textarea>
+          </article>
+        </section>
+
+        <aside class="creator-cabin-side">
+          <article class="creator-card">
+            <p class="eyebrow" id="creator-next-kicker">Что делать дальше</p>
+            <div class="creator-mini-list" id="creator-next-list"></div>
+          </article>
+
+          <article class="creator-card">
+            <p class="eyebrow" id="creator-screen-kicker">Текущий экран</p>
+            <div class="creator-mini-list" id="creator-screen-list"></div>
+          </article>
+
+          <article class="creator-card">
+            <p class="eyebrow" id="creator-status-kicker">Статус копирования</p>
+            <p class="creator-copy-status" id="creator-copy-status">Бриф ещё не копировался.</p>
+          </article>
+
+          <article class="creator-card">
+            <p class="eyebrow" id="creator-example-kicker">Можно спросить меня так</p>
+            <div class="creator-mini-list" id="creator-example-list"></div>
+          </article>
+        </aside>
+      </div>
+    </aside>
+  </section>
+
+  <script src="src/main.js?v=20260321s" defer></script>
 </body>
 </html>
+

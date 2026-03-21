@@ -1,5 +1,1 @@
-{
-  "steps": [
-    { "buttons": [], "frames": 6 }
-  ]
-}
+[{"type":"wait","ms":250}]

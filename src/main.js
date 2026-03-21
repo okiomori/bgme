@@ -622,6 +622,317 @@
     },
   ];
 
+  const guideSectionFrames = {
+    overview: {
+      tags: ["Steam demo", "PC-first", "Party RPG"],
+      highlightKicker: "Опорные столбы",
+      highlights: [
+        {
+          title: "Маршрутный цикл",
+          body: "Один поход должен быстро доводить игрока от карты главы до боя, награды и усиления без лишней навигационной грязи.",
+        },
+        {
+          title: "Визуальный тон",
+          body: "Заросшие руины, стеклянные панели, мягкий люмен и вертикальные массы создают нужный Steam-first масштаб.",
+        },
+        {
+          title: "Фокус среза",
+          body: "Мы собираем не полную игру, а демонстрационный вертикальный кусок, который уже ощущается как готовый продукт.",
+        },
+      ],
+      actions: [
+        {
+          title: "Начать с титула",
+          body: "Запустите новый проход и убедитесь, что титул, guide и continue читаются как единый desktop-вход.",
+        },
+        {
+          title: "Проверить ритм",
+          body: "Путь игрока должен быть понятен без объяснений: выбрать главу, пройти узел, зайти в бой и вернуться с наградой.",
+        },
+        {
+          title: "Держать тон",
+          body: "Любой новый экран должен поддерживать мир руин и памяти, а не выглядеть как отдельная админ-панель.",
+        },
+      ],
+    },
+    screens: {
+      tags: ["Quests", "Battle", "Archive"],
+      highlightKicker: "Роли экранов",
+      highlights: [
+        {
+          title: "Экспедиции",
+          body: "Глава, маршрут, задача и вход в encounter держатся в одном фокусе и не смешиваются с лором или настройками.",
+        },
+        {
+          title: "Бой",
+          body: "Поле боя показывает очередь, цели, намерения и навык так, чтобы игрок считывал решение за один взгляд.",
+        },
+        {
+          title: "Архив и журнал",
+          body: "Дневник нужен для мира и памяти, а не для дублирования миссионного интерфейса.",
+        },
+      ],
+      actions: [
+        {
+          title: "Сначала глава",
+          body: "Игрок всегда понимает, где он находится в кампании и что нужно сделать в текущем узле.",
+        },
+        {
+          title: "Потом бой",
+          body: "Боевой экран должен быть следствием квестового выбора, а не отдельным disconnected режимом.",
+        },
+        {
+          title: "Потом возврат",
+          body: "После результата игрок получает понятный next step: награда, усиление, следующая глава или финал.",
+        },
+      ],
+    },
+    controls: {
+      tags: ["Keyboard", "Hotkeys", "Fullscreen"],
+      highlightKicker: "Навигация на ПК",
+      highlights: [
+        {
+          title: "Горячие клавиши",
+          body: "Rail, dock и главные CTA подсвечивают свои клавиши прямо в интерфейсе, чтобы не учить игрока отдельно.",
+        },
+        {
+          title: "Подтверждение",
+          body: "Enter завершает служебный шаг на титуле, результатах, главе и в эпилоге без поиска мышью.",
+        },
+        {
+          title: "Плотность HUD",
+          body: "ПК-версия может держать больше воздуха и больше информации одновременно, не скатываясь в mobile-карточки.",
+        },
+      ],
+      actions: [
+        {
+          title: "Проверить без мыши",
+          body: "Базовый путь demo должен быть проходим по клавиатуре: выбор экранов, бой, возврат и эпилог.",
+        },
+        {
+          title: "Проверить 16:9",
+          body: "Вся ключевая информация должна читаться без прокрутки на типовом desktop-экране.",
+        },
+        {
+          title: "Проверить fullscreen",
+          body: "На ПК игрок должен уметь перейти в полноэкранный режим без поломки композиции.",
+        },
+      ],
+    },
+    steam: {
+      tags: ["Release candidate", "Desktop slice", "Content gap"],
+      highlightKicker: "Граница демо",
+      highlights: [
+        {
+          title: "Что уже собрано",
+          body: "Титул, главы, бой, результаты, усиление, chapter complete и эпилог уже образуют завершённый Steam-demo loop.",
+        },
+        {
+          title: "Что ещё сыро",
+          body: "Иллюстративные портреты, больше авторского контента, звук и поздняя прогрессия пока не дотянуты до full game уровня.",
+        },
+        {
+          title: "Как это читать",
+          body: "Процент проекта и процент текущего сейва — это разные вещи. Guide теперь показывает их отдельно, чтобы не путать ожидания.",
+        },
+      ],
+      actions: [
+        {
+          title: "Оценивать как демо",
+          body: "Срез должен закрывать один мощный кусок игры, а не притворяться полной кампанией.",
+        },
+        {
+          title: "Оценивать по циклу",
+          body: "Главный критерий качества — целостный путь от старта до эпилога без логических провалов.",
+        },
+        {
+          title: "Оценивать по расширяемости",
+          body: "После этого каркаса уже можно наращивать главы, врагов, портреты, звук и мета-системы.",
+        },
+      ],
+    },
+  };
+
+  const creatorTopics = [
+    {
+      id: "art-direction",
+      label: "Портреты",
+      kicker: "Арт-направление",
+      questionTitle: "Каким должен быть персонаж на одном взгляде?",
+      questionBody:
+        "Опишите героя не через сюжет, а через первое ощущение. Если игрок увидит его две секунды, что он должен почувствовать: нежность, угрозу, интеллект, святость, усталость?",
+      points: [
+        "Назовите одно главное чувство для героя.",
+        "Назовите два материала, которые всегда должны читаться в образе.",
+        "Назовите одну форму, без которой силуэт нельзя считать удачным.",
+      ],
+      help: [
+        { title: "Силуэт", body: "Это внешний контур персонажа. Если его тень узнаётся сразу, силуэт работает." },
+        { title: "Материал", body: "Это то, из чего образ будто сделан: шёлк, камень, мох, бумага, металл." },
+        { title: "Акцент", body: "Одна деталь, за которую цепляется глаз: нимб, молот, крыло, ленты." },
+      ],
+      next: [
+        { title: "Выберите одного героя", body: "Не пытайтесь улучшать сразу всех. Сначала доведите одного до действительно выразительного вида." },
+        { title: "Проверьте в маленьком размере", body: "Если образ разваливается в маленькой карточке, значит форма ещё слишком сложная или слабая." },
+      ],
+    },
+    {
+      id: "player-loop",
+      label: "Игровой путь",
+      kicker: "Loop",
+      questionTitle: "Где игрок должен испытать главный кайф демо?",
+      questionBody:
+        "Выберите один пик впечатления. Это может быть босс, награда, портрет героя, открытие следующей главы или ощущение мира. Всё остальное должно усиливать именно этот момент.",
+      points: [
+        "Один главный эмоциональный пик на демо.",
+        "Один экран, который обязан выглядеть лучше остальных.",
+        "Один момент, который стоит показать в трейлере.",
+      ],
+      help: [
+        { title: "Loop", body: "Повторяющийся цикл игры: выбрать маршрут, пройти бой, получить награду, усилиться, снова выйти." },
+        { title: "Пик", body: "Самый сильный момент, ради которого игрок будет помнить демо и хотеть продолжения." },
+        { title: "Перегруз", body: "Когда слишком много одинаково важных деталей и ни одна не выигрывает." },
+      ],
+      next: [
+        { title: "Отметьте главный кадр", body: "Найдите один экран, который должен быть вашим постером. Обычно это бой, титул или лучший портрет." },
+        { title: "Уберите лишнее", body: "Если что-то не помогает главному впечатлению, его лучше ослабить или убрать." },
+      ],
+    },
+    {
+      id: "scope",
+      label: "Приоритеты",
+      kicker: "Scope",
+      questionTitle: "Что мы пока сознательно не делаем?",
+      questionBody:
+        "Чтобы проект не расползался, нужно честно назвать, что пока не входит в демо. Это не слабость, а инструмент фокуса.",
+      points: [
+        "Что не войдёт в ближайший месяц.",
+        "Что можно оставить как текстовую заглушку.",
+        "Что нужно доделать обязательно перед показом другим.",
+      ],
+      help: [
+        { title: "Vertical slice", body: "Не вся игра, а один очень качественный кусок, который показывает потенциал целого проекта." },
+        { title: "Полировка", body: "Последний слой улучшений: ритм, читаемость, свет, анимация, аккуратность деталей." },
+        { title: "Приоритет", body: "То, что даёт самый заметный результат за ближайшее время." },
+      ],
+      next: [
+        { title: "Сделайте список стопов", body: "Запишите, что мы пока не трогаем. Это защитит от хаоса и выгорания." },
+        { title: "Сделайте список must-have", body: "Оставьте 3 вещи, без которых демо нельзя показывать." },
+      ],
+    },
+    {
+      id: "steam-pitch",
+      label: "Steam",
+      kicker: "Подача",
+      questionTitle: "Что игрок должен понять о проекте за первые 10 секунд?",
+      questionBody:
+        "Steam-игрок редко читает долго. Ему нужно сразу понять жанр, тон, качество и главное отличие вашей игры от других.",
+      points: [
+        "Одно предложение: что это за игра.",
+        "Одно отличие: почему её не перепутают с другой.",
+        "Один визуальный мотив, который станет лицом проекта.",
+      ],
+      help: [
+        { title: "Питч", body: "Очень короткое объяснение проекта простыми словами." },
+        { title: "Витрина", body: "Как игра выглядит со стороны: титул, кадры, описания, капсула, первые впечатления." },
+        { title: "Читаемость", body: "Насколько быстро человек понимает, что он видит и куда смотреть." },
+      ],
+      next: [
+        { title: "Соберите одно предложение", body: "Напишите коротко, для кого эта игра и в чём её мир или механика." },
+        { title: "Выберите лицо проекта", body: "Один герой или один босс должен стать визуальным символом игры." },
+      ],
+    },
+  ];
+
+  const creatorGlossary = [
+    {
+      title: "Силуэт",
+      body: "Контур персонажа. Если героя можно узнать по тени, значит форма работает хорошо.",
+    },
+    {
+      title: "Вертикальный срез",
+      body: "Один качественный кусок игры, а не вся игра целиком. Он нужен, чтобы показать потенциал проекта.",
+    },
+    {
+      title: "Полировка",
+      body: "Момент, когда мы не добавляем много новых систем, а улучшаем читаемость, красоту и удобство.",
+    },
+  ];
+
+  const creatorScreenHints = {
+    title: {
+      title: "Титул",
+      body: "Тут важно одно главное обещание игры. Если экран можно описать одним сильным предложением, он уже работает лучше.",
+    },
+    quests: {
+      title: "Экспедиции",
+      body: "Игрок должен сразу видеть, что делать дальше. Если взгляд блуждает, нужно усиливать главный путь и ослаблять второстепенное.",
+    },
+    party: {
+      title: "Персонажи",
+      body: "Смотрите на силуэт, материалы и акцент. Не на количество деталей, а на то, насколько герой запоминается за секунду.",
+    },
+    battle: {
+      title: "Бой",
+      body: "Самое важное здесь — быстро считывать цель, очередь и угрозу. Красота должна помогать решению, а не мешать ему.",
+    },
+    guide: {
+      title: "Руководство",
+      body: "Этот экран нужен вам как автору. Он должен объяснять, а не спорить с вами терминами и процентами.",
+    },
+    shop: {
+      title: "Лавка",
+      body: "Лавка должна объяснять выгоду простыми словами: что купить, зачем это нужно и кому из героев это поможет.",
+    },
+    menu: {
+      title: "Меню",
+      body: "Системный экран не должен быть скучным. Но сначала он обязан быть понятным и спокойным.",
+    },
+    home: {
+      title: "Хаб",
+      body: "Главный экран должен давать отдых и ощущение мира, а не заставлять разбираться с десятком окон.",
+    },
+    journal: {
+      title: "Дневник",
+      body: "Архив должен выглядеть как знание мира, а не как ещё одно техническое меню.",
+    },
+    results: {
+      title: "Итоги боя",
+      body: "После результата игрок должен сразу понимать: что он получил, что это значит и куда нажать дальше.",
+    },
+    chapter: {
+      title: "Завершение главы",
+      body: "Это эмоциональная пауза после пути. Здесь полезно показать ощущение продвижения и открыть следующую цель.",
+    },
+    ending: {
+      title: "Эпилог",
+      body: "Финал демо должен обещать большую игру дальше и оставлять одно запоминающееся чувство.",
+    },
+  };
+
+  const creatorPromptExamples = {
+    "art-direction": [
+      "Сделай Лиору более святой и хрупкой, но не превращай её в обычную жрицу.",
+      "Скажи, какие две детали у Сайи сейчас спорят друг с другом и мешают силуэту.",
+      "Предложи три способа сделать портрет Ноэль более дорогим и атмосферным без полной перерисовки экрана.",
+    ],
+    "player-loop": [
+      "Объясни простыми словами, где в этом демо сейчас самый сильный момент и почему.",
+      "Скажи, какой экран стоит сделать главным кадром для Steam и что на нём нужно усилить.",
+      "Покажи, что в цикле игрока сейчас лишнее и отнимает внимание у главного впечатления.",
+    ],
+    scope: [
+      "Помоги честно отделить то, что обязательно для демо, от того, что можно оставить на потом.",
+      "Скажи, какие три улучшения дадут самый сильный результат за ближайший проход.",
+      "Объясни, что из моих идей сейчас лучше не трогать, чтобы проект не расползался.",
+    ],
+    "steam-pitch": [
+      "Помоги сформулировать игру в одном сильном абзаце для Steam простыми словами.",
+      "Скажи, какой образ и какой экран лучше всего продают атмосферу игры.",
+      "Предложи, как описать проект так, чтобы было понятно даже человеку не из геймдева.",
+    ],
+  };
+
   const journalUnlockRules = {
     vestibule: { questId: "story", minNode: 0 },
     architect: { questId: "story", minNode: 1 },
@@ -833,6 +1144,19 @@
     return {
       hasStarted: false,
       endingSeen: false,
+    };
+  }
+
+  function createInitialCreatorState() {
+    return {
+      unlocked: false,
+      open: false,
+      activeTopicId: "art-direction",
+      hintMode: true,
+      asks: {},
+      answers: {},
+      privateNotes: "",
+      lastCopiedAt: "",
     };
   }
 
@@ -1099,9 +1423,41 @@
   const guideKicker = document.getElementById("guide-kicker");
   const guideTitle = document.getElementById("guide-title");
   const guideSummary = document.getElementById("guide-summary");
+  const guideTagList = document.getElementById("guide-tag-list");
+  const guideHighlightKicker = document.getElementById("guide-highlight-kicker");
+  const guideHighlightGrid = document.getElementById("guide-highlight-grid");
   const guidePointList = document.getElementById("guide-point-list");
+  const guideActionList = document.getElementById("guide-action-list");
+  const guideProjectTitle = document.getElementById("guide-project-title");
+  const guideProjectList = document.getElementById("guide-project-list");
   const guideStatusTitle = document.getElementById("guide-status-title");
   const guideStatusList = document.getElementById("guide-status-list");
+  const guideFocusEyebrow = document.querySelector(".guide-focus-panel .eyebrow");
+  const guideSideEyebrows = document.querySelectorAll(".guide-side-block .eyebrow");
+  const creatorHintChip = document.getElementById("creator-hint-chip");
+  const creatorHintTitle = document.getElementById("creator-hint-title");
+  const creatorHintBody = document.getElementById("creator-hint-body");
+  const creatorHintOpen = document.getElementById("creator-hint-open");
+  const creatorCabin = document.getElementById("creator-cabin");
+  const creatorCabinBackdrop = document.getElementById("creator-cabin-backdrop");
+  const creatorClose = document.getElementById("creator-close");
+  const creatorCopyBrief = document.getElementById("creator-copy-brief");
+  const creatorTitle = document.getElementById("creator-title");
+  const creatorLead = document.getElementById("creator-lead");
+  const creatorTopicList = document.getElementById("creator-topic-list");
+  const creatorHintsToggle = document.getElementById("creator-hints-toggle");
+  const creatorGlossaryList = document.getElementById("creator-glossary-list");
+  const creatorQuestionTitle = document.getElementById("creator-question-title");
+  const creatorQuestionBody = document.getElementById("creator-question-body");
+  const creatorQuestionPoints = document.getElementById("creator-question-points");
+  const creatorHelpList = document.getElementById("creator-help-list");
+  const creatorAskInput = document.getElementById("creator-ask-input");
+  const creatorAnswerInput = document.getElementById("creator-answer-input");
+  const creatorPrivateNotes = document.getElementById("creator-private-notes");
+  const creatorNextList = document.getElementById("creator-next-list");
+  const creatorScreenList = document.getElementById("creator-screen-list");
+  const creatorCopyStatus = document.getElementById("creator-copy-status");
+  const creatorExampleList = document.getElementById("creator-example-list");
   const battleTitle = document.getElementById("battle-title");
   const battleSubtitle = document.getElementById("battle-subtitle");
   const battleObjective = document.getElementById("battle-objective");
@@ -1212,6 +1568,7 @@
     result: createInitialResultState(),
     chapter: createInitialChapterState(),
     game: createInitialGameState(),
+    creator: createInitialCreatorState(),
   };
 
   function getActiveQuest() {
@@ -1237,6 +1594,42 @@
 
   function getActiveGuideSection() {
     return guideSections.find((section) => section.id === state.activeGuideSectionId) ?? guideSections[0];
+  }
+
+  function getActiveCreatorTopic() {
+    return creatorTopics.find((topic) => topic.id === state.creator.activeTopicId) ?? creatorTopics[0];
+  }
+
+  function getCreatorHintForScreen(screenName = state.activeScreen) {
+    return creatorScreenHints[screenName] ?? creatorScreenHints.home;
+  }
+
+  function getCreatorPlaceholders(topicId) {
+    const placeholderMap = {
+      "art-direction": {
+        ask: "Например: как сделать Лиору более запоминающейся, но не потерять её тихую святость и природную мягкость?",
+        answer: "Например: для меня Лиора — это свет сквозь листву, стекло и мох; её силуэт должен читаться мягким, высоким и спокойным.",
+      },
+      "player-loop": {
+        ask: "Например: в какой момент демо игрок должен почувствовать максимальный восторг и на каком экране это лучше всего видно?",
+        answer: "Например: главный пик демо — бой с Немым колоссом и возвращение после него с ощущением, что мир начал говорить.",
+      },
+      scope: {
+        ask: "Например: что из идей сейчас лучше отложить, чтобы мы не потеряли темп и не расползлись по задачам?",
+        answer: "Например: пока не трогаем новые главы и сложный meta-layer, а доводим до силы один маршрут, бой и портреты героев.",
+      },
+      "steam-pitch": {
+        ask: "Например: как описать эту игру на Steam так, чтобы она звучала атмосферно и понятно обычному игроку?",
+        answer: "Например: это тактическая party-RPG о походах через заросшие руины и боях с живой архитектурой, где каждый выход возвращает миру память.",
+      },
+    };
+
+    return (
+      placeholderMap[topicId] ?? {
+        ask: "Например: что здесь сейчас выглядит слабым и что лучше улучшить следующим шагом?",
+        answer: "Например: для меня здесь важнее читаемость, атмосфера и один сильный эмоциональный акцент.",
+      }
+    );
   }
 
   function getMaterialCount(materialId) {
@@ -1455,6 +1848,7 @@
       result: state.result,
       chapter: state.chapter,
       game: state.game,
+      creator: state.creator,
     };
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
@@ -1499,6 +1893,15 @@
       }
       if (parsed.game) {
         state.game = { ...state.game, ...parsed.game };
+      }
+      if (parsed.creator) {
+        state.creator = {
+          ...state.creator,
+          ...parsed.creator,
+          asks: { ...state.creator.asks, ...(parsed.creator.asks ?? {}) },
+          answers: { ...state.creator.answers, ...(parsed.creator.answers ?? {}) },
+        };
+        state.creator.open = false;
       }
       if (Array.isArray(parsed.sessionLog) && parsed.sessionLog.length) {
         state.sessionLog = parsed.sessionLog.slice(0, 6);
@@ -1689,7 +2092,35 @@
     return true;
   }
 
-  function getReadinessReport() {
+  function getProjectStatusReport() {
+    return {
+      percent: 94,
+      cards: [
+        {
+          title: "Проходимый desktop-цикл",
+          body: "Титул, экспедиции, бой, итоги, chapter complete и эпилог уже собраны в один проходимый PC-цикл.",
+          tone: "good",
+        },
+        {
+          title: "Steam-first интерфейс",
+          body: "Композиция держится под ПК и 16:9, а ключевые действия уже читаются как витринный демо-срез, а не мобильный mockup.",
+          tone: "good",
+        },
+        {
+          title: "Системный каркас",
+          body: "Маршруты, награды, усиления героев, архив и боссовые encounter'ы уже связаны друг с другом.",
+          tone: "good",
+        },
+        {
+          title: "Что ещё нужно",
+          body: "До уровня полной игры всё ещё не хватает авторских портретов, звука, дополнительных глав и более глубокого meta-слоя.",
+          tone: "mid",
+        },
+      ],
+    };
+  }
+
+  function getSaveProgressReport() {
     const totalJournalEntries = journalTabs.reduce((sum, tab) => sum + tab.entries.length, 0);
     const unlockedJournalEntries = journalTabs.reduce(
       (sum, tab) => sum + tab.entries.filter((entry) => isJournalEntryUnlocked(entry.id)).length,
@@ -1707,48 +2138,44 @@
     const hasEnding = state.game.endingSeen || isCampaignComplete();
     const percent = Math.min(
       100,
-      48 +
-        Math.round((clearedNodes / Math.max(1, totalNodes)) * 18) +
-        Math.round((resolvedCombatNodes / Math.max(1, totalCombatNodes)) * 12) +
-        Math.round((unlockedJournalEntries / Math.max(1, totalJournalEntries)) * 8) +
-        upgradedHeroes * 3 +
-        completedCampaign * 3 +
-        (hasEnding ? 5 : 0),
+      Math.round(
+        (clearedNodes / Math.max(1, totalNodes)) * 34 +
+          (resolvedCombatNodes / Math.max(1, totalCombatNodes)) * 20 +
+          (unlockedJournalEntries / Math.max(1, totalJournalEntries)) * 16 +
+          (upgradedHeroes / Math.max(1, heroes.length)) * 10 +
+          (completedCampaign / Math.max(1, campaignQuestOrder.length)) * 15 +
+          (hasEnding ? 5 : 0),
+      ),
     );
 
     return {
       percent,
       cards: [
         {
-          title: "Визуальный shell",
-          body: "Стиль, крупные формы и desktop-композиция уже считываются как Steam-first срез.",
+          title: "Маршрут",
+          body: `${clearedNodes} из ${totalNodes} узлов пройдены в текущем сейве.`,
           tone: "good",
         },
         {
-          title: "Маршруты и награды",
-          body: `${clearedNodes} из ${totalNodes} узлов отслеживаются, а награды выдаются только один раз.`,
-          tone: "good",
+          title: "Encounter'ы",
+          body: `${resolvedCombatNodes} из ${totalCombatNodes} боевых узлов уже закрыты победой.`,
+          tone: resolvedCombatNodes > 0 ? "good" : "mid",
         },
         {
-          title: "Архив и дневник",
-          body: `${unlockedJournalEntries} из ${totalJournalEntries} записей открываются по прогрессу, а не смешаны с mission UI.`,
+          title: "Архив",
+          body: `${unlockedJournalEntries} из ${totalJournalEntries} записей открыты в дневнике и архиве.`,
           tone: unlockedJournalEntries >= Math.ceil(totalJournalEntries * 0.5) ? "good" : "mid",
         },
         {
-          title: "Боевые encounter'ы",
-          body: `${resolvedCombatNodes} из ${totalCombatNodes} боевых узлов уже могут фиксироваться как выигранные.`,
-          tone: resolvedCombatNodes >= Math.ceil(totalCombatNodes * 0.5) ? "good" : "mid",
-        },
-        {
-          title: "Meta-прогрессия",
-          body: `${upgradedHeroes} из ${heroes.length} героев уже можно усиливать через трофеи маршрутов и поставки лавки.`,
+          title: "Отряд",
+          body: `${upgradedHeroes} из ${heroes.length} героев получили усиления через награды и поставки.`,
           tone: upgradedHeroes > 0 ? "good" : "mid",
         },
         {
-          title: "Финал демо",
+          title: "Кампания",
           body: hasEnding
-            ? "Титульный вход, chapter complete и эпилог уже собираются в завершённый desktop-цикл."
-            : "До полного demo-loop осталось закрыть все главы кампании и увидеть эпилог.",
+            ? "Эпилог уже открыт: текущий сейв завершил весь демо-цикл."
+            : `${completedCampaign} из ${campaignQuestOrder.length} глав кампании закрыты в текущем прохождении.`,
           tone: hasEnding ? "good" : "mid",
         },
       ],
@@ -2349,7 +2776,7 @@
       { key: "Enter", label: "Запуск, подтверждение, закрепление шага." },
       { key: "1-6", label: "Основные экраны святилища и систем." },
       { key: "7", label: "Быстрый вход в тактический бой из маршрута." },
-      { key: "8", label: "Руководство и текущая готовность среза." },
+      { key: "8", label: "Руководство, статус проекта и прогресс текущего прохождения." },
       { key: "F", label: "Полный экран без потери desktop-композиции." },
       { key: "← →", label: "Листание героев и chapter-панелей на ПК." },
     ]
@@ -2475,7 +2902,7 @@
           ]
         : [
             "Enter · вернуться в святилище после полного цикла.",
-            "8 · открыть руководство и оценить готовность среза.",
+            "8 · открыть руководство и увидеть статус проекта и прогресс текущего прохождения.",
             "N · после финала можно запустить новый цикл.",
           ],
       nextQuestId,
@@ -2781,19 +3208,54 @@
 
   function updateGuidePanel() {
     const activeSection = getActiveGuideSection();
-    const readiness = getReadinessReport();
+    const sectionFrame = guideSectionFrames[activeSection.id] ?? guideSectionFrames.overview;
+    const projectStatus = getProjectStatusReport();
+    const saveProgress = getSaveProgressReport();
 
     guideKicker.textContent = activeSection.kicker;
     guideTitle.textContent = activeSection.title;
     guideSummary.textContent =
       activeSection.id === "steam"
-        ? `${activeSection.summary} Текущая готовность вертикального среза: ${readiness.percent}%.`
+        ? `${activeSection.summary} Текущее состояние проекта: ${projectStatus.percent}% готовности demo-среза.`
         : activeSection.summary;
+    if (guideFocusEyebrow) {
+      guideFocusEyebrow.textContent = "Следующий фокус";
+    }
+    if (guideSideEyebrows[0]) {
+      guideSideEyebrows[0].textContent = "Состояние проекта";
+    }
+    if (guideSideEyebrows[1]) {
+      guideSideEyebrows[1].textContent = "Прогресс сохранения";
+    }
+    guideTagList.innerHTML = sectionFrame.tags
+      .map((tag) => `<span class="guide-tag">${tag}</span>`)
+      .join("");
+    guideHighlightKicker.textContent = sectionFrame.highlightKicker;
+    guideHighlightGrid.innerHTML = sectionFrame.highlights
+      .map(
+        (item) => `
+          <article class="guide-highlight-card">
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
     guidePointList.innerHTML = activeSection.points
       .map((point) => `<article class="guide-point">${point}</article>`)
       .join("");
-    guideStatusTitle.textContent = `Готовность среза · ${readiness.percent}%`;
-    guideStatusList.innerHTML = readiness.cards
+    guideActionList.innerHTML = sectionFrame.actions
+      .map(
+        (item) => `
+          <article class="guide-action-card">
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+    guideProjectTitle.textContent = `Steam demo · ${projectStatus.percent}%`;
+    guideProjectList.innerHTML = projectStatus.cards
       .map(
         (card) => `
           <article class="guide-status-card is-${card.tone}">
@@ -2803,6 +3265,241 @@
         `,
       )
       .join("");
+    guideStatusTitle.textContent = `Текущее прохождение · ${saveProgress.percent}%`;
+    guideStatusList.innerHTML = saveProgress.cards
+      .map(
+        (card) => `
+          <article class="guide-status-card is-${card.tone}">
+            <strong>${card.title}</strong>
+            <p>${card.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function renderCreatorTopics() {
+    creatorTopicList.innerHTML = creatorTopics
+      .map(
+        (topic) => `
+          <button class="creator-topic-button ${topic.id === state.creator.activeTopicId ? "is-active" : ""}" type="button" data-creator-topic="${topic.id}">
+            <strong>${topic.label}</strong>
+            <p>${topic.kicker}</p>
+          </button>
+        `,
+      )
+      .join("");
+
+    creatorTopicList.querySelectorAll("[data-creator-topic]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.creator.activeTopicId = button.dataset.creatorTopic;
+        renderCreatorTopics();
+        updateCreatorCabin();
+        saveState();
+      });
+    });
+  }
+
+  function renderCreatorGlossary() {
+    creatorGlossaryList.innerHTML = creatorGlossary
+      .map(
+        (item) => `
+          <article class="creator-glossary-card">
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function buildCreatorBrief() {
+    const topic = getActiveCreatorTopic();
+    const projectStatus = getProjectStatusReport();
+    const saveProgress = getSaveProgressReport();
+    const screenHint = getCreatorHintForScreen();
+
+    return [
+      "BGME Creator Brief",
+      `Текущий экран: ${state.activeScreen}`,
+      `Тема: ${topic.label}`,
+      `Состояние проекта: ${projectStatus.percent}%`,
+      `Прогресс текущего сейва: ${saveProgress.percent}%`,
+      "",
+      "Вопрос от Codex:",
+      topic.questionTitle,
+      topic.questionBody,
+      "",
+      "Что нужно решить:",
+      ...topic.points.map((point) => `- ${point}`),
+      "",
+      "Мои вопросы к Codex:",
+      state.creator.asks[topic.id] || "(пока пусто)",
+      "",
+      "Мой ответ для проекта:",
+      state.creator.answers[topic.id] || "(пока пусто)",
+      "",
+      "Приватные заметки:",
+      state.creator.privateNotes || "(пока пусто)",
+      "",
+      "Подсказка по текущему экрану:",
+      `${screenHint.title}: ${screenHint.body}`,
+    ].join("\n");
+  }
+
+  async function copyCreatorBrief() {
+    const brief = buildCreatorBrief();
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(brief);
+      } else {
+        const helper = document.createElement("textarea");
+        helper.value = brief;
+        document.body.appendChild(helper);
+        helper.select();
+        document.execCommand("copy");
+        helper.remove();
+      }
+      state.creator.lastCopiedAt = new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+      creatorCopyStatus.textContent = `Бриф скопирован в ${state.creator.lastCopiedAt}. Его можно вставить в чат со мной без подготовки.`;
+      saveState();
+    } catch (error) {
+      creatorCopyStatus.textContent = "Не удалось скопировать автоматически. Выделите текст вручную из заметок и отправьте мне.";
+    }
+  }
+
+  function updateCreatorHint() {
+    const hint = getCreatorHintForScreen();
+    creatorHintTitle.textContent = `Авторская подсказка · ${hint.title}`;
+    creatorHintBody.textContent = hint.body;
+    creatorHintChip.hidden = !(state.creator.unlocked && state.creator.hintMode && !state.creator.open);
+  }
+
+  function updateCreatorCabin() {
+    const topic = getActiveCreatorTopic();
+    const screenHint = getCreatorHintForScreen();
+    const projectStatus = getProjectStatusReport();
+    const saveProgress = getSaveProgressReport();
+    const placeholders = getCreatorPlaceholders(topic.id);
+    const promptExamples = creatorPromptExamples[topic.id] ?? [];
+
+    creatorCabin.hidden = !state.creator.open;
+    document.body.classList.toggle("creator-open", state.creator.open);
+
+    creatorHintOpen.textContent = "Открыть";
+    creatorClose.textContent = "Закрыть";
+    creatorCopyBrief.textContent = "Скопировать бриф";
+    creatorTitle.textContent = "Кабинет автора";
+    creatorLead.textContent =
+      "Скрытый режим только для вас: здесь можно накапливать вопросы ко мне, отвечать на важные вопросы по проекту и получать подсказки простым языком.";
+    creatorHintsToggle.classList.toggle("is-active", state.creator.hintMode);
+    creatorHintsToggle.textContent = state.creator.hintMode ? "Подсказки включены" : "Подсказки выключены";
+
+    creatorQuestionTitle.textContent = topic.questionTitle;
+    creatorQuestionBody.textContent = topic.questionBody;
+    creatorQuestionPoints.innerHTML = topic.points
+      .map(
+        (point) => `
+          <article class="creator-mini-card">
+            <strong>${point}</strong>
+          </article>
+        `,
+      )
+      .join("");
+    creatorHelpList.innerHTML = topic.help
+      .map(
+        (item) => `
+          <article class="creator-mini-card">
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+    creatorNextList.innerHTML = topic.next
+      .map(
+        (item) => `
+          <article class="creator-mini-card">
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+    creatorScreenList.innerHTML = [
+      {
+        title: `Сейчас открыт экран «${state.activeScreen}»`,
+        body: screenHint.body,
+      },
+      {
+        title: "Как открыть этот кабинет",
+        body: "Нажмите Ctrl + Shift + M. Это скрытая комбинация только для автора проекта.",
+      },
+      {
+        title: "Что сюда писать",
+        body: "Любые вопросы ко мне, ваши решения по миру и заметки о том, что смущает или кажется слабым.",
+      },
+      {
+        title: "Статус проекта",
+        body: `${projectStatus.percent}% у демо-среза и ${saveProgress.percent}% у текущего прохождения.`,
+      },
+    ]
+      .map(
+        (item) => `
+          <article class="creator-mini-card">
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+
+    creatorExampleList.innerHTML = promptExamples
+      .map(
+        (item) => `
+          <article class="creator-mini-card">
+            <strong>Готовая формулировка</strong>
+            <p>${item}</p>
+          </article>
+        `,
+      )
+      .join("");
+
+    if (document.activeElement !== creatorAskInput) {
+      creatorAskInput.value = state.creator.asks[topic.id] ?? "";
+    }
+    if (document.activeElement !== creatorAnswerInput) {
+      creatorAnswerInput.value = state.creator.answers[topic.id] ?? "";
+    }
+    if (document.activeElement !== creatorPrivateNotes) {
+      creatorPrivateNotes.value = state.creator.privateNotes ?? "";
+    }
+
+    creatorAskInput.placeholder = placeholders.ask;
+    creatorAnswerInput.placeholder = placeholders.answer;
+    creatorPrivateNotes.placeholder = "Здесь можно писать мысли простыми словами: что нравится, что не нравится, что хочется изменить позже.";
+
+    if (!state.creator.lastCopiedAt) {
+      creatorCopyStatus.textContent = "Здесь появится статус после копирования брифа для следующего разговора со мной.";
+    }
+
+    updateCreatorHint();
+  }
+
+  function openCreatorCabin() {
+    state.creator.unlocked = true;
+    state.creator.open = true;
+    renderCreatorTopics();
+    renderCreatorGlossary();
+    updateCreatorCabin();
+    saveState();
+  }
+
+  function closeCreatorCabin() {
+    state.creator.open = false;
+    updateCreatorCabin();
+    saveState();
   }
 
   function renderShopGrid() {
@@ -2907,15 +3604,16 @@
   }
 
   function renderMenuChecklist() {
-    const readiness = getReadinessReport();
+    const projectStatus = getProjectStatusReport();
+    const saveProgress = getSaveProgressReport();
     const checklist = [
       steamChecklist[0],
       { ...steamChecklist[1], body: "Экраны листаются цифрами 1–8, титул открывается по 0, а подтверждение на служебных экранах работает по Enter." },
       steamChecklist[2],
       {
         title: "Логика вертикального среза",
-        body: `Текущая оценка готовности: ${readiness.percent}%. Маршруты, архив и бой уже связаны, но мета-слой ещё неглубокий.`,
-        complete: readiness.percent >= 60,
+        body: `Состояние проекта: ${projectStatus.percent}%. Прогресс текущего прохождения: ${saveProgress.percent}%. Основной демо-цикл собран, а full game слой ещё впереди.`,
+        complete: projectStatus.percent >= 85,
       },
     ];
 
@@ -3129,7 +3827,12 @@
         return `
           <button class="battle-unit" type="button" data-side="ally" data-form="${ally.form}" style="${getUnitStyle(ally.form)}">
             <div class="battle-unit-frame">
+              <div class="battle-unit-halo"></div>
+              <div class="battle-unit-shroud"></div>
               <div class="battle-unit-core"></div>
+              <div class="battle-unit-trail battle-unit-trail-left"></div>
+              <div class="battle-unit-trail battle-unit-trail-right"></div>
+              <div class="battle-unit-emblem"></div>
               <div class="battle-unit-weapon"></div>
             </div>
             <strong class="battle-unit-label">${ally.name}</strong>
@@ -3149,7 +3852,12 @@
         return `
           <button class="battle-unit ${selectedClass}" type="button" data-battle-target="${enemy.id}" data-side="enemy" data-form="${enemy.form}" style="${getUnitStyle(enemy.form)}">
             <div class="battle-unit-frame">
+              <div class="battle-unit-halo"></div>
+              <div class="battle-unit-shroud"></div>
               <div class="battle-unit-core"></div>
+              <div class="battle-unit-trail battle-unit-trail-left"></div>
+              <div class="battle-unit-trail battle-unit-trail-right"></div>
+              <div class="battle-unit-emblem"></div>
               <div class="battle-unit-weapon"></div>
             </div>
             <strong class="battle-unit-label">${enemy.name}</strong>
@@ -3479,6 +4187,7 @@
     dockButtons.forEach((button) => {
       button.classList.toggle("is-active", button.dataset.screenTarget === navScreen);
     });
+    updateCreatorHint();
     saveState();
   }
 
@@ -3595,6 +4304,30 @@
     saveState();
   });
 
+  creatorHintOpen.addEventListener("click", openCreatorCabin);
+  creatorCabinBackdrop.addEventListener("click", closeCreatorCabin);
+  creatorClose.addEventListener("click", closeCreatorCabin);
+  creatorCopyBrief.addEventListener("click", () => {
+    copyCreatorBrief();
+  });
+  creatorHintsToggle.addEventListener("click", () => {
+    state.creator.hintMode = !state.creator.hintMode;
+    updateCreatorCabin();
+    saveState();
+  });
+  creatorAskInput.addEventListener("input", () => {
+    state.creator.asks[state.creator.activeTopicId] = creatorAskInput.value;
+    saveState();
+  });
+  creatorAnswerInput.addEventListener("input", () => {
+    state.creator.answers[state.creator.activeTopicId] = creatorAnswerInput.value;
+    saveState();
+  });
+  creatorPrivateNotes.addEventListener("input", () => {
+    state.creator.privateNotes = creatorPrivateNotes.value;
+    saveState();
+  });
+
   toggleMotion.addEventListener("click", () => {
     state.settings.reducedMotion = !state.settings.reducedMotion;
     applyUiSettings();
@@ -3615,6 +4348,34 @@
 
   window.addEventListener("keydown", (event) => {
     const loweredKey = event.key.toLowerCase();
+    const isTypingTarget =
+      event.target instanceof HTMLTextAreaElement ||
+      event.target instanceof HTMLInputElement ||
+      event.target instanceof HTMLSelectElement;
+
+    if (event.ctrlKey && event.shiftKey && loweredKey === "m") {
+      event.preventDefault();
+      if (state.creator.open) {
+        closeCreatorCabin();
+      } else {
+        openCreatorCabin();
+      }
+      return;
+    }
+
+    if (state.creator.open && event.key === "Escape") {
+      event.preventDefault();
+      closeCreatorCabin();
+      return;
+    }
+
+    if (state.creator.open) {
+      return;
+    }
+
+    if (isTypingTarget) {
+      return;
+    }
 
     if (state.activeScreen === "title" && event.key === "Enter") {
       event.preventDefault();
@@ -3707,7 +4468,8 @@
     const activeShopItem = getActiveShopItem();
     const activeGuideSection = getActiveGuideSection();
     const { progress, nodeIndex, node, resolved, isCompleted } = getQuestNodeContext(activeQuest);
-    const readiness = getReadinessReport();
+    const projectStatus = getProjectStatusReport();
+    const saveProgress = getSaveProgressReport();
 
     return JSON.stringify({
       mode: state.activeScreen,
@@ -3743,7 +4505,14 @@
       },
       guide: {
         section: activeGuideSection.title,
-        readiness: readiness.percent,
+        projectReadiness: projectStatus.percent,
+        saveProgress: saveProgress.percent,
+      },
+      creator: {
+        unlocked: state.creator.unlocked,
+        open: state.creator.open,
+        topic: getActiveCreatorTopic().label,
+        hintMode: state.creator.hintMode,
       },
       battle: {
         title: state.battle.title,
@@ -3866,6 +4635,8 @@
   loadState();
   ensureValidJournalSelection();
   applyStaticHotkeyBadges();
+  renderCreatorTopics();
+  renderCreatorGlossary();
   refreshProgressionUi();
   renderUiScaleOptions();
   renderBattle();
@@ -3876,5 +4647,6 @@
   }
   const startScreen = state.game.hasStarted ? initialScreen || state.activeScreen || "home" : "title";
   setActiveScreen(startScreen);
+  updateCreatorCabin();
   startAmbientCanvas();
 })();

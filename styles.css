@@ -1411,10 +1411,17 @@ button {
   --weapon: rgba(252, 247, 236, 0.9);
   --companion: rgba(210, 245, 231, 0.8);
   --sigil: rgba(230, 242, 233, 0.18);
+  --ornament: rgba(240, 221, 172, 0.22);
+  --trail-1: rgba(255, 255, 255, 0.22);
+  --trail-2: rgba(255, 255, 255, 0.02);
+  --halo-1: rgba(236, 244, 233, 0.26);
+  --halo-2: rgba(236, 244, 233, 0.02);
 }
 
 .portrait-aura,
 .portrait-ring,
+.portrait-light,
+.portrait-orbit,
 .portrait-sigil,
 .portrait-companion {
   position: absolute;
@@ -1433,6 +1440,26 @@ button {
   border-radius: 50%;
   border: 1px solid var(--sigil);
   box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.015);
+}
+
+.portrait-light {
+  inset: 4% 14% 24%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 36%, var(--halo-1), transparent 36%),
+    radial-gradient(circle at 50% 54%, var(--halo-2), transparent 72%);
+  filter: blur(18px);
+  opacity: 0.82;
+}
+
+.portrait-orbit {
+  inset: 12% 16% 18%;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 221, 172, 0.08);
+  box-shadow:
+    0 0 0 18px rgba(240, 221, 172, 0.03),
+    0 0 0 42px rgba(240, 221, 172, 0.02);
+  opacity: 0.56;
 }
 
 .portrait-ornament {
@@ -1466,12 +1493,40 @@ button {
   opacity: 0.9;
 }
 
+.portrait-back-hair,
+.portrait-crown,
 .portrait-head,
 .portrait-hair,
 .portrait-cloak,
+.portrait-trail,
+.portrait-arm,
+.portrait-emblem,
 .portrait-body,
+.portrait-legs,
 .portrait-weapon {
   position: absolute;
+}
+
+.portrait-back-hair {
+  inset: 10% 18% 8%;
+  border-radius: 40% 60% 34% 66% / 12% 12% 88% 88%;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--hair-1) 82%, white 18%), var(--hair-2) 28%, var(--hair-3) 80%);
+  clip-path: polygon(34% 0, 60% 0, 76% 10%, 86% 28%, 90% 78%, 72% 100%, 54% 76%, 38% 100%, 18% 82%, 14% 32%, 20% 10%);
+  filter: blur(0.6px) drop-shadow(0 18px 28px rgba(0, 0, 0, 0.24));
+  opacity: 0.72;
+}
+
+.portrait-crown {
+  top: 6%;
+  left: 50%;
+  width: 28%;
+  height: 12%;
+  transform: translateX(-50%);
+  clip-path: polygon(0 100%, 12% 56%, 26% 72%, 36% 20%, 50% 60%, 64% 18%, 74% 72%, 88% 54%, 100% 100%);
+  background: linear-gradient(180deg, rgba(255, 247, 220, 0.7), rgba(177, 173, 148, 0.18));
+  filter: drop-shadow(0 0 12px rgba(240, 221, 172, 0.2));
+  opacity: 0.72;
 }
 
 .portrait-head {
@@ -1500,6 +1555,27 @@ button {
   background: linear-gradient(180deg, var(--cloak-1), var(--cloak-2) 42%, rgba(10, 10, 11, 0.04) 100%);
   clip-path: polygon(28% 0, 72% 0, 92% 14%, 100% 70%, 72% 100%, 28% 100%, 0 72%, 8% 14%);
   filter: blur(0.4px);
+}
+
+.portrait-trail {
+  bottom: 6%;
+  width: 14%;
+  height: 48%;
+  background: linear-gradient(180deg, var(--trail-1), var(--trail-2));
+  opacity: 0.6;
+  filter: blur(0.3px);
+}
+
+.portrait-trail-left {
+  left: 22%;
+  clip-path: polygon(58% 0, 100% 12%, 74% 100%, 0 84%);
+  transform: rotate(8deg);
+}
+
+.portrait-trail-right {
+  right: 22%;
+  clip-path: polygon(0 8%, 46% 0, 100% 84%, 26% 100%);
+  transform: rotate(-7deg);
 }
 
 .portrait-body {
@@ -1532,6 +1608,22 @@ button {
   background:
     radial-gradient(circle at 50% 38%, var(--accent-soft), transparent 14%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 24%);
+}
+
+.portrait-emblem {
+  left: 50%;
+  top: 44%;
+  width: 18%;
+  aspect-ratio: 1;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.24), transparent 36%),
+    linear-gradient(180deg, var(--ornament), rgba(255, 255, 255, 0.06));
+  box-shadow:
+    0 0 0 1px rgba(240, 221, 172, 0.12),
+    0 0 18px rgba(240, 221, 172, 0.08);
+  opacity: 0.9;
 }
 
 .portrait-weapon {
@@ -1733,6 +1825,11 @@ button {
   --weapon: rgba(247, 244, 232, 0.96);
   --companion: rgba(224, 255, 243, 0.86);
   --sigil: rgba(214, 245, 233, 0.2);
+  --ornament: rgba(228, 245, 235, 0.26);
+  --trail-1: rgba(243, 255, 250, 0.42);
+  --trail-2: rgba(194, 233, 220, 0.04);
+  --halo-1: rgba(212, 255, 242, 0.28);
+  --halo-2: rgba(212, 255, 242, 0.06);
 }
 
 #portrait-shell[data-hero="rian"] {
@@ -1751,6 +1848,11 @@ button {
   --weapon: rgba(223, 217, 195, 0.9);
   --companion: rgba(191, 214, 176, 0.62);
   --sigil: rgba(203, 215, 181, 0.16);
+  --ornament: rgba(212, 222, 170, 0.2);
+  --trail-1: rgba(217, 205, 172, 0.18);
+  --trail-2: rgba(95, 114, 84, 0.02);
+  --halo-1: rgba(200, 224, 176, 0.2);
+  --halo-2: rgba(200, 224, 176, 0.04);
 }
 
 #portrait-shell[data-hero="saya"] {
@@ -1769,6 +1871,11 @@ button {
   --weapon: rgba(246, 231, 214, 0.9);
   --companion: rgba(220, 112, 120, 0.68);
   --sigil: rgba(211, 122, 136, 0.14);
+  --ornament: rgba(226, 136, 157, 0.22);
+  --trail-1: rgba(218, 143, 164, 0.26);
+  --trail-2: rgba(84, 28, 39, 0.02);
+  --halo-1: rgba(210, 92, 118, 0.18);
+  --halo-2: rgba(210, 92, 118, 0.04);
 }
 
 #portrait-shell[data-hero="noel"] {
@@ -1787,6 +1894,11 @@ button {
   --weapon: rgba(233, 241, 248, 0.92);
   --companion: rgba(182, 215, 245, 0.74);
   --sigil: rgba(176, 212, 241, 0.16);
+  --ornament: rgba(191, 225, 248, 0.22);
+  --trail-1: rgba(206, 230, 247, 0.28);
+  --trail-2: rgba(88, 115, 148, 0.02);
+  --halo-1: rgba(180, 226, 255, 0.2);
+  --halo-2: rgba(180, 226, 255, 0.04);
 }
 
 #portrait-shell[data-hero="rian"] .portrait-hair {
@@ -2351,11 +2463,22 @@ button {
   filter: blur(10px);
 }
 
+.guide-rings {
+  position: absolute;
+  inset: 20% 22% 18%;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 221, 172, 0.08);
+  box-shadow:
+    0 0 0 18px rgba(240, 221, 172, 0.04),
+    0 0 0 54px rgba(240, 221, 172, 0.03);
+  opacity: 0.55;
+}
+
 .guide-layout {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(260px, 310px) 1fr minmax(280px, 330px);
+  grid-template-columns: minmax(240px, 280px) minmax(0, 1fr) minmax(250px, 300px);
   gap: 22px;
   height: 100%;
   padding: clamp(24px, 1.5vw, 32px);
@@ -2379,29 +2502,133 @@ button {
 
 .guide-book {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.84fr);
+  grid-template-columns: minmax(0, 1.12fr) minmax(260px, 0.8fr);
+  gap: 18px;
+  align-content: start;
   background:
     linear-gradient(180deg, rgba(252, 248, 236, 0.08), rgba(64, 58, 44, 0.08)),
     rgba(255, 255, 255, 0.02);
 }
 
-.guide-page {
-  padding: 28px 26px;
+.guide-hero-panel,
+.guide-highlight-panel,
+.guide-loop-panel,
+.guide-focus-panel,
+.guide-side-block {
+  position: relative;
+  overflow: hidden;
+  padding: 24px 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+    rgba(7, 11, 10, 0.16);
 }
 
-.guide-page-secondary {
-  border-left: 1px solid rgba(240, 221, 172, 0.12);
+.guide-hero-panel,
+.guide-highlight-panel {
+  min-height: 220px;
 }
 
-.guide-page h2 {
+.guide-hero-panel::after,
+.guide-highlight-panel::after,
+.guide-loop-panel::after,
+.guide-focus-panel::after {
+  content: "";
+  position: absolute;
+  inset: auto -8% -40% auto;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(160, 188, 150, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.guide-hero-panel h2 {
   margin-top: 12px;
-  font-size: clamp(1.9rem, 2.5vw, 2.7rem);
+  font-size: clamp(2rem, 2.7vw, 3rem);
 }
 
-.guide-page p:not(.eyebrow) {
+.guide-hero-panel p:not(.eyebrow) {
   margin-top: 14px;
   color: var(--text-soft);
   line-height: 1.72;
+}
+
+.guide-highlight-panel,
+.guide-loop-panel,
+.guide-focus-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.guide-highlight-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.guide-highlight-card,
+.guide-action-card,
+.guide-tag {
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.028);
+}
+
+.guide-highlight-card,
+.guide-action-card {
+  padding: 14px 15px;
+  border-radius: 18px;
+}
+
+.guide-highlight-card strong,
+.guide-action-card strong {
+  display: block;
+}
+
+.guide-highlight-card p,
+.guide-action-card p {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.guide-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.guide-tag {
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.guide-loop-panel {
+  grid-column: 1 / -1;
+}
+
+.guide-focus-panel {
+  grid-column: 1 / -1;
+}
+
+.guide-action-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.guide-side {
+  align-content: start;
+}
+
+.guide-side > .eyebrow {
+  display: none;
 }
 
 .guide-section-list,
@@ -2456,6 +2683,204 @@ button {
   background: rgba(255, 255, 255, 0.028);
   color: var(--text-soft);
   line-height: 1.55;
+}
+
+.creator-hint-chip {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: min(380px, calc(100vw - 40px));
+  padding: 14px 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  background:
+    linear-gradient(180deg, rgba(25, 34, 31, 0.94), rgba(10, 14, 13, 0.96));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.creator-hint-copy {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+}
+
+.creator-hint-copy strong {
+  font-size: 0.95rem;
+}
+
+.creator-hint-copy p,
+.creator-copy-status {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.creator-hint-open {
+  flex: 0 0 auto;
+}
+
+.creator-cabin {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+
+body.creator-open {
+  overflow: hidden;
+}
+
+.creator-cabin-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(162, 199, 177, 0.14), transparent 28%),
+    rgba(5, 8, 8, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.creator-cabin-panel {
+  position: relative;
+  z-index: 1;
+  width: min(1520px, calc(100vw - 56px));
+  max-height: calc(100vh - 56px);
+  padding: 24px;
+  border-radius: 30px;
+  overflow: auto;
+}
+
+.creator-cabin-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.creator-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.creator-lead {
+  max-width: 720px;
+  margin: 10px 0 0;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.creator-cabin-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 300px) minmax(0, 1.1fr) minmax(280px, 340px);
+  gap: 18px;
+}
+
+.creator-cabin-nav,
+.creator-cabin-main,
+.creator-cabin-side {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.creator-topic-list,
+.creator-glossary-list,
+.creator-mini-list {
+  display: grid;
+  gap: 10px;
+}
+
+.creator-topic-button,
+.creator-glossary-card,
+.creator-mini-card,
+.creator-card {
+  border-radius: 20px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02)),
+    rgba(10, 14, 13, 0.3);
+}
+
+.creator-topic-button {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.creator-topic-button.is-active {
+  border-color: rgba(240, 221, 172, 0.24);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(10, 14, 13, 0.34);
+}
+
+.creator-topic-button strong,
+.creator-glossary-card strong,
+.creator-mini-card strong {
+  display: block;
+}
+
+.creator-topic-button p,
+.creator-glossary-card p,
+.creator-mini-card p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.creator-toggle-block {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.creator-glossary-card,
+.creator-mini-card {
+  padding: 14px 15px;
+}
+
+.creator-cabin-main {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.creator-card {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.creator-card-wide {
+  grid-column: 1 / -1;
+}
+
+.creator-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(240, 221, 172, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-main);
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.creator-textarea-large {
+  min-height: 180px;
 }
 
 .bottom-dock {
@@ -2635,8 +3060,17 @@ button {
   inset: 6% 30% 24%;
 }
 
+#portrait-shell[data-hero="liora"] .portrait-back-hair {
+  inset: 4% 24% 10%;
+}
+
 #portrait-shell[data-hero="liora"] .portrait-cloak {
   inset: 18% 27% 8%;
+}
+
+#portrait-shell[data-hero="liora"] .portrait-crown {
+  width: 30%;
+  top: 5%;
 }
 
 #portrait-shell[data-hero="liora"] .portrait-weapon {
@@ -2650,9 +3084,20 @@ button {
   width: 17%;
 }
 
+#portrait-shell[data-hero="rian"] .portrait-crown {
+  width: 22%;
+  top: 7%;
+  clip-path: polygon(0 100%, 18% 58%, 34% 70%, 42% 18%, 58% 70%, 66% 20%, 82% 58%, 100% 100%);
+}
+
 #portrait-shell[data-hero="rian"] .portrait-hair {
   inset: 10% 35% 46%;
   clip-path: polygon(28% 0, 72% 0, 82% 14%, 70% 56%, 58% 86%, 38% 86%, 24% 54%, 18% 14%);
+}
+
+#portrait-shell[data-hero="rian"] .portrait-back-hair {
+  inset: 10% 28% 28%;
+  clip-path: polygon(30% 0, 70% 0, 86% 14%, 82% 42%, 76% 100%, 26% 100%, 18% 42%, 14% 14%);
 }
 
 #portrait-shell[data-hero="rian"] .portrait-cloak {
@@ -2689,9 +3134,27 @@ button {
   right: 26%;
 }
 
+#portrait-shell[data-hero="rian"] .portrait-trail-left,
+#portrait-shell[data-hero="rian"] .portrait-trail-right {
+  height: 34%;
+  bottom: 8%;
+  opacity: 0.34;
+}
+
 #portrait-shell[data-hero="saya"] .portrait-hair {
   inset: 8% 28% 24%;
   clip-path: polygon(32% 0, 62% 0, 80% 10%, 86% 24%, 78% 54%, 88% 92%, 66% 100%, 42% 72%, 20% 100%, 10% 66%, 14% 22%);
+}
+
+#portrait-shell[data-hero="saya"] .portrait-back-hair {
+  inset: 8% 18% 18%;
+  clip-path: polygon(34% 0, 64% 0, 82% 10%, 96% 24%, 88% 48%, 100% 92%, 74% 100%, 46% 70%, 18% 100%, 4% 70%, 10% 24%, 22% 10%);
+}
+
+#portrait-shell[data-hero="saya"] .portrait-crown {
+  width: 34%;
+  top: 4%;
+  clip-path: polygon(0 100%, 16% 44%, 34% 70%, 44% 8%, 56% 48%, 66% 6%, 84% 70%, 100% 42%, 100% 100%);
 }
 
 #portrait-shell[data-hero="saya"] .portrait-cloak {
@@ -2715,9 +3178,30 @@ button {
   border-radius: 50% 50% 44% 44% / 60% 60% 40% 40%;
 }
 
+#portrait-shell[data-hero="saya"] .portrait-trail-left {
+  left: 18%;
+  width: 18%;
+  height: 54%;
+}
+
+#portrait-shell[data-hero="saya"] .portrait-trail-right {
+  right: 16%;
+  width: 18%;
+  height: 56%;
+}
+
 #portrait-shell[data-hero="noel"] .portrait-hair {
   inset: 8% 30% 24%;
   clip-path: polygon(34% 0, 60% 0, 78% 10%, 84% 24%, 88% 92%, 70% 100%, 54% 72%, 40% 100%, 18% 86%, 18% 24%, 24% 10%);
+}
+
+#portrait-shell[data-hero="noel"] .portrait-back-hair {
+  inset: 8% 22% 14%;
+}
+
+#portrait-shell[data-hero="noel"] .portrait-crown {
+  width: 26%;
+  top: 6%;
 }
 
 #portrait-shell[data-hero="noel"] .portrait-cloak {
@@ -2737,6 +3221,12 @@ button {
   right: 22%;
   width: 64px;
   height: 64px;
+}
+
+#portrait-shell[data-hero="noel"] .portrait-trail-left,
+#portrait-shell[data-hero="noel"] .portrait-trail-right {
+  width: 12%;
+  height: 52%;
 }
 
 .battle-scape {
@@ -3022,12 +3512,32 @@ button {
     rgba(255, 255, 255, 0.02);
 }
 
+.battle-unit-halo,
+.battle-unit-shroud,
+.battle-unit-trail,
+.battle-unit-emblem,
 .battle-unit-core,
 .battle-unit-core::before,
 .battle-unit-core::after,
 .battle-unit-weapon {
   position: absolute;
   content: "";
+}
+
+.battle-unit-halo {
+  inset: 10% 18% 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.18), transparent 58%);
+  filter: blur(12px);
+  opacity: 0.7;
+}
+
+.battle-unit-shroud {
+  inset: 18% 24% 8%;
+  border-radius: 46% 54% 22% 22% / 18% 18% 22% 22%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 24%, rgba(8, 10, 10, 0.04) 100%);
+  clip-path: polygon(28% 0, 72% 0, 88% 14%, 84% 54%, 72% 100%, 28% 100%, 16% 56%, 12% 16%);
+  opacity: 0.65;
 }
 
 .battle-unit-core {
@@ -3056,6 +3566,39 @@ button {
   background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.2), transparent 66%);
 }
 
+.battle-unit-trail {
+  bottom: 10%;
+  width: 14%;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02));
+  opacity: 0.45;
+}
+
+.battle-unit-trail-left {
+  left: 20%;
+  clip-path: polygon(58% 0, 100% 16%, 70% 100%, 0 86%);
+  transform: rotate(8deg);
+}
+
+.battle-unit-trail-right {
+  right: 20%;
+  clip-path: polygon(0 10%, 46% 0, 100% 84%, 28% 100%);
+  transform: rotate(-9deg);
+}
+
+.battle-unit-emblem {
+  left: 50%;
+  top: 44%;
+  width: 18%;
+  aspect-ratio: 1;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 34%),
+    linear-gradient(180deg, rgba(240, 221, 172, 0.22), rgba(255, 255, 255, 0.04));
+  box-shadow: 0 0 12px rgba(240, 221, 172, 0.06);
+}
+
 .battle-unit-weapon {
   right: 20%;
   bottom: 14%;
@@ -3068,6 +3611,40 @@ button {
 
 .battle-unit[data-form="colossus"] .battle-unit-frame {
   height: 272px;
+}
+
+.battle-unit[data-form="guide"] .battle-unit-trail {
+  opacity: 0.64;
+}
+
+.battle-unit[data-form="vanguard"] .battle-unit-shroud {
+  inset: 20% 18% 10%;
+  clip-path: polygon(24% 0, 76% 0, 92% 16%, 94% 74%, 70% 100%, 30% 100%, 6% 72%, 8% 16%);
+}
+
+.battle-unit[data-form="vanguard"] .battle-unit-trail {
+  height: 28%;
+  opacity: 0.2;
+}
+
+.battle-unit[data-form="hunter"] .battle-unit-trail {
+  width: 18%;
+  height: 50%;
+  opacity: 0.58;
+}
+
+.battle-unit[data-form="hunter"] .battle-unit-shroud {
+  inset: 18% 16% 8%;
+  clip-path: polygon(26% 0, 74% 0, 92% 20%, 76% 44%, 100% 78%, 66% 100%, 34% 76%, 0 100%, 16% 42%, 10% 18%);
+}
+
+.battle-unit[data-form="archivist"] .battle-unit-trail {
+  width: 12%;
+  height: 52%;
+}
+
+.battle-unit[data-form="archivist"] .battle-unit-shroud {
+  inset: 16% 24% 8%;
 }
 
 .battle-unit[data-form="colossus"] .battle-unit-core {
@@ -3086,6 +3663,25 @@ button {
   width: 18px;
   height: 34%;
   border-radius: 16px;
+}
+
+.battle-unit[data-form="colossus"] .battle-unit-halo {
+  inset: 8% 10% 12%;
+}
+
+.battle-unit[data-form="colossus"] .battle-unit-shroud {
+  inset: 16% 10% 4%;
+  clip-path: polygon(18% 4%, 76% 0, 92% 12%, 96% 70%, 80% 100%, 16% 100%, 4% 40%);
+}
+
+.battle-unit[data-form="colossus"] .battle-unit-emblem {
+  top: 38%;
+  width: 14%;
+}
+
+.battle-unit[data-form="cantor"] .battle-unit-trail {
+  width: 16%;
+  height: 44%;
 }
 
 .battle-unit-label {
@@ -3309,7 +3905,7 @@ button {
   }
 
   .guide-layout {
-    grid-template-columns: minmax(300px, 340px) minmax(860px, 1.08fr) minmax(320px, 360px);
+    grid-template-columns: minmax(250px, 290px) minmax(0, 1.08fr) minmax(260px, 310px);
   }
 }
 
@@ -3347,7 +3943,11 @@ button {
   }
 
   .guide-layout {
-    grid-template-columns: minmax(340px, 390px) minmax(980px, 1.12fr) minmax(360px, 400px);
+    grid-template-columns: minmax(290px, 340px) minmax(0, 1.12fr) minmax(300px, 360px);
+  }
+
+  .guide-highlight-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -3415,6 +4015,29 @@ button {
 
   .dock-button {
     min-width: calc(33.333% - 8px);
+  }
+
+  .guide-book {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-loop-panel,
+  .guide-focus-panel {
+    grid-column: auto;
+  }
+
+  .guide-action-list,
+  .guide-highlight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .creator-cabin-layout,
+  .creator-cabin-main {
+    grid-template-columns: 1fr;
+  }
+
+  .creator-card-wide {
+    grid-column: auto;
   }
 }
 
