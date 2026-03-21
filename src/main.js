@@ -604,7 +604,7 @@
       title: "Клавиши ПК",
       summary: "Навигация под десктоп строится вокруг быстрых переходов и короткого боевого цикла.",
       points: [
-        "1–6 переключают основные экраны, 7 открывает encounter.",
+        "1–8 и 0 переключают ключевые экраны, а Enter подтверждает служебные переходы.",
         "Стрелки в составе листают героев без лишних кликов.",
         "В бою игрок выбирает цель, выбирает навык и завершает ход одной основной кнопкой.",
       ],
@@ -615,9 +615,9 @@
       title: "Текущий срез",
       summary: "Минимальный vertical slice должен уже выглядеть как игра для витрины Steam, а не набор UI-панелей.",
       points: [
-        "Нужны рабочие победа/поражение, награды, сохранение и понятный возврат в прогрессию.",
-        "Портреты и враги должны читаться как иллюстративные силуэты даже на дальнем плане.",
-        "Босс главы должен иметь сильный кадр для capsule art и трейлерного кадра.",
+        "Победа, поражение, награды, глава и финал уже собраны в один desktop-loop.",
+        "Портреты и враги читаются как иллюстративные силуэты на дальнем плане.",
+        "Босс главы и эпилог теперь закрывают полноценный Steam-demo маршрут.",
       ],
     },
   ];
@@ -804,6 +804,8 @@
       grade: "Rank C",
       rewards: [],
       notes: [],
+      metrics: [],
+      quickActions: [],
       nextTitle: "",
       nextCopy: "",
       claimPending: false,
@@ -816,9 +818,11 @@
       title: "",
       subtitle: "",
       summary: "",
+      track: [],
       stats: [],
       rewards: [],
       unlocks: [],
+      nextActions: [],
       nextQuestId: null,
       nextTitle: "",
       nextCopy: "",
@@ -1124,6 +1128,9 @@
   const titleStatusHeading = document.getElementById("title-status-heading");
   const titleStatusCopy = document.getElementById("title-status-copy");
   const titleStatList = document.getElementById("title-stat-list");
+  const titleFlowList = document.getElementById("title-flow-list");
+  const titleKeyList = document.getElementById("title-key-list");
+  const titleCampaignList = document.getElementById("title-campaign-list");
   const resultKicker = document.getElementById("result-kicker");
   const resultTitle = document.getElementById("result-title");
   const resultSubtitle = document.getElementById("result-subtitle");
@@ -1134,17 +1141,20 @@
   const resultNoteList = document.getElementById("result-note-list");
   const resultNextTitle = document.getElementById("result-next-title");
   const resultNextCopy = document.getElementById("result-next-copy");
+  const resultNextList = document.getElementById("result-next-list");
   const resultPrimary = document.getElementById("result-primary");
   const resultSecondary = document.getElementById("result-secondary");
   const chapterKicker = document.getElementById("chapter-kicker");
   const chapterTitle = document.getElementById("chapter-title");
   const chapterSubtitle = document.getElementById("chapter-subtitle");
   const chapterSummary = document.getElementById("chapter-summary");
+  const chapterTrackList = document.getElementById("chapter-track-list");
   const chapterStatList = document.getElementById("chapter-stat-list");
   const chapterRewardList = document.getElementById("chapter-reward-list");
   const chapterUnlockList = document.getElementById("chapter-unlock-list");
   const chapterNextTitle = document.getElementById("chapter-next-title");
   const chapterNextCopy = document.getElementById("chapter-next-copy");
+  const chapterNextList = document.getElementById("chapter-next-list");
   const chapterPrimary = document.getElementById("chapter-primary");
   const chapterSecondary = document.getElementById("chapter-secondary");
   const heroUpgradeLevel = document.getElementById("hero-upgrade-level");
@@ -1160,6 +1170,7 @@
   const endingCreditList = document.getElementById("ending-credit-list");
   const endingNextTitle = document.getElementById("ending-next-title");
   const endingNextCopy = document.getElementById("ending-next-copy");
+  const endingNextList = document.getElementById("ending-next-list");
   const endingHomeButton = document.getElementById("ending-home");
   const endingResetButton = document.getElementById("ending-reset");
 
@@ -1366,6 +1377,35 @@
     });
   }
 
+  function getCampaignTrack() {
+    return campaignQuestOrder.map((questId, index) => {
+      const quest = getQuestById(questId);
+      const { unlocked } = getQuestUnlockInfo(questId);
+      const complete = isQuestComplete(questId);
+      return {
+        id: questId,
+        order: index + 1,
+        title: quest.title,
+        subtitle: quest.subtitle,
+        state: complete ? "complete" : unlocked ? "active" : "locked",
+        label: complete ? "Завершена" : unlocked ? "Открыта" : "Запечатана",
+      };
+    });
+  }
+
+  function getRewardItemCopy(item) {
+    if (item.includes("люмена")) {
+      return "Валюта сразу уходит в общий запас и открывает новые усиления.";
+    }
+    if (item.includes("фрагм")) {
+      return "Редкий трофей для поздних тирoв усиления и chapter progression.";
+    }
+    if (item.includes("AP")) {
+      return "Передышка маршрута возвращает темп следующему выходу.";
+    }
+    return "Материал закрепляется в общем хранилище и доступен на экране состава.";
+  }
+
   function getNodeKey(questId, nodeIndex) {
     return `${questId}:${nodeIndex}`;
   }
@@ -1458,6 +1498,9 @@
         state.sessionLog = parsed.sessionLog.slice(0, 6);
       }
       if (state.activeScreen !== "title") {
+        state.game.hasStarted = true;
+      }
+      if (Object.values(state.routeProgress).some((progress) => progress > 0)) {
         state.game.hasStarted = true;
       }
     } catch {
@@ -2151,6 +2194,41 @@
     const claimPending = outcome === "victory" && !state.claimedNodeRewards[getNodeKey(quest.id, nodeIndex)];
     const livingAllies = state.battle.allies.filter((ally) => ally.hp > 0).length;
     const grade = calculateBattleGrade(outcome);
+    const metrics = outcome === "victory"
+      ? [
+          {
+            label: "Строй",
+            value: `${livingAllies}/${state.battle.allies.length}`,
+            body: "Герои вышли из сцены живыми и удержали темп похода.",
+          },
+          {
+            label: "Резонанс",
+            value: `${state.battle.resonance}%`,
+            body: "Маршрут закрепил ритм и не сорвался в распад.",
+          },
+          {
+            label: "Темп",
+            value: `${state.battle.turn} такт.`,
+            body: "Чем чище закрыт бой, тем выше итоговый ранг.",
+          },
+        ]
+      : [
+          {
+            label: "Статус",
+            value: "Отступление",
+            body: "Маршрут не потерян, но узел ещё не закреплён.",
+          },
+          {
+            label: "Резонанс",
+            value: `${state.battle.resonance}%`,
+            body: "Текущий темп уже записан в журнал вылазки.",
+          },
+          {
+            label: "Повтор",
+            value: "Доступен",
+            body: "Можно сразу вернуться в бой без потери главы.",
+          },
+        ];
     const rewards = outcome === "victory"
       ? [
           reward.lumen ? `${reward.lumen} люмена` : null,
@@ -2180,6 +2258,19 @@
       grade,
       rewards,
       notes,
+      metrics,
+      quickActions:
+        outcome === "victory"
+          ? [
+              "Enter · закрепить трофеи и продвинуть маршрут.",
+              "2 · вернуться к chapter-карте.",
+              "3 · открыть состав и вложить награды в усиление.",
+            ]
+          : [
+              "Enter · сразу повторить encounter.",
+              "1 · выйти в святилище и перегруппироваться.",
+              "4 · открыть дневник и перечитать заметки по узлу.",
+            ],
       nextTitle: outcome === "victory" ? "Забрать награду и продолжить маршрут" : "Повторить encounter или перегруппироваться",
       nextCopy:
         outcome === "victory"
@@ -2191,13 +2282,89 @@
 
   function renderTitleScreen() {
     const hasProgress = getCompletedCampaignCount() > 0 || Object.values(state.routeProgress).some((progress) => progress > 0);
+    const canContinue = state.game.hasStarted || hasProgress;
     const unlockedQuestCount = questCards.filter((quest) => getQuestUnlockInfo(quest.id).unlocked).length;
+    const completedHeroCount = heroes.filter((hero) => getHeroLevel(hero.id) > 1).length;
+    const campaignTrack = getCampaignTrack();
 
-    titleContinueButton.disabled = !state.game.hasStarted && !hasProgress;
-    titleStatusHeading.textContent = hasProgress ? "Поход уже записан в архив" : "Святилище готово к новому циклу";
-    titleStatusCopy.textContent = hasProgress
+    titleNewButton.dataset.hotkey = "Enter";
+    titleContinueButton.dataset.hotkey = "C";
+    titleGuideButton.dataset.hotkey = "8";
+
+    titleContinueButton.disabled = !canContinue;
+    titleStatusHeading.textContent = canContinue ? "Поход уже записан в архив" : "Святилище готово к новому циклу";
+    titleStatusCopy.textContent = canContinue
       ? `Открыто глав: ${unlockedQuestCount}/${questCards.length}. Можно продолжить текущий цикл или начать новый.`
       : "Сохранения ещё нет. Начните первую экспедицию или откройте руководство, чтобы увидеть весь desktop-loop демо.";
+
+    titleFlowList.innerHTML = [
+      {
+        step: "01",
+        title: "Маршрут",
+        body: "Откройте chapter-карту, отметьте узел и войдите в экспедицию.",
+      },
+      {
+        step: "02",
+        title: "Бой",
+        body: "Удержите строй, подавите encounter и закрепите резонанс узла.",
+      },
+      {
+        step: "03",
+        title: "Трофеи",
+        body: "Люмен, фрагменты и материалы уходят в общий запас святилища.",
+      },
+      {
+        step: "04",
+        title: "Усиление",
+        body: "Вложите добычу в состав, чтобы следующий выход был сильнее.",
+      },
+      {
+        step: "05",
+        title: "Эпилог",
+        body: "Закройте четыре главы кампании и доведите demo-loop до финала.",
+      },
+    ]
+      .map(
+        (item) => `
+          <article class="title-mini-card">
+            <span>${item.step}</span>
+            <strong>${item.title}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
+
+    titleKeyList.innerHTML = [
+      { key: "Enter", label: "Запуск, подтверждение, закрепление шага." },
+      { key: "1-6", label: "Основные экраны святилища и систем." },
+      { key: "7", label: "Быстрый вход в тактический бой из маршрута." },
+      { key: "8", label: "Руководство и текущая готовность среза." },
+      { key: "F", label: "Полный экран без потери desktop-композиции." },
+      { key: "← →", label: "Листание героев и chapter-панелей на ПК." },
+    ]
+      .map(
+        (item) => `
+          <article class="title-key-card">
+            <strong>${item.key}</strong>
+            <p>${item.label}</p>
+          </article>
+        `,
+      )
+      .join("");
+
+    titleCampaignList.innerHTML = campaignTrack
+      .map(
+        (item) => `
+          <article class="title-campaign-card is-${item.state}">
+            <span>Глава ${item.order}</span>
+            <strong>${item.title}</strong>
+            <p>${item.subtitle}</p>
+            <em>${item.label}</em>
+          </article>
+        `,
+      )
+      .join("");
 
     titleStatList.innerHTML = [
       { label: "Главы кампании", value: `${getCompletedCampaignCount()} / ${campaignQuestOrder.length}` },
@@ -2228,7 +2395,19 @@
     resultSubtitle.textContent = state.result.subtitle || "Текущий маршрут";
     resultStatusPill.textContent = isVictory ? "Победа" : "Отступление";
     resultGrade.textContent = state.result.grade;
-    resultBurstList.innerHTML = burstRows.map((item) => `<span class="results-pill">${item}</span>`).join("");
+    resultPrimary.dataset.hotkey = "Enter";
+    resultSecondary.dataset.hotkey = isVictory ? "2" : "1";
+    resultBurstList.innerHTML = (state.result.metrics.length ? state.result.metrics : burstRows.map((item) => ({ label: "Поле", value: item, body: "Итог encounter записан в хронику." })))
+      .map(
+        (item) => `
+          <article class="results-burst-card">
+            <span>${item.label}</span>
+            <strong>${item.value}</strong>
+            <p>${item.body}</p>
+          </article>
+        `,
+      )
+      .join("");
     resultRewardList.innerHTML = rewardRows
       .map((item) => `<article class="results-card"><strong>${item}</strong><p>Награда сразу уходит в общее progression-состояние после подтверждения.</p></article>`)
       .join("");
@@ -2338,6 +2517,11 @@
   function finalizeVictoryProgression() {
     const quest = getQuestById(state.result.questId);
     const nodeIndex = state.result.nodeIndex;
+    if ((state.routeProgress[quest.id] ?? 0) > nodeIndex) {
+      setActiveScreen("quests");
+      saveState();
+      return;
+    }
     const nextProgress = Math.min((state.routeProgress[quest.id] ?? 0) + 1, quest.route.length);
 
     if (state.result.claimPending) {
@@ -2660,7 +2844,7 @@
     const readiness = getReadinessReport();
     const checklist = [
       steamChecklist[0],
-      { ...steamChecklist[1], body: "Экраны листаются цифрами 1–7, а руководство открывается также по клавише 8." },
+      { ...steamChecklist[1], body: "Экраны листаются цифрами 1–8, титул открывается по 0, а подтверждение на служебных экранах работает по Enter." },
       steamChecklist[2],
       {
         title: "Логика вертикального среза",
@@ -3208,7 +3392,7 @@
           ? ""
           : screenName;
 
-    if (!["title", "ending"].includes(screenName)) {
+    if (!["title", "ending", "guide", "menu"].includes(screenName)) {
       state.game.hasStarted = true;
     }
 
@@ -3340,6 +3524,10 @@
     saveState();
   });
   endingResetButton.addEventListener("click", startNewGame);
+  openGuideButton.addEventListener("click", () => {
+    setActiveScreen("guide");
+    saveState();
+  });
 
   toggleMotion.addEventListener("click", () => {
     state.settings.reducedMotion = !state.settings.reducedMotion;
@@ -3404,8 +3592,12 @@
       setActiveScreen("menu");
     }
     if (event.key === "7") {
-      prepareBattleFromQuest();
-      setActiveScreen("battle");
+      const activeQuest = getActiveQuest();
+      const { isCompleted, node } = getQuestNodeContext(activeQuest);
+      if (getQuestUnlockInfo(activeQuest.id).unlocked && !isCompleted && node) {
+        prepareBattleFromQuest();
+        setActiveScreen("battle");
+      }
     }
     if (event.key === "8") {
       setActiveScreen("guide");
@@ -3432,6 +3624,10 @@
     return JSON.stringify({
       mode: state.activeScreen,
       note: "UI origin top-left, x grows right, y grows down.",
+      title: {
+        hasStarted: state.game.hasStarted,
+        endingSeen: state.game.endingSeen,
+      },
       quest: {
         id: activeQuest.id,
         progress,
@@ -3439,10 +3635,12 @@
         nodeTitle: node?.title ?? "Маршрут завершён",
         resolvedCombat: resolved,
         completed: isCompleted,
+        unlocked: getQuestUnlockInfo(activeQuest.id).unlocked,
       },
       hero: {
         id: state.activeHeroId,
         name: getActiveHero().name,
+        level: getHeroLevel(state.activeHeroId),
       },
       journal: {
         tab: state.activeJournalTab,
@@ -3466,6 +3664,20 @@
         acting: getBattleActingHero().name,
         target: getBattleTarget().name,
       },
+      result: {
+        outcome: state.result.outcome,
+        claimPending: state.result.claimPending,
+        grade: state.result.grade,
+      },
+      chapter: {
+        questId: state.chapter.questId,
+        nextQuestId: state.chapter.nextQuestId,
+      },
+      ending: {
+        completedCampaign: getCompletedCampaignCount(),
+        isCampaignComplete: isCampaignComplete(),
+      },
+      inventory: state.materialInventory,
       resources: state.resources,
       settings: state.settings,
     });
@@ -3565,27 +3777,15 @@
 
   loadState();
   ensureValidJournalSelection();
-  renderResources();
-  renderQuestCards();
-  updateQuestOverview();
-  renderHeroList();
-  updateHeroPanel();
-  renderJournalTabs();
-  renderJournalList();
-  updateJournalPanel();
-  renderShopGrid();
-  updateShopPanel();
+  refreshProgressionUi();
   renderUiScaleOptions();
-  renderMenuChecklist();
-  renderSessionLog();
-  renderGuideSections();
-  updateGuidePanel();
   renderBattle();
   applyUiSettings();
   const initialScreen = window.location.hash.replace("#", "");
-  if (initialScreen === "battle") {
+  if (initialScreen === "battle" || initialScreen === "results" || initialScreen === "chapter" || initialScreen === "ending") {
     prepareBattleFromQuest();
   }
-  setActiveScreen(initialScreen || state.activeScreen || "home");
+  const startScreen = state.game.hasStarted ? initialScreen || state.activeScreen || "home" : "title";
+  setActiveScreen(startScreen);
   startAmbientCanvas();
 })();

@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Последняя Ступень</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2318231f'/%3E%3Cpath d='M32 10c8 8 14 14 14 22 0 10-6 18-14 22-8-4-14-12-14-22 0-8 6-14 14-22Z' fill='%23d8d1c1'/%3E%3Cpath d='M32 18c5 6 8 10 8 15 0 6-3 11-8 14-5-3-8-8-8-14 0-5 3-9 8-15Z' fill='%2377b18f'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=20260321p">
 </head>
 <body data-screen="title">
   <canvas id="ambient-canvas" aria-hidden="true"></canvas>
@@ -41,19 +42,19 @@
 
     <main class="viewport">
       <aside class="left-rail ornate-panel">
-        <button class="rail-button is-active" data-screen-target="home">
+        <button class="rail-button is-active" data-screen-target="home" data-hotkey="1">
           <span class="rail-icon">⌂</span>
           <span>Дом</span>
         </button>
-        <button class="rail-button" data-screen-target="quests">
+        <button class="rail-button" data-screen-target="quests" data-hotkey="2">
           <span class="rail-icon">⌘</span>
           <span>Экспедиции</span>
         </button>
-        <button class="rail-button" data-screen-target="party">
+        <button class="rail-button" data-screen-target="party" data-hotkey="3">
           <span class="rail-icon">✦</span>
           <span>Отряд</span>
         </button>
-        <button class="rail-button" data-screen-target="journal">
+        <button class="rail-button" data-screen-target="journal" data-hotkey="4">
           <span class="rail-icon">☷</span>
           <span>Дневник</span>
         </button>
@@ -83,6 +84,16 @@
               <span>Desktop / Steam</span>
               <span>Moss-gothic</span>
             </div>
+            <div class="title-lower-grid">
+              <article class="title-detail-panel">
+                <p class="design-label">Р”Р•РњРћ-Р¦РРљР›</p>
+                <div class="title-flow-list" id="title-flow-list"></div>
+              </article>
+              <article class="title-detail-panel">
+                <p class="design-label">PC РЈРџР РђР’Р›Р•РќРР•</p>
+                <div class="title-key-list" id="title-key-list"></div>
+              </article>
+            </div>
           </section>
 
           <aside class="title-status ornate-panel">
@@ -91,6 +102,7 @@
             <p class="title-status-copy" id="title-status-copy">
               Сохранения еще нет. Начните первую экспедицию или откройте руководство, чтобы увидеть полный поток демо.
             </p>
+            <div class="title-campaign-list" id="title-campaign-list"></div>
             <div class="title-stat-list" id="title-stat-list"></div>
           </aside>
         </div>
@@ -309,6 +321,7 @@
             <p class="eyebrow">Следующее действие</p>
             <h3 id="result-next-title">Забрать награду и вернуться к маршруту</h3>
             <p id="result-next-copy">После зачистки encounter подберите награду, зафиксируйте прогресс главы и выберите следующий шаг.</p>
+            <div class="results-next-list" id="result-next-list"></div>
             <div class="results-action-stack">
               <button class="primary-button" id="result-primary">Забрать награду</button>
               <button class="secondary-button" id="result-secondary">К маршруту</button>
@@ -329,6 +342,7 @@
             <h2 id="chapter-title">Хроника руин</h2>
             <p class="chapter-subtitle" id="chapter-subtitle">Собор листвы остался позади</p>
             <p class="chapter-summary-copy" id="chapter-summary">Отряд закрыл главу, вернул часть памяти святилища и открыл следующий маршрут.</p>
+            <div class="chapter-track-list" id="chapter-track-list"></div>
           </section>
 
           <section class="chapter-board ornate-panel">
@@ -347,6 +361,7 @@
             <p class="eyebrow">Следующий выход</p>
             <h3 id="chapter-next-title">К следующей главе</h3>
             <p id="chapter-next-copy">Святилище ответило на первый проход. Теперь можно углубиться в следующий маршрут или подготовить отряд.</p>
+            <div class="chapter-next-list" id="chapter-next-list"></div>
             <div class="chapter-action-stack">
               <button class="primary-button" id="chapter-primary">Открыть следующую главу</button>
               <button class="secondary-button" id="chapter-secondary">Вернуться в святилище</button>
@@ -621,6 +636,7 @@
             <p class="eyebrow">После финала</p>
             <h3 id="ending-next-title">Вернуться в святилище или начать новый цикл</h3>
             <p id="ending-next-copy">Останьтесь в сохранении для свободной полировки или запустите новую экспедицию с начала.</p>
+            <div class="ending-next-list" id="ending-next-list"></div>
             <div class="ending-action-stack">
               <button class="primary-button" id="ending-home">В Святилище</button>
               <button class="secondary-button" id="ending-reset">Новый цикл</button>
@@ -640,6 +656,6 @@
     </nav>
   </div>
 
-  <script src="src/main.js" defer></script>
+  <script src="src/main.js?v=20260321p" defer></script>
 </body>
 </html>
