@@ -1,0 +1,9 @@
+Bust portrait of Rian, living architectural support of moss-covered ruins, monolithic torso reads like a load-bearing pillar of stone and bark, short thick neck, massive weathered body, hammer-instrument fused to silhouette as extension of the body not a held weapon, materials are basalt-gray stone texture bark and lichen layered onto garments rough iron hardware with visible hand-repair marks, calm heavy expression no aggression no bravado the quiet weight of someone who understands the world through mass and endurance, dark stone-gray and bark-brown palette dull iron pale lichen-green accent, soft ambient ruin light from above, premium painterly fantasy character concept art for desktop Steam tactical RPG, strong readable silhouette at thumbnail size, grounded anatomy restrained materials atmospheric depth, single character fully clothed practical costume no UI elements no text no watermark
+
+NEGATIVE:
+text, logo, watermark, frame, UI overlay, generic knight plate armor, shiny fantasy pauldrons, berserk warrior pose, aggressive expression, sci-fi metal, overdesigned ornament spam, mobile gacha face, clean bright skin, glossy highlights, toy look, neon glow, 3d render, photorealism, plastic skin, blurry, extra fingers, bad anatomy, nsfw, nude, nudity, bare chest, transparent clothing, lingerie, erotic, suggestive pose, childlike face
+
+--
+Aspect ratio: 2:3  (portrait bust, approx 1024x1536)
+Style reference notes: premium painterly JRPG concept art, NOT generic western dark fantasy, NOT mobile gacha
+Key silhouette test: must read as "architectural load-bearing mass" not "fantasy warrior" at 200px height

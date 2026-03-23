@@ -1,0 +1,9 @@
+Bust portrait of Saya, a silent cut in the world's fabric, narrow asymmetric silhouette one side closed one side open with a long diagonal cutting accent implying motion without action, one wing-like or linen-shred opening element trails from the shoulder like a wound in the air, materials are burnt silk in charcoal and deep crimson fragments of bone and dry pale pollen surfaces of dark lacquer torn organic edges, expression composed to the point of inhuman stillness gaze precisely focused no emotion performed danger is in posture and geometry alone, palette restrained crimson-black bone-white ashen charcoal faint ember warmth at edges no glossy color no decorative flourish, premium painterly fantasy character concept art for desktop Steam tactical RPG, strong readable asymmetric silhouette, single character fully clothed no UI no text no watermark
+
+NEGATIVE:
+text, logo, watermark, frame, UI overlay, sexualized assassin pose, revealing outfit, cleavage, goth fashion model pose, idol look, glossy glamour hair, kawaii anime face, noisy costume detail spam, cheap VFX glow, neon red, oversaturated palette, edgy generic design, 3d render, photorealism, plastic skin, blurry, bad anatomy, nsfw, nude, nudity, bare chest, transparent clothing, lingerie, erotic, childlike face
+
+--
+Aspect ratio: 2:3  (portrait bust, approx 1024x1536)
+Style reference notes: premium painterly JRPG concept art, asymmetric silhouette essential, predatory geometry not decoration
+Key silhouette test: must read as "a cut" or "a blade-shape" not "a girl" at 200px height

@@ -1,0 +1,212 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: Chronicle of the Mossbound
+        - heading "Последняя Ступень" [level=1] [ref=e9]
+        - paragraph [ref=e10]: Глава 1. Сад немого стража
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - generic [ref=e13]: AP
+          - strong [ref=e14]: 15 / 15
+        - generic [ref=e15]:
+          - generic [ref=e16]: Фрагменты
+          - strong [ref=e17]: "14"
+        - generic [ref=e18]:
+          - generic [ref=e19]: Люмен
+          - strong [ref=e20]: "482"
+    - main [ref=e21]:
+      - complementary [ref=e226]:
+        - button "⌂ Дом 1" [ref=e227] [cursor=pointer]:
+          - generic [ref=e228]: ⌂
+          - generic [ref=e229]: Дом
+          - text: "1"
+        - button "⌘ Экспедиции 2" [ref=e230] [cursor=pointer]:
+          - generic [ref=e231]: ⌘
+          - generic [ref=e232]: Экспедиции
+          - text: "2"
+        - button "✦ Отряд 3" [ref=e233] [cursor=pointer]:
+          - generic [ref=e234]: ✦
+          - generic [ref=e235]: Отряд
+          - text: "3"
+        - button "☷ Дневник 4" [ref=e236] [cursor=pointer]:
+          - generic [ref=e237]: ☷
+          - generic [ref=e238]: Дневник
+          - text: "4"
+      - text: Enter C 8 Enter 1 Enter 1
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - paragraph [ref=e28]: Экспедиционный состав
+          - generic [ref=e29]:
+            - button "Лиора Проводница мха Support Полупрозрачный силуэт, длинные световые волосы и круг навигации за спиной." [ref=e30]:
+              - generic [ref=e31]:
+                - generic [ref=e32]:
+                  - generic [ref=e33]: Лиора
+                  - generic [ref=e34]: Проводница мха
+                - generic [ref=e35]: Support
+              - paragraph [ref=e36]: Полупрозрачный силуэт, длинные световые волосы и круг навигации за спиной.
+            - button "Риан Камнерез святилищ Vanguard Широкий корпус, тяжёлый молот-мегалит и плащ из коры. Это фронтовой силуэт для Steam key art." [ref=e37]:
+              - generic [ref=e38]:
+                - generic [ref=e39]:
+                  - generic [ref=e40]: Риан
+                  - generic [ref=e41]: Камнерез святилищ
+                - generic [ref=e42]: Vanguard
+              - paragraph [ref=e43]: Широкий корпус, тяжёлый молот-мегалит и плащ из коры. Это фронтовой силуэт для Steam key art.
+            - button "Сайя Охотница красной моли Hunter Хищный силуэт-крыло, красно-чёрная палитра и вытянутый веер-клинок для более мрачной сказки." [ref=e44]:
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - generic [ref=e47]: Сайя
+                  - generic [ref=e48]: Охотница красной моли
+                - generic [ref=e49]: Hunter
+              - paragraph [ref=e50]: Хищный силуэт-крыло, красно-чёрная палитра и вытянутый веер-клинок для более мрачной сказки.
+            - button "Ноэль Архивистка дождевых карт Control Холодная синяя палитра, длинные ленты-карты и изящный диагональный посох как силуэт исследователя." [ref=e51]:
+              - generic [ref=e52]:
+                - generic [ref=e53]:
+                  - generic [ref=e54]: Ноэль
+                  - generic [ref=e55]: Архивистка дождевых карт
+                - generic [ref=e56]: Control
+              - paragraph [ref=e57]: Холодная синяя палитра, длинные ленты-карты и изящный диагональный посох как силуэт исследователя.
+          - generic [ref=e58]:
+            - paragraph [ref=e59]: PC / Steam
+            - paragraph [ref=e60]:
+              - text: "Крупные карточки, читаемая типографика и быстрая навигация под 16:9 и Steam Deck. Клавиши:"
+              - strong [ref=e61]: "1"
+              - text: /
+              - strong [ref=e62]: "2"
+              - text: /
+              - strong [ref=e63]: "3"
+              - text: для экранов,
+              - strong [ref=e64]: ←
+              - text: /
+              - strong [ref=e65]: →
+              - text: для героев.
+        - generic [ref=e92]:
+          - paragraph [ref=e93]: Поднимает арку там, где остальные видят завал
+          - heading "Риан" [level=2] [ref=e94]
+          - paragraph [ref=e95]: Камнерез святилищ
+          - paragraph [ref=e96]: “Если тропа осыпалась, я выбью новую.”
+          - generic [ref=e97]:
+            - article [ref=e98]:
+              - generic [ref=e99]: Ощущение
+              - strong [ref=e100]: Тяжелая опора
+            - article [ref=e101]:
+              - generic [ref=e102]: Материал
+              - strong [ref=e103]: Кора и базальт
+            - article [ref=e104]:
+              - generic [ref=e105]: Акцент
+              - strong [ref=e106]: Молот-мегалит
+          - generic [ref=e107]:
+            - article [ref=e108]:
+              - heading "Опорная арка" [level=3] [ref=e109]
+              - paragraph [ref=e110]: Ставит каменную преграду и открывает безопасный коридор для отряда.
+            - article [ref=e111]:
+              - heading "Глухой удар" [level=3] [ref=e112]
+              - paragraph [ref=e113]: Ломает броню стражей и сбивает телеграф крупных атак.
+        - generic [ref=e114]:
+          - generic [ref=e115]:
+            - button "Дизайн" [ref=e116] [cursor=pointer]
+            - button "Статы" [ref=e117] [cursor=pointer]
+            - button "Материалы" [ref=e118] [cursor=pointer]
+          - generic [ref=e124]:
+            - generic [ref=e125]: Art focus
+            - strong [ref=e126]: РљР°РјРµРЅРЅС‹Р№ Р±Р°СЃС‚РёРѕРЅ
+            - paragraph [ref=e127]: Р’СЃСЏ СЃС†РµРЅР° РґРµСЂР¶РёС‚СЃСЏ РЅР° С‚СЏР¶С‘Р»РѕРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРѕРј РјРѕР»РѕС‚Рµ Рё С€РёСЂРѕРєРѕРј РєРѕСЂРїСѓСЃРµ. Р”Р°Р¶Рµ РІ РјР°Р»РµРЅСЊРєРѕРј СЂР°Р·РјРµСЂРµ РѕРЅ С‡РёС‚Р°РµС‚СЃСЏ РєР°Рє РїРѕРґРІРёР¶РЅР°СЏ Р°СЂРєР° Рё С„СЂРѕРЅС‚РѕРІРѕР№ СЏРєРѕСЂСЊ РїР°СЂС‚РёРё.
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - text: Силуэт
+              - paragraph [ref=e130]: Широкий торс, короткая шея, прямоугольный молот и массивный плащ. На фоне руин читается как движущийся обелиск.
+            - generic [ref=e131]:
+              - text: Материалы
+              - paragraph [ref=e132]: Каменная кожа, бронзовые заклёпки, жёсткая кора, зелёный лишайник и матовая сталь без sci-fi блеска.
+            - generic [ref=e133]:
+              - text: Steam key art
+              - paragraph [ref=e134]: Полуоборот вперёд с молотом на плече. В вертикальной капсуле контраст даёт большой прямоугольный силуэт оружия.
+          - generic [ref=e135]:
+            - generic [ref=e136]: Песок
+            - generic [ref=e137]: Кора
+            - generic [ref=e138]: Лишайник
+            - generic [ref=e139]: Базальт
+          - generic [ref=e140]:
+            - generic [ref=e141]:
+              - generic [ref=e142]: Узел созвучия
+              - strong [ref=e143]: 3/4
+            - generic [ref=e144]:
+              - generic [ref=e145]: Сила отряда
+              - strong [ref=e146]: 3488 +310
+            - generic [ref=e147]:
+              - generic [ref=e148]: HP
+              - strong [ref=e149]: 1924 +30
+            - generic [ref=e150]:
+              - generic [ref=e151]: Атака
+              - strong [ref=e152]: 149 +8
+            - generic [ref=e153]:
+              - generic [ref=e154]: Защита
+              - strong [ref=e155]: "184"
+            - generic [ref=e156]:
+              - generic [ref=e157]: Блок
+              - strong [ref=e158]: 78%
+            - generic [ref=e159]:
+              - generic [ref=e160]: Устойчивость
+              - strong [ref=e161]: A
+          - generic [ref=e162]:
+            - generic [ref=e163]:
+              - generic [ref=e165]:
+                - heading "Ядро монолита" [level=3] [ref=e166]
+                - paragraph [ref=e167]: Тяжелое ядро для фронтового пролома.
+              - generic [ref=e168]:
+                - generic [ref=e169]: 1 / 2
+                - generic [ref=e170]: +
+            - generic [ref=e171]:
+              - generic [ref=e173]:
+                - heading "Люмен-камень" [level=3] [ref=e174]
+                - paragraph [ref=e175]: Стабилизирует удар и щит.
+              - generic [ref=e176]:
+                - generic [ref=e177]: "2"
+                - generic [ref=e178]: +
+            - generic [ref=e179]:
+              - generic [ref=e181]:
+                - heading "Чернила архива" [level=3] [ref=e182]
+                - paragraph [ref=e183]: Возвращает память о старых опорах.
+              - generic [ref=e184]:
+                - generic [ref=e185]: "3"
+                - generic [ref=e186]: +
+          - generic [ref=e187]:
+            - generic [ref=e188]:
+              - generic [ref=e189]: Усиление героя
+              - strong [ref=e190]: Узел 3
+            - heading "Главная опора" [level=3] [ref=e191]
+            - paragraph [ref=e192]: Риан превращается в неподвижный якорь для пролома.
+            - generic [ref=e193]:
+              - article [ref=e194]:
+                - strong [ref=e195]: HP +220
+                - paragraph [ref=e196]: Риан получает новый запас для следующей вылазки.
+              - article [ref=e197]:
+                - strong [ref=e198]: Щит +8
+                - paragraph [ref=e199]: Риан получает новый запас для следующей вылазки.
+              - article [ref=e200]:
+                - strong [ref=e201]: Удар +24
+                - paragraph [ref=e202]: Риан получает новый запас для следующей вылазки.
+            - generic [ref=e203]:
+              - article [ref=e204]:
+                - strong [ref=e205]: Люмен
+                - paragraph [ref=e206]: 482 / 120
+              - article [ref=e207]:
+                - strong [ref=e208]: Фрагменты
+                - paragraph [ref=e209]: 14 / 1
+              - article [ref=e210]:
+                - strong [ref=e211]: Ядро монолита
+                - paragraph [ref=e212]: 1 / 2
+            - button "Недостаточно трофеев" [disabled] [ref=e213] [cursor=pointer]
+      - text: ✓ ✓ ✓ ✓ Enter N
+    - navigation "Основная навигация" [ref=e214]:
+      - button "Святилище 1" [ref=e215] [cursor=pointer]
+      - button "Квесты 2" [ref=e216] [cursor=pointer]
+      - button "Состав 3" [ref=e217] [cursor=pointer]
+      - button "Дневник 4" [ref=e218] [cursor=pointer]
+      - button "Лавка 5" [ref=e219] [cursor=pointer]
+      - button "Меню 6" [ref=e220] [cursor=pointer]
+  - generic [ref=e221]:
+    - generic [ref=e222]:
+      - strong [ref=e223]: Авторская подсказка · Персонажи
+      - paragraph [ref=e224]: Смотрите на силуэт, материалы и акцент. Не на количество деталей, а на то, насколько герой запоминается за секунду.
+    - button "Открыть" [ref=e225] [cursor=pointer]

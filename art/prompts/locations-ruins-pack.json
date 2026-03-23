@@ -1,0 +1,51 @@
+{
+  "defaults": {
+    "model": "gpt-image-1",
+    "size": "1536x1024",
+    "quality": "high",
+    "format": "png",
+    "styleGuide": "Premium painterly fantasy environment concept art for a desktop tactical RPG, moss-gothic atmosphere, readable composition, no UI, no logos, no direct imitation of existing game IP."
+  },
+  "locations": [
+    {
+      "id": "weeping_narthex",
+      "name": "The Weeping Narthex",
+      "prompt": "Wide environment concept art of a flooded cathedral entry hall where rainwater runs down cracked icon walls. Massive collapsed arches, hanging roots, moss glass reflections on shallow water, one distant lantern path toward a sealed inner gate. Mood: sacred ruin, silence before danger. Palette: wet stone gray, moss green, bone ivory, dim amber. Strong foreground-midground-background depth, cinematic vignette."
+    },
+    {
+      "id": "ash_moth_greenhouse",
+      "name": "Ash Moth Greenhouse",
+      "prompt": "Environment concept art of an abandoned greenhouse overtaken by pale fungal vines and ash moth clusters. Broken iron ribs, fog pockets between overgrown glass bays, faint bioluminescent pollen drifting in shafts of light. Mood: fragile beauty with latent threat. Palette: muted jade, fog blue, charcoal, warm ash."
+    },
+    {
+      "id": "sunken_archive_stairs",
+      "name": "Sunken Archive Stairs",
+      "prompt": "Environment concept art of descending archive stairs submerged in dark water, floating parchment bundles tied with rusted chains, carved stone shelves disappearing into mist. One narrow dry ledge guides traversal. Mood: memory sink, heavy stillness. Palette: deep teal-black water, parchment ivory, oxidized bronze, moss green."
+    },
+    {
+      "id": "broken_buttress_bridge",
+      "name": "Broken Buttress Bridge",
+      "prompt": "Wide scene of a shattered buttress bridge crossing a deep ruin chasm. Improvised rope walkways and old support beams patched by survivors, distant monolith silhouettes, drifting low fog and rain. Mood: precarious transit, tactical tension. Palette: storm gray, desaturated green, worn wood brown, faint gold highlights."
+    },
+    {
+      "id": "lumen_bell_court",
+      "name": "Lumen Bell Court",
+      "prompt": "Environment concept of a circular courtyard with cracked bell towers and dormant lumen channels in the floor. Moss-coated reliefs, thin fog ribboning around stone bases, one active bell glowing softly to guide pathfinding. Mood: ritual geometry, controlled reverence. Palette: stone ivory, old bronze, moss green, low cyan-white glow."
+    },
+    {
+      "id": "root_choir_corridor",
+      "name": "Root Choir Corridor",
+      "prompt": "Narrow corridor concept where thick roots form organ-like ribs through a ruined cloister passage. Wet walls, suspended droplets, carved saints partially swallowed by bark. The corridor bends into darkness with subtle ambient glow from trapped spores. Mood: living architecture, claustrophobic reverence."
+    },
+    {
+      "id": "salt_rain_observatory",
+      "name": "Salt Rain Observatory",
+      "prompt": "Environment concept of a ruined observatory with fractured dome panes, mechanical star rings jammed by mineral salt and moss. Rain falls through the open oculus onto map tables and rusted compass devices. Mood: scientific devotion after collapse. Palette: slate blue, mineral white, aged brass, muted green-black."
+    },
+    {
+      "id": "mute_colossus_plaza",
+      "name": "Mute Colossus Plaza",
+      "prompt": "Boss arena concept art of a monumental plaza where a fallen statue-platform has become a living moss monolith cradle. Layered steps, broken statues, root fissures emitting faint inner light, distant storm haze, dramatic centerline composition for encounter readability. Mood: awe, dread, architectural memory becoming hostile."
+    }
+  ]
+}

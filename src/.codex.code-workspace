@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../.codex"
+		},
+		{
+			"path": "../docs"
+		},
+		{
+			"path": "../node_modules"
+		},
+		{
+			"path": "../output"
+		},
+		{
+			"path": "."
+		}
+	]
+}

@@ -1,0 +1,6 @@
+services:
+  bgme:
+    image: bgme
+    build:
+      context: .
+      dockerfile: ./Dockerfile

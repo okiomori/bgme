@@ -1,0 +1,85 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "bgme: run local server",
+			"type": "shell",
+			"command": "${workspaceFolder}\\run-game.bat",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "bgme",
+				"pattern": [
+					{
+						"regexp": ".*",
+						"file": 1,
+						"location": 1,
+						"message": 0
+					}
+				],
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Starting BGME demo at",
+					"endsPattern": "Serving HTTP on"
+				}
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "bgme: generate and apply hero art",
+			"type": "shell",
+			"command": "${workspaceFolder}\\generate-heroes-and-apply.bat",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "bgme: import local art and apply",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"art:pipeline:local"
+			],
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "bgme: open ComfyUI",
+			"type": "shell",
+			"command": "${workspaceFolder}\\open-comfyui.bat",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "bgme: start art studio",
+			"type": "shell",
+			"command": "${workspaceFolder}\\start-bgme-art-studio.bat",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"type": "markdownlint",
+			"problemMatcher": [
+				"$markdownlint"
+			],
+			"label": "markdownlint: Lint all Markdown files in the workspace with markdownlint"
+		},
+		{
+			"type": "npm",
+			"script": "art:apply",
+			"problemMatcher": [],
+			"label": "npm: art:apply",
+			"detail": "node scripts/apply-hero-art.cjs"
+		}
+	]
+}

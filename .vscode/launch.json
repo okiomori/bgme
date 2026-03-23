@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+
+        {
+            "type": "pwa-msedge",
+            "request": "launch",
+            "name": "BGME: открыть index.html",
+            "file": "${workspaceFolder}/index.html",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "pwa-msedge",
+            "request": "launch",
+            "name": "BGME: запустить через локальный сервер",
+            "url": "http://127.0.0.1:4175",
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "bgme: run local server"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+Bust portrait of Noel, keeper of rain maps — a person for whom knowledge has become a wound, medium build fragile attentive presence layered in map-paper and ink-stained textiles that have begun to look like diagrams, a diagonal staff or measuring rod crosses the composition, ribbon and parchment strip elements fold or drift from garments, materials are aged paper parchment glass-bead accents like caught rain drops compass-metal hardware heavy ink stain marks on cloth, expression internally focused collected on the edge of exhaustion attentive to something just outside the frame, palette cold blue-gray pale parchment ivory ink black faint glass-highlight silver, premium painterly fantasy character concept art for desktop Steam tactical RPG, strong readable diagonal silhouette, single character fully clothed no UI no text no watermark
+
+NEGATIVE:
+text, logo, watermark, frame, UI overlay, cute librarian aesthetic, cheerful expression, modern office clothing, decorative scroll spam, hologram HUD, clean bright pop-anime style, plastic skin, overexposed white highlights, 3d render, photorealism, blurry, bad anatomy, nsfw, nude, nudity, bare chest, transparent clothing, lingerie, erotic, suggestive pose, childlike face
+
+--
+Aspect ratio: 2:3  (portrait bust, approx 1024x1536)
+Style reference notes: premium painterly JRPG concept art, fragile scholar-survivor NOT cute anime librarian
+Key silhouette test: costume elements should partially read as a map or diagram at 200px height
