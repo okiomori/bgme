@@ -1,0 +1,35 @@
+{
+  "defaults": {
+    "model": "gpt-image-1",
+    "size": "1024x1536",
+    "quality": "high",
+    "format": "png",
+    "styleGuide": "Premium painterly fantasy character concept art for a desktop-first Steam tactical RPG, readable silhouette, grounded anatomy, restrained materials, atmospheric depth, no UI elements, fully clothed character design with practical layered costume and no sexualization."
+  },
+  "heroes": [
+    {
+      "id": "liora",
+      "name": "Liora",
+      "prompt": "Waist-up portrait of Liora, adult woman and moss guide of ancient living ruins. Calm severe expression, intelligent gaze, mature facial proportions, long silver-white hair with a soft dew tint, pale matte natural skin, fully clothed in layered ceremonial travel robes with high collar, enclosed shoulders, sealed chest, parchment and moss garment language, subtle halo motif behind the silhouette, delicate weathered gold trims, restrained moss details only on fabric and ornaments, soft sacred forest light, premium melancholic tone, practical costume, readable for a game UI hero frame, grounded anatomy, dry material rendering, no liquid-body effect, no doll-like proportions.",
+      "negative": "text, logo, watermark, frame, UI overlay, generic mobile gacha style, plastic skin, over-sharpening, cheap neon, chibi, 3d render, photorealism, nsfw, nude, nudity, nipples, bare chest, exposed torso, exposed shoulders, transparent clothing, lingerie, erotic, suggestive pose, underage, child, childlike face, doll face, porcelain doll skin, giant eyes, liquid skin, slime body, melting body, latex body, wet skin fetish look, glossy wet highlights on skin, tear drops on face, gemstone skin, marine nymph look"
+    },
+    {
+      "id": "rian",
+      "name": "Rian",
+      "prompt": "Bust portrait of Rian, living architectural support of moss-covered ruins. Monolithic torso, short thick neck, massive weathered body reading like a load-bearing pillar of stone and bark. Hammer-instrument fused to silhouette as if part of the body, not a held weapon. Materials: basalt-gray skin texture, bark and lichen layered onto garments, rough iron hardware with visible hand-repairs. Calm, heavy expression — no aggression, no bravado, the quiet weight of someone who understands the world through mass and endurance. Dark stone-gray and bark-brown palette, dull iron, pale lichen-green accent. Soft ambient ruin light from above. Premium painterly concept art for desktop Steam tactical RPG, strong readable silhouette at thumbnail size.",
+      "negative": "text, logo, watermark, frame, UI overlay, generic knight plate armor, shiny fantasy pauldrons, berserk warrior pose, aggressive expression, sci-fi metal, overdesigned ornament spam, mobile gacha face, clean skin, bright highlights, toy look, neon glow, 3d render, photorealism, nsfw, nude, nudity, bare chest, transparent clothing, lingerie, erotic, suggestive pose, childlike face"
+    },
+    {
+      "id": "saya",
+      "name": "Saya",
+      "prompt": "Bust portrait of Saya, a silent cut in the world's fabric. Narrow asymmetric silhouette — one side open, one closed — with a long diagonal cutting accent suggesting motion without action. One wing-like or linen-shred opening element trails from the shoulder. Materials: burnt silk in charcoal and deep crimson, fragments of bone and dry pale pollen, dark lacquer surfaces, torn organic edges. Expression: composed to the point of inhuman stillness, gaze precisely focused, no emotion performed — danger in posture and geometry alone. Palette: restrainted crimson-black, bone white, ashen charcoal, faint ember warmth at edges. No glossy color, no decoration for decoration's sake. Premium painterly concept art for desktop Steam tactical RPG, strong readable silhouette.",
+      "negative": "text, logo, watermark, frame, UI overlay, sexualized assassin pose, goth fashion model, cleavage, idol look, glossy glamour hair, kawaii anime face, noisy costume details, cheap VFX glow, neon red, oversaturated, edgy generic design, 3d render, photorealism, nsfw, nude, nudity, bare chest, transparent clothing, lingerie, erotic, childlike face"
+    },
+    {
+      "id": "noel",
+      "name": "Noel",
+      "prompt": "Bust portrait of Noel, keeper of rain maps — a person for whom knowledge has become a wound. Medium figure with a fragile attentive presence, layered in map-paper and ink-stained textiles that have begun to look like diagrams. A diagonal staff or measuring rod crosses the silhouette. Ribbon and parchment strip elements flutter or fold from garments. Materials: paper, aged parchment, glass-bead accents like caught rain, compass-metal hardware, heavy ink stain marks. Expression: internally focused, collected on the edge of exhaustion, attentive to something just out of frame. Palette: cold blue-gray, pale parchment ivory, ink black, faint glass-highlight silver. Premium painterly concept art for desktop Steam tactical RPG, readable at small size.",
+      "negative": "text, logo, watermark, frame, UI overlay, cute librarian aesthetic, cheerful scholar expression, modern office clothing, scroll decoration spam, sci-fi hologram HUD, clean anime pop style, plastic skin, bright overexposed highlights, 3d render, photorealism, nsfw, nude, nudity, bare chest, transparent clothing, lingerie, erotic, suggestive pose, childlike face"
+    }
+  ]
+}

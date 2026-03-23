@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Последняя Ступень</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2318231f'/%3E%3Cpath d='M32 10c8 8 14 14 14 22 0 10-6 18-14 22-8-4-14-12-14-22 0-8 6-14 14-22Z' fill='%23d8d1c1'/%3E%3Cpath d='M32 18c5 6 8 10 8 15 0 6-3 11-8 14-5-3-8-8-8-14 0-5 3-9 8-15Z' fill='%2377b18f'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260321s">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23131816'/%3E%3Cpath d='M32 12c10 8 14 16 14 24 0 10-6 16-14 16S18 46 18 36c0-8 4-16 14-24Z' fill='%2396b79f'/%3E%3Cpath d='M32 18c6 5 8 10 8 16 0 6-3 10-8 10s-8-4-8-10c0-6 2-11 8-16Z' fill='%23d7ead7'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=20260401">
 </head>
-<body data-screen="title">
+<body data-screen="home">
   <canvas id="ambient-canvas" aria-hidden="true"></canvas>
   <div class="fog-layer" aria-hidden="true"></div>
 
@@ -22,6 +22,15 @@
           <h1>Последняя Ступень</h1>
           <p class="chapter-copy">Глава 1. Сад немого стража</p>
         </div>
+      </div>
+
+      <div class="topbar-hud" aria-label="Статус интерфейса">
+        <div class="topbar-screen-pill" id="topbar-screen-pill">Святилище</div>
+        <div class="topbar-status-copy">
+          <strong id="topbar-status-title">Текущий протокол</strong>
+          <p id="topbar-status-copy">Маршрут, экран и ритм вылазки должны читаться сразу.</p>
+        </div>
+        <div class="topbar-status-tags" id="topbar-status-tags"></div>
       </div>
 
       <div class="resource-strip">
@@ -42,73 +51,25 @@
 
     <main class="viewport">
       <aside class="left-rail ornate-panel">
-        <button class="rail-button is-active" data-screen-target="home" data-hotkey="1">
+        <button class="rail-button is-active" data-screen-target="home">
           <span class="rail-icon">⌂</span>
           <span>Дом</span>
         </button>
-        <button class="rail-button" data-screen-target="quests" data-hotkey="2">
+        <button class="rail-button" data-screen-target="quests">
           <span class="rail-icon">⌘</span>
           <span>Экспедиции</span>
         </button>
-        <button class="rail-button" data-screen-target="party" data-hotkey="3">
+        <button class="rail-button" data-screen-target="party">
           <span class="rail-icon">✦</span>
           <span>Отряд</span>
         </button>
-        <button class="rail-button" data-screen-target="journal" data-hotkey="4">
+        <button class="rail-button" data-screen-target="journal">
           <span class="rail-icon">☷</span>
           <span>Дневник</span>
         </button>
       </aside>
 
-      <section class="screen is-active" data-screen="title">
-        <div class="screen-scape title-scape" aria-hidden="true">
-          <div class="title-monolith"></div>
-          <div class="title-arch"></div>
-          <div class="title-mist"></div>
-        </div>
-
-        <div class="title-layout">
-          <section class="title-hero ornate-panel">
-            <p class="eyebrow">Steam-first tactical party-RPG</p>
-            <h2>Последняя Ступень</h2>
-            <p class="title-copy">
-              Заросшие руины отвечают только тем, кто идет вперед медленно и удерживает строй. Ведите отряд через главы, забирайте награды, усиливайте героев и завершите первый полный цикл святилища.
-            </p>
-            <div class="title-actions">
-              <button class="primary-button" id="title-new">Новая экспедиция</button>
-              <button class="secondary-button" id="title-continue">Продолжить</button>
-              <button class="secondary-button" id="title-guide">Открыть руководство</button>
-            </div>
-            <div class="title-tags">
-              <span>Campaign loop</span>
-              <span>Desktop / Steam</span>
-              <span>Moss-gothic</span>
-            </div>
-            <div class="title-lower-grid">
-              <article class="title-detail-panel">
-                <p class="design-label">DEMO LOOP</p>
-                <div class="title-flow-list" id="title-flow-list"></div>
-              </article>
-              <article class="title-detail-panel">
-                <p class="design-label">PC CONTROLS</p>
-                <div class="title-key-list" id="title-key-list"></div>
-              </article>
-            </div>
-          </section>
-
-          <aside class="title-status ornate-panel">
-            <p class="eyebrow">Статус похода</p>
-            <strong class="title-status-heading" id="title-status-heading">Святилище готово к новому циклу</strong>
-            <p class="title-status-copy" id="title-status-copy">
-              Сохранения еще нет. Начните первую экспедицию или откройте руководство, чтобы увидеть полный поток демо.
-            </p>
-            <div class="title-campaign-list" id="title-campaign-list"></div>
-            <div class="title-stat-list" id="title-stat-list"></div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="screen" data-screen="home">
+      <section class="screen is-active" data-screen="home">
         <div class="screen-scape home-scape" aria-hidden="true">
           <div class="home-ruin home-ruin-back"></div>
           <div class="home-ruin home-ruin-front"></div>
@@ -118,35 +79,67 @@
 
         <div class="home-layout">
           <section class="intro-card ornate-panel">
-            <p class="eyebrow">Святилище возвращения</p>
-            <h2>Один путь, один страж, одна живая глава.</h2>
-            <p>
-              Главный экран делаем тише: больше воздуха, больше фона и только один
-              стеклянный блок управления вместо набора отдельных окошек.
-            </p>
-            <div class="intro-actions">
-              <button class="primary-button" data-screen-target="quests">Открыть экспедиции</button>
-              <button class="secondary-button" data-screen-target="party">Посмотреть отряд</button>
+            <div class="home-command-copy-block">
+              <p class="eyebrow">Святилище</p>
+              <h2>Войти в маршрут, собрать строй, забрать трофей.</h2>
             </div>
-            <p class="home-quote">“Руины помнят дольше людей.”</p>
+            <div class="home-command-grid" id="home-command-grid" aria-label="Ключевые действия святилища"></div>
+            <div class="home-command-strip" id="home-command-strip" aria-label="Состояние святилища"></div>
           </section>
 
-          <section class="hero-stage" aria-label="Дух-проводник">
+          <section class="hero-stage" aria-label="Проводница Лиора">
+            <div class="hero-stage-status">
+              <span class="hero-stage-pill">Оперативная строка</span>
+              <div class="hero-stage-status-line">
+                <strong id="home-stage-status-title">Текущий выход</strong>
+                <p id="home-stage-status-copy">Путь собран. Проверь следующий узел, строй и входи в главу.</p>
+              </div>
+              <div class="hero-stage-status-tags" id="home-stage-status-tags"></div>
+            </div>
             <div class="hero-stage-aura"></div>
             <div class="hero-stage-ring"></div>
-            <div class="spirit-figure">
-              <div class="spirit-halo"></div>
-              <div class="spirit-head"></div>
-              <div class="spirit-hair spirit-hair-left"></div>
-              <div class="spirit-hair spirit-hair-right"></div>
-              <div class="spirit-body"></div>
-              <div class="spirit-arm spirit-arm-left"></div>
-              <div class="spirit-arm spirit-arm-right"></div>
-              <div class="spirit-glow"></div>
+            <div class="home-stage-art">
+              <div class="home-stage-art-backdrop"></div>
+              <div class="home-stage-pedestal"></div>
+              <div class="home-stage-atmosphere"></div>
+              <div class="home-stage-art-fallback" id="home-stage-art-fallback" aria-hidden="true"></div>
+              <img
+                class="home-stage-art-figure"
+                id="home-stage-art-figure"
+                src="art/characters/liora-canon-bust.png"
+                alt="Лиора, проводница мха"
+              >
+              <div class="home-stage-foreground" aria-hidden="true"></div>
             </div>
-            <div class="hero-caption">
-              <p class="eyebrow">Проводница Лиора</p>
-              <h3>“Не бойся стражей. Бойся тишины, когда они замолкнут.”</h3>
+            <div class="home-stage-dashboard">
+              <div class="hero-caption">
+                <p class="eyebrow">Точка выхода</p>
+                <h3>Текущий выход</h3>
+              </div>
+              <div class="home-ops-grid" aria-label="Сводка вылазки">
+                <section class="home-panel home-objective-panel">
+                  <div class="home-panel-head">
+                    <p class="eyebrow">Следующая цель</p>
+                    <span>Маршрут</span>
+                  </div>
+                  <article class="home-encounter-preview" id="home-encounter-preview"></article>
+                </section>
+                <section class="home-panel home-focus-panel">
+                  <div class="home-panel-head">
+                    <p class="eyebrow">Фокус выхода</p>
+                    <span>Лидер</span>
+                  </div>
+                  <article class="home-focus-card" id="home-focus-card"></article>
+                </section>
+                <section class="home-panel home-party-panel">
+                  <div class="home-panel-head">
+                    <p class="eyebrow">Отряд в строю</p>
+                    <span>4 героя</span>
+                  </div>
+                  <div class="home-party-strip" id="home-party-strip"></div>
+                </section>
+              </div>
+              <section class="home-scene-panel" id="home-scene-panel" aria-label="Тактический срез вылазки"></section>
             </div>
           </section>
         </div>
@@ -161,12 +154,29 @@
 
         <div class="quest-layout">
           <section class="quest-overview ornate-panel">
+            <div class="quest-heraldry" aria-hidden="true">
+              <span>◈</span>
+            </div>
             <p class="eyebrow">Экран экспедиций</p>
             <h2 id="quest-title">Хроника руин</h2>
             <p id="quest-description">
-              Вертикальные карты читаются как chapter-sheets: атмосферный живописный фон,
-              золотые рамки, тонкие статусы и минимум шумного UI.
+              Первая вылазка ведёт через собор листвы: тихие пролёты, мокрый камень,
+              архивные следы и узлы, которые ещё держит живой страж.
             </p>
+            <section class="quest-scene-visual" id="quest-scene-visual" aria-label="Визуальный фокус экспедиции"></section>
+            <div class="quest-hook-row">
+              <span class="quest-hook-pill" id="quest-threat-pill">Исследование</span>
+              <span class="quest-hook-copy" id="quest-reward-copy">Люмен, архивные записи, доступ к боевой сцене главы.</span>
+            </div>
+            <section class="quest-spotlight" aria-label="Текущий фокус маршрута">
+              <div class="quest-spotlight-head">
+                <p class="eyebrow">Ключевой узел</p>
+                <span id="quest-spotlight-state">Следующий вход</span>
+              </div>
+              <h3 id="quest-spotlight-title">Разломанный вестибюль</h3>
+              <p id="quest-spotlight-body">Партия входит в зал, где камень уже зарос мягким мхом и слышен голос проводницы.</p>
+              <div class="quest-spotlight-tags" id="quest-spotlight-tags"></div>
+            </section>
             <div class="quest-meta">
               <div>
                 <span>Статус</span>
@@ -252,6 +262,11 @@
                 <strong id="battle-turn">1</strong>
               </div>
             </div>
+            <div class="battle-ornaments" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
 
             <div class="battle-field">
               <div class="battle-lane battle-lane-allies" id="battle-allies"></div>
@@ -290,41 +305,42 @@
 
       <section class="screen" data-screen="results">
         <div class="screen-scape results-scape" aria-hidden="true">
-          <div class="results-sigil"></div>
-          <div class="results-mist"></div>
+          <div class="results-arch"></div>
+          <div class="results-beam"></div>
+          <div class="results-water"></div>
         </div>
 
         <div class="results-layout">
           <aside class="results-summary ornate-panel">
-            <p class="eyebrow" id="result-kicker">Итог encounter</p>
+            <p class="eyebrow" id="result-kicker">Итог экспедиции</p>
             <h2 id="result-title">Узел подавлен</h2>
-            <p class="results-subtitle" id="result-subtitle">Хроника руин · Слепые корнееды</p>
-            <div class="results-pill-row">
-              <span class="results-pill" id="result-status-pill">Победа</span>
-              <span class="results-grade" id="result-grade">Rank A</span>
-            </div>
-            <div class="results-burst-list" id="result-burst-list"></div>
+            <p class="results-subtitle" id="result-subtitle">Хроника руин · Стычка</p>
+            <div class="result-status-pill" id="result-status-pill">Победа</div>
+            <p class="results-summary-copy" id="result-summary">
+              Отряд удержал темп, подавил угрозу и подготовил маршрут к следующему узлу.
+            </p>
           </aside>
 
-          <section class="results-breakdown ornate-panel">
-            <div class="results-section">
-              <p class="eyebrow">Награды</p>
-              <div class="results-reward-list" id="result-reward-list"></div>
+          <section class="results-report ornate-panel">
+            <div class="results-page">
+              <p class="eyebrow">Награда</p>
+              <div class="result-reward-list" id="result-reward-list"></div>
             </div>
-            <div class="results-section">
-              <p class="eyebrow">Разбор сцены</p>
-              <div class="results-note-list" id="result-note-list"></div>
+            <div class="results-page results-page-secondary">
+              <p class="eyebrow">Разбор выхода</p>
+              <div class="result-note-list" id="result-note-list"></div>
             </div>
           </section>
 
-          <aside class="results-next ornate-panel">
-            <p class="eyebrow">Следующее действие</p>
-            <h3 id="result-next-title">Забрать награду и вернуться к маршруту</h3>
-            <p id="result-next-copy">После зачистки encounter подберите награду, зафиксируйте прогресс главы и выберите следующий шаг.</p>
-            <div class="results-next-list" id="result-next-list"></div>
-            <div class="results-action-stack">
-              <button class="primary-button" id="result-primary">Забрать награду</button>
-              <button class="secondary-button" id="result-secondary">К маршруту</button>
+          <aside class="results-actions ornate-panel">
+            <p class="eyebrow">Следующий шаг</p>
+            <h3 id="result-next-title">Забрать награду</h3>
+            <p id="result-next-copy">
+              Подтвердите результат, чтобы вернуть отряд в маршрут и сохранить прогресс главы.
+            </p>
+            <div class="results-button-stack">
+              <button class="primary-button" id="result-primary">Забрать награду и к маршруту</button>
+              <button class="secondary-button" id="result-secondary">Открыть дневник</button>
             </div>
           </aside>
         </div>
@@ -332,39 +348,69 @@
 
       <section class="screen" data-screen="chapter">
         <div class="screen-scape chapter-scape" aria-hidden="true">
-          <div class="chapter-gate"></div>
-          <div class="chapter-light"></div>
+          <div class="chapter-arch"></div>
+          <div class="chapter-seal"></div>
+          <div class="chapter-garden"></div>
         </div>
 
         <div class="chapter-layout">
-          <section class="chapter-summary ornate-panel">
-            <p class="eyebrow" id="chapter-kicker">Глава завершена</p>
-            <h2 id="chapter-title">Хроника руин</h2>
-            <p class="chapter-subtitle" id="chapter-subtitle">Собор листвы остался позади</p>
-            <p class="chapter-summary-copy" id="chapter-summary">Отряд закрыл главу, вернул часть памяти святилища и открыл следующий маршрут.</p>
-            <div class="chapter-track-list" id="chapter-track-list"></div>
+          <aside class="chapter-summary ornate-panel">
+            <p class="eyebrow" id="chapter-kicker">Отчет главы</p>
+            <h2 id="chapter-title">Сад немого стража удержан</h2>
+            <p id="chapter-summary">
+              Отряд вынес из руин корень памяти и вернул в святилище новую ось для следующих вылазок.
+            </p>
+            <div class="chapter-stat-list" id="chapter-stat-list"></div>
+          </aside>
+
+          <section class="chapter-choice ornate-panel">
+            <div class="chapter-page">
+              <p class="eyebrow">Выбор сигила святилища</p>
+              <h3 id="chapter-choice-title">Что укрепить между вылазками</h3>
+              <p id="chapter-choice-copy">
+                Выберите один глобальный акцент для следующих выходов. Он будет виден в доме, бою и на наградах.
+              </p>
+            </div>
+            <div class="chapter-boon-grid" id="chapter-boon-grid"></div>
           </section>
 
-          <section class="chapter-board ornate-panel">
-            <div class="chapter-board-section">
-              <p class="eyebrow">Итоги похода</p>
-              <div class="chapter-stat-list" id="chapter-stat-list"></div>
+          <aside class="chapter-actions ornate-panel">
+            <p class="eyebrow">Следующий шаг</p>
+            <h3 id="chapter-next-title">Вернуться в святилище</h3>
+            <p id="chapter-next-copy">
+              После выбора сигила вы разблокируете следующий слой прогрессии и откроете новые маршруты.
+            </p>
+            <div class="results-button-stack">
+              <button class="primary-button" id="chapter-primary">Зафиксировать сигил и в дом</button>
+              <button class="secondary-button" id="chapter-secondary">Открыть состав</button>
             </div>
-            <div class="chapter-board-section">
-              <p class="eyebrow">Награды и открытия</p>
-              <div class="chapter-reward-list" id="chapter-reward-list"></div>
-              <div class="chapter-unlock-list" id="chapter-unlock-list"></div>
-            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="ending">
+        <div class="screen-scape ending-scape" aria-hidden="true">
+          <div class="ending-aura"></div>
+          <div class="ending-figure"></div>
+          <div class="ending-stars"></div>
+        </div>
+
+        <div class="ending-layout">
+          <section class="ending-main ornate-panel">
+            <p class="eyebrow" id="ending-kicker">Эпилог демо</p>
+            <h2 id="ending-title">Сад снова ответил</h2>
+            <p id="ending-summary">
+              Первая глава закрыта, святилище помнит ваш выбор, а отряд готов к следующему слою мира.
+            </p>
+            <div class="ending-pillars" id="ending-pillars"></div>
           </section>
 
-          <aside class="chapter-next ornate-panel">
-            <p class="eyebrow">Следующий выход</p>
-            <h3 id="chapter-next-title">К следующей главе</h3>
-            <p id="chapter-next-copy">Святилище ответило на первый проход. Теперь можно углубиться в следующий маршрут или подготовить отряд.</p>
-            <div class="chapter-next-list" id="chapter-next-list"></div>
-            <div class="chapter-action-stack">
-              <button class="primary-button" id="chapter-primary">Открыть следующую главу</button>
-              <button class="secondary-button" id="chapter-secondary">Вернуться в святилище</button>
+          <aside class="ending-side ornate-panel">
+            <p class="eyebrow">Что осталось в памяти мира</p>
+            <div class="ending-note-list" id="ending-note-list"></div>
+            <div class="results-button-stack">
+              <button class="primary-button" id="ending-primary">Начать новую вылазку</button>
+              <button class="secondary-button" id="ending-secondary">Вернуться в дом</button>
             </div>
           </aside>
         </div>
@@ -374,6 +420,8 @@
         <div class="screen-scape party-scape" aria-hidden="true">
           <div class="party-window party-window-left"></div>
           <div class="party-window party-window-right"></div>
+          <div class="party-banner"></div>
+          <div class="party-floor-glow"></div>
         </div>
 
         <div class="party-layout">
@@ -392,25 +440,35 @@
 
           <section class="party-portrait ornate-panel">
             <div class="portrait-frame" id="portrait-shell" data-hero="liora">
+              <div class="portrait-art-wrap" id="portrait-art-wrap">
+                <img class="portrait-art-backdrop" id="portrait-art-backdrop" alt="" src="art/characters/liora-canon-bust.png" />
+                <div class="portrait-art-float" id="portrait-art-float">
+                  <img class="portrait-art" id="portrait-art" alt="Портрет героя" src="art/characters/liora-canon-bust.png" />
+                </div>
+                <canvas class="portrait-sparkle-canvas" id="portrait-sparkle-canvas" aria-hidden="true"></canvas>
+              </div>
+              <div class="portrait-stage-copy">
+                <p class="portrait-stage-kicker" id="portrait-stage-kicker">Проводница мха</p>
+                <h3 class="portrait-stage-name" id="portrait-stage-name">Лиора</h3>
+                <p class="portrait-stage-summary" id="portrait-stage-summary">
+                  Тихая проводница, в чьей форме уже чувствуется работа памяти и сырой живой архитектуры.
+                </p>
+              </div>
               <div class="portrait-aura"></div>
               <div class="portrait-ring"></div>
+              <div class="portrait-backwash"></div>
+              <div class="portrait-motif"></div>
               <div class="portrait-ornament"></div>
-              <div class="portrait-light"></div>
-              <div class="portrait-orbit"></div>
               <div class="portrait-companion"></div>
               <div class="portrait-sigil"></div>
               <div class="portrait-svg-layer"></div>
+              <div class="portrait-veil"></div>
               <div class="portrait-figure">
-                <div class="portrait-back-hair"></div>
-                <div class="portrait-crown"></div>
                 <div class="portrait-head"></div>
                 <div class="portrait-hair"></div>
                 <div class="portrait-cloak"></div>
-                <div class="portrait-trail portrait-trail-left"></div>
-                <div class="portrait-trail portrait-trail-right"></div>
                 <div class="portrait-arm portrait-arm-left"></div>
                 <div class="portrait-arm portrait-arm-right"></div>
-                <div class="portrait-emblem"></div>
                 <div class="portrait-body"></div>
                 <div class="portrait-legs"></div>
                 <div class="portrait-weapon"></div>
@@ -427,11 +485,11 @@
 
           <section class="party-design ornate-panel">
             <div class="upgrade-tabs">
-              <button class="upgrade-tab is-active">Дизайн</button>
-              <button class="upgrade-tab">Статы</button>
-              <button class="upgrade-tab">Материалы</button>
+              <button class="upgrade-tab is-active" type="button" data-party-tab="design">Дизайн</button>
+              <button class="upgrade-tab" type="button" data-party-tab="stats">Статы</button>
+              <button class="upgrade-tab" type="button" data-party-tab="materials">Материалы</button>
             </div>
-            <div class="design-copy">
+            <div class="design-copy" data-party-panels="design">
               <div class="design-block">
                 <span class="design-label">Силуэт</span>
                 <p id="hero-silhouette">Длинная световая фигура, тонкие рукава и круг навигации за спиной.</p>
@@ -445,22 +503,17 @@
                 <p id="hero-steam-pose">Три четверти корпуса, силуэт читается даже в маленькой капсуле за счёт светового нимба и висящих прядей.</p>
               </div>
             </div>
-            <div class="swatch-list" id="hero-swatches"></div>
-            <div class="stat-list" id="hero-stats"></div>
-            <div class="material-list" id="material-list"></div>
-            <section class="hero-upgrade-panel">
-              <div class="hero-upgrade-head">
-                <span class="design-label">Усиление героя</span>
-                <strong id="hero-upgrade-level">Узел I</strong>
+            <div class="swatch-list" id="hero-swatches" data-party-panels="design"></div>
+            <div class="stat-list" id="hero-stats" data-party-panels="stats"></div>
+            <div class="material-list" id="material-list" data-party-panels="materials"></div>
+            <div class="party-upgrade-box" data-party-panels="stats materials">
+              <div class="party-upgrade-copy">
+                <p class="eyebrow">Усиление героя</p>
+                <h3 id="hero-upgrade-title">Сигил подготовки I</h3>
+                <p id="hero-upgrade-copy">Усиливает базовый запас HP, щит и силу навыков для следующих экспедиций.</p>
               </div>
-              <h3 id="hero-upgrade-title">Следующее созвучие</h3>
-              <p class="hero-upgrade-summary" id="hero-upgrade-summary">
-                Награды маршрутов и поставки из лавки переводятся в реальное усиление состава.
-              </p>
-              <div class="hero-upgrade-bonus-list" id="hero-upgrade-bonuses"></div>
-              <div class="hero-upgrade-cost-list" id="hero-upgrade-costs"></div>
-              <button class="primary-button upgrade-button" id="hero-upgrade-button">Усилить героя</button>
-            </section>
+            </div>
+            <button class="primary-button upgrade-button" id="hero-upgrade-button" data-party-panels="stats materials">Усилить героя</button>
           </section>
         </div>
       </section>
@@ -470,6 +523,8 @@
           <div class="journal-torii"></div>
           <div class="journal-torii journal-torii-back"></div>
           <div class="journal-lantern"></div>
+          <div class="journal-rain-lines"></div>
+          <div class="journal-paper-shrine"></div>
         </div>
 
         <div class="journal-layout">
@@ -508,6 +563,8 @@
         <div class="screen-scape shop-scape" aria-hidden="true">
           <div class="shop-arch"></div>
           <div class="shop-shelf-light"></div>
+          <div class="shop-shelves"></div>
+          <div class="shop-hanging-charms"></div>
         </div>
 
         <div class="shop-layout">
@@ -543,6 +600,8 @@
         <div class="screen-scape menu-scape" aria-hidden="true">
           <div class="menu-room"></div>
           <div class="menu-fire"></div>
+          <div class="menu-pillars"></div>
+          <div class="menu-sigil"></div>
         </div>
 
         <div class="menu-layout">
@@ -584,7 +643,8 @@
         <div class="screen-scape guide-scape" aria-hidden="true">
           <div class="guide-arch"></div>
           <div class="guide-glow"></div>
-          <div class="guide-rings"></div>
+          <div class="guide-pillars"></div>
+          <div class="guide-constellation"></div>
         </div>
 
         <div class="guide-layout">
@@ -594,182 +654,152 @@
           </aside>
 
           <section class="guide-book ornate-panel">
-            <article class="guide-hero-panel">
+            <div class="guide-page">
               <p class="eyebrow" id="guide-kicker">Введение</p>
               <h2 id="guide-title">Последняя Ступень</h2>
               <p id="guide-summary">
                 Steam-first tactical party-RPG о походах через заросшие руины и боях со стражами живой архитектуры.
               </p>
-              <div class="guide-tag-list" id="guide-tag-list"></div>
-            </article>
-            <article class="guide-highlight-panel">
-              <p class="eyebrow" id="guide-highlight-kicker">Desktop frame</p>
-              <div class="guide-highlight-grid" id="guide-highlight-grid"></div>
-            </article>
-            <article class="guide-loop-panel">
+            </div>
+            <div class="guide-page guide-page-secondary">
               <p class="eyebrow">Ключевые правила</p>
               <div class="guide-point-list" id="guide-point-list"></div>
-            </article>
-            <article class="guide-focus-panel">
-              <p class="eyebrow">Р§С‚Рѕ РґРµР»Р°С‚СЊ РґР°Р»СЊС€Рµ</p>
-              <div class="guide-action-list" id="guide-action-list"></div>
-            </article>
+            </div>
           </section>
 
           <aside class="guide-side ornate-panel">
             <p class="eyebrow">Статус среза</p>
-            <section class="guide-side-block">
-              <p class="eyebrow">PROJECT STATUS</p>
-              <h3 id="guide-project-title">Steam demo</h3>
-              <div class="guide-status-list" id="guide-project-list"></div>
-            </section>
-            <section class="guide-side-block">
-              <p class="eyebrow">SAVE PROGRESS</p>
-              <h3 id="guide-status-title">Current run</h3>
-              <div class="guide-status-list" id="guide-status-list"></div>
-            </section>
-          </aside>
-        </div>
-      </section>
-
-      <section class="screen" data-screen="ending">
-        <div class="screen-scape ending-scape" aria-hidden="true">
-          <div class="ending-halo"></div>
-          <div class="ending-ruin"></div>
-        </div>
-
-        <div class="ending-layout">
-          <section class="ending-hero ornate-panel">
-            <p class="eyebrow" id="ending-kicker">Эпилог</p>
-            <h2 id="ending-title">Святилище снова заговорило</h2>
-            <p class="ending-summary" id="ending-summary">
-              Отряд закрыл первый полный цикл и вернул миру часть памяти. Это конец демо-кампании и начало более большой игры.
-            </p>
-          </section>
-
-          <section class="ending-journal ornate-panel">
-            <div class="ending-journal-section">
-              <p class="eyebrow">Итоги цикла</p>
-              <div class="ending-stat-list" id="ending-stat-list"></div>
-            </div>
-            <div class="ending-journal-section">
-              <p class="eyebrow">Команда и мир</p>
-              <div class="ending-credit-list" id="ending-credit-list"></div>
-            </div>
-          </section>
-
-          <aside class="ending-actions ornate-panel">
-            <p class="eyebrow">После финала</p>
-            <h3 id="ending-next-title">Вернуться в святилище или начать новый цикл</h3>
-            <p id="ending-next-copy">Останьтесь в сохранении для свободной полировки или запустите новую экспедицию с начала.</p>
-            <div class="ending-next-list" id="ending-next-list"></div>
-            <div class="ending-action-stack">
-              <button class="primary-button" id="ending-home">В Святилище</button>
-              <button class="secondary-button" id="ending-reset">Новый цикл</button>
-            </div>
+            <h3 id="guide-status-title">Vertical Slice</h3>
+            <div class="guide-status-list" id="guide-status-list"></div>
           </aside>
         </div>
       </section>
     </main>
 
     <nav class="bottom-dock ornate-panel" aria-label="Основная навигация">
-      <button class="dock-button is-active" data-screen-target="home">Святилище</button>
-      <button class="dock-button" data-screen-target="quests">Квесты</button>
-      <button class="dock-button" data-screen-target="party">Состав</button>
-      <button class="dock-button" data-screen-target="journal">Дневник</button>
-      <button class="dock-button" data-screen-target="shop">Лавка</button>
-      <button class="dock-button" data-screen-target="menu">Меню</button>
+      <button class="dock-button is-active" data-screen-target="home"><span class="dock-glyph">⌂</span><span class="dock-label">Святилище</span></button>
+      <button class="dock-button" data-screen-target="quests"><span class="dock-glyph">⌘</span><span class="dock-label">Квесты</span></button>
+      <button class="dock-button" data-screen-target="party"><span class="dock-glyph">✦</span><span class="dock-label">Состав</span></button>
+      <button class="dock-button" data-screen-target="journal"><span class="dock-glyph">☷</span><span class="dock-label">Дневник</span></button>
+      <button class="dock-button" data-screen-target="shop"><span class="dock-glyph">⬢</span><span class="dock-label">Лавка</span></button>
+      <button class="dock-button" data-screen-target="menu"><span class="dock-glyph">≡</span><span class="dock-label">Меню</span></button>
     </nav>
   </div>
 
-  <div class="creator-hint-chip" id="creator-hint-chip" hidden>
-    <div class="creator-hint-copy">
-      <strong id="creator-hint-title">Авторская подсказка</strong>
-      <p id="creator-hint-body">Скрытая подсказка для автора проекта.</p>
-    </div>
-    <button class="secondary-button creator-hint-open" id="creator-hint-open" type="button">Открыть</button>
-  </div>
-
-  <section class="creator-cabin" id="creator-cabin" hidden aria-label="Кабинет автора">
-    <div class="creator-cabin-backdrop" id="creator-cabin-backdrop"></div>
-    <aside class="creator-cabin-panel ornate-panel">
-      <header class="creator-cabin-header">
-        <div>
-          <p class="eyebrow" id="creator-kicker">Режим автора</p>
-          <h2 id="creator-title">Кабинет автора</h2>
-          <p class="creator-lead" id="creator-lead">Скрытое пространство для ваших вопросов, ответов и заметок по развитию игры.</p>
+  <div class="creator-cabin" id="creator-cabin" aria-hidden="true">
+    <button class="creator-backdrop" id="creator-backdrop" type="button" aria-label="Закрыть кабинет"></button>
+    <section class="creator-panel ornate-panel" role="dialog" aria-modal="true" aria-labelledby="creator-title">
+      <header class="creator-header">
+        <div class="creator-heading">
+          <p class="eyebrow">BGME Creator Brief</p>
+          <h2 id="creator-title">Приватный кабинет автора</h2>
+          <p class="creator-subcopy">
+            Скрытый режим для автора проекта. Открывается тройным кликом по логотипу или сочетанием
+            <strong>Ctrl + Shift + M</strong>.
+          </p>
         </div>
-        <div class="creator-header-actions">
-          <button class="secondary-button" id="creator-copy-brief" type="button">Скопировать бриф</button>
-          <button class="secondary-button" id="creator-close" type="button">Закрыть</button>
-        </div>
+        <button class="creator-close" id="creator-close" type="button" aria-label="Закрыть кабинет">×</button>
       </header>
 
-      <div class="creator-cabin-layout">
-        <aside class="creator-cabin-nav">
-          <div class="creator-topic-list" id="creator-topic-list"></div>
-          <div class="creator-toggle-block">
-            <p class="design-label" id="creator-toggle-label">Авторские подсказки</p>
-            <button class="toggle-button" id="creator-hints-toggle" type="button">Подсказки включены</button>
+      <div class="creator-grid">
+        <section class="creator-brief">
+          <div class="creator-stats-grid">
+            <article class="creator-stat-card">
+              <span>Текущий экран</span>
+              <strong id="creator-current-screen">party</strong>
+            </article>
+            <article class="creator-stat-card">
+              <span>Тема</span>
+              <strong id="creator-topic">Приоритеты</strong>
+            </article>
+            <article class="creator-stat-card">
+              <span>Состояние проекта</span>
+              <strong id="creator-project-state">62%</strong>
+            </article>
+            <article class="creator-stat-card">
+              <span>Прогресс сейва</span>
+              <strong id="creator-save-progress">0%</strong>
+            </article>
           </div>
-          <div class="creator-glossary-list" id="creator-glossary-list"></div>
-        </aside>
 
-        <section class="creator-cabin-main">
-          <article class="creator-card">
-            <p class="eyebrow" id="creator-question-kicker">Вопрос от Codex</p>
-            <h3 id="creator-question-title">Тема</h3>
-            <p id="creator-question-body">Здесь будет вопрос по проекту.</p>
-            <div class="creator-mini-list" id="creator-question-points"></div>
+          <article class="creator-brief-card">
+            <p class="eyebrow">Вопрос от Codex</p>
+            <h3 id="creator-brief-question">Что мы сейчас хотим довести до уровня показа другим?</h3>
+            <p id="creator-brief-body">
+              Чтобы проект не расползался, важно каждый раз выбирать один фокус. Это не ограничение, а способ
+              спокойно собирать сильное демо по шагам.
+            </p>
           </article>
 
-          <article class="creator-card">
-            <p class="eyebrow" id="creator-help-kicker">Простыми словами</p>
-            <div class="creator-mini-list" id="creator-help-list"></div>
+          <article class="creator-brief-card">
+            <p class="eyebrow">Что нужно решить</p>
+            <div class="creator-checklist" id="creator-checklist"></div>
           </article>
 
-          <article class="creator-card">
-            <p class="eyebrow" id="creator-note-kicker">Мои вопросы к Codex</p>
-            <textarea class="creator-textarea" id="creator-ask-input" placeholder="Например: как сделать этот экран понятнее, что здесь выглядит слабо, какой из героев сейчас самый удачный?"></textarea>
-          </article>
-
-          <article class="creator-card">
-            <p class="eyebrow" id="creator-answer-kicker">Мой ответ для проекта</p>
-            <textarea class="creator-textarea" id="creator-answer-input" placeholder="Например: главный акцент демо — бой с колоссом; Лиора должна ощущаться как тихая святость и свет сквозь мох."></textarea>
-          </article>
-
-          <article class="creator-card creator-card-wide">
-            <p class="eyebrow" id="creator-private-kicker">Приватные заметки</p>
-            <textarea class="creator-textarea creator-textarea-large" id="creator-private-notes" placeholder="Сюда можно писать что угодно: идеи по миру, слабые места, планы на неделю, сомнения по визуалу, мысли для следующего разговора со мной."></textarea>
+          <article class="creator-brief-card">
+            <p class="eyebrow">Подсказка по текущему экрану</p>
+            <p id="creator-screen-hint">
+              Персонажи: смотрите на силуэт, материалы и акцент. Не на количество деталей, а на то,
+              насколько герой запоминается за секунду.
+            </p>
           </article>
         </section>
 
-        <aside class="creator-cabin-side">
-          <article class="creator-card">
-            <p class="eyebrow" id="creator-next-kicker">Что делать дальше</p>
-            <div class="creator-mini-list" id="creator-next-list"></div>
+        <section class="creator-console">
+          <article class="creator-brief-card creator-chat-card">
+            <div class="creator-chat-header">
+              <div>
+                <p class="eyebrow">Мои вопросы к Codex</p>
+                <p class="creator-subcopy">Можно писать простыми словами. Я отвечу сразу внутри проекта.</p>
+              </div>
+              <div class="creator-quick-row" id="creator-quick-row">
+                <button class="creator-chip" type="button" data-creator-prompt="Что обязательно доделать перед показом другим?">Перед показом</button>
+                <button class="creator-chip" type="button" data-creator-prompt="Как улучшить художественность портретов на экране отряда?">Портреты</button>
+                <button class="creator-chip" type="button" data-creator-prompt="Что можно оставить текстовой заглушкой на ближайший месяц?">Заглушки</button>
+              </div>
+            </div>
+
+            <div class="creator-chat-log" id="creator-chat-log"></div>
+
+            <label class="creator-label" for="creator-question-input">Сообщение для Codex</label>
+            <textarea
+              class="creator-textarea creator-question-input"
+              id="creator-question-input"
+              rows="4"
+              placeholder="Например: почему экран выглядит сыро и что исправить первым?"
+            ></textarea>
+            <div class="creator-action-row">
+              <span class="creator-live-pill" id="creator-live-pill">Локальный ответчик готов</span>
+              <button class="primary-button" id="creator-send" type="button">Отправить вопрос</button>
+            </div>
           </article>
 
-          <article class="creator-card">
-            <p class="eyebrow" id="creator-screen-kicker">Текущий экран</p>
-            <div class="creator-mini-list" id="creator-screen-list"></div>
-          </article>
+          <div class="creator-note-grid">
+            <article class="creator-brief-card">
+              <label class="creator-label" for="creator-project-answer">Мой ответ для проекта</label>
+              <textarea
+                class="creator-textarea"
+                id="creator-project-answer"
+                rows="6"
+                placeholder="Сюда можно записывать решения простыми словами: что делаем сейчас, что откладываем, что обязательно показать."
+              ></textarea>
+            </article>
 
-          <article class="creator-card">
-            <p class="eyebrow" id="creator-status-kicker">Статус копирования</p>
-            <p class="creator-copy-status" id="creator-copy-status">Бриф ещё не копировался.</p>
-          </article>
-
-          <article class="creator-card">
-            <p class="eyebrow" id="creator-example-kicker">Можно спросить меня так</p>
-            <div class="creator-mini-list" id="creator-example-list"></div>
-          </article>
-        </aside>
+            <article class="creator-brief-card">
+              <label class="creator-label" for="creator-private-notes">Приватные заметки</label>
+              <textarea
+                class="creator-textarea"
+                id="creator-private-notes"
+                rows="6"
+                placeholder="Любые ваши заметки. Они сохраняются локально только в этом браузере."
+              ></textarea>
+            </article>
+          </div>
+        </section>
       </div>
-    </aside>
-  </section>
+    </section>
+  </div>
 
-  <script src="src/main.js?v=20260321s" defer></script>
+  <script src="src/main.js?v=20260323a" defer></script>
 </body>
 </html>
-

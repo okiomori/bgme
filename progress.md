@@ -10,41 +10,101 @@ Original prompt: отлично теперь заполни все недост�
 - Added a player-facing guide document in docs/game-guide.md.
 - TODO: connect route nodes to real combat encounters and post-battle rewards.
 - TODO: add save/load so menu state persists across sessions.
-
-- 2026-03-21: added a full desktop title flow with `new run`, `continue`, and guide access.
-- 2026-03-21: wired real `results`, `chapter complete`, and `ending` screens into the game loop.
-- 2026-03-21: connected battle rewards to shared material inventory and hero upgrades.
-- 2026-03-21: added quest unlock rules for campaign progression: `story -> gathering -> raid -> event`.
-- 2026-03-21: made hero upgrades spend real resources and affect future battle stats.
-- 2026-03-21: verified the complete campaign in Playwright from a fresh save to the ending screen.
-- 2026-03-21: captured fresh desktop verification images:
-  - `output/final-title.png`
-  - `output/final-results.png`
-  - `output/final-chapter.png`
-  - `output/final-ending.png`
-  - `output/final-party-upgrade.png`
-- 2026-03-21: note about tooling: the bundled `develop-web-game` client still captures only the ambient canvas in its PNG output for this project, so visual verification was done with direct Playwright screenshots in addition to the required client run.
-- 2026-03-21: synced the title-screen `Continue` state with actual save presence so a clean boot no longer claims there is a save when there is not.
-- Current status: the vertical slice is now fully finishable as a Steam-style demo loop.
-- 2026-03-21: final PC polish pass completed for the Steam demo release candidate.
-- 2026-03-21: expanded the title screen with a readable demo-loop panel, keyboard reference, and campaign-track status cards.
-- 2026-03-21: upgraded the results, chapter-complete, and ending screens with denser desktop cards, explicit next-step actions, and visible hotkey badges.
-- 2026-03-21: added static hotkey badges to rail, dock, and primary action buttons to make keyboard-first PC navigation self-explanatory.
-- 2026-03-21: captured fresh desktop verification images:
-  - `output/polish-title-full.png`
-  - `output/polish-results-final.png`
-  - `output/polish-chapter-final.png`
-  - `output/polish-ending-final.png`
-- 2026-03-21: reran the required `develop-web-game` client against the polished build and verified the final layouts with direct Playwright screenshots.
-- 2026-03-21: rebuilt the `Guide` screen into a denser desktop layout with section tags, highlight cards, action cards, and a clearer PC information hierarchy.
-- 2026-03-21: separated `project status` from `save progress` in the guide and menu so the player's current run no longer looks like the overall project readiness.
-- 2026-03-21: captured updated guide verification images:
-  - `output/guide-rework-check-fresh.png`
-  - `output/guide-rework-check-final.png`
-- 2026-03-21: added an artistic portrait pass for the party screen with per-hero halos, back-hair shapes, crowns, trails, and emblems to push the silhouettes away from abstract blocks.
-- 2026-03-21: upgraded battle-unit silhouettes with halos, shrouds, trails, and emblems so allies and enemies read more like authored factions instead of placeholder shapes.
-- 2026-03-21: added a hidden creator-only `author cabin` opened with `Ctrl + Shift + M`.
-- 2026-03-21: the creator cabin stores private questions, project answers, and notes in localStorage and offers a one-click `Copy brief` action for the next conversation with Codex.
-- 2026-03-21: added topic-based creator help in simple language, screen-specific author hints, and ready-made prompt examples for a non-technical project owner.
-- 2026-03-21: repaired `index.html` after a temporary UTF-8 / mojibake regression and re-verified the served build in the browser.
-- 2026-03-21: reran the required `develop-web-game` client after the creator/portrait pass.
+- Added an in-game Guide screen and wired it into `Menu -> Open guide` plus keyboard `8`.
+- Separated Quest and Journal responsibilities:
+  - Quests now show route logic, node type, objective, reward, and recommendation.
+  - Journal now behaves like an archive with unlock conditions and related-entry context.
+- Added route progression logic for Steam slice:
+  - route progress now tracks cleared nodes
+  - combat nodes block advancement until the encounter is won
+  - node rewards are claimed only once
+- Added battle state resolution:
+  - encounter victory marks the current combat node as resolved
+  - defeat allows retry without losing the route
+  - progress, archive state, settings, and resources save to localStorage
+- Verified syntax with `node --check src/main.js`.
+- Verified UI state via `develop-web-game` client (`render_game_to_text`) and full-page Playwright screenshots.
+- TODO: tie shop purchases and hero growth to persistent combat/meta outcomes.
+- TODO: add a dedicated post-battle reward/result screen instead of returning via log only.
+- Added a hidden creator-only cabin overlay:
+  - opens via triple-click on the logo or `Ctrl+Shift+M`
+  - closes via close button, backdrop click, and `Esc`
+  - stores creator notes/questions in `localStorage`
+  - includes a local instant-response assistant for project modernization questions
+- Added a private creator brief layer with:
+  - current screen
+  - project readiness
+  - save progress
+  - dynamic Codex question/checklist/hint based on the active screen
+- Added a first painterly pass for party portraits:
+  - new backwash/motif/veil layers in the portrait frame
+- Integrated a real Liora portrait into the Party screen:
+  - added a portrait-art layer to the frame
+  - wired hero data so Liora uses real art while the other heroes keep the fallback stylized shell
+  - verified the live Party screen on a clean local server build
+  - stronger head/hair/cloak rendering
+  - hero-specific motif silhouettes for Liora, Rian, Saya, and Noel
+- Verified syntax with `node --check src/main.js`.
+- Verified creator flow and portrait pass with Playwright via `output/verify_creator_ui.mjs`.
+- Captured verification artifacts:
+  - `output/creator-cabin-open.png`
+  - `output/creator-cabin-answer.png`
+  - `output/party-portrait-pass.png`
+- Note for next pass:
+  - creator tooling is now good enough as a hidden author layer
+  - primary focus should return to the actual game: `quests`, `battle`, and stronger in-game character presentation
+- Added a deeper demo-loop pass for the actual game:
+  - home now shows chapter progress, current sanctuary boon status, and active hero focus
+  - party now has real hero upgrades tied to shared resources
+  - added `chapter` and `ending` screens to close the loop after the main route
+  - added a company-facing note for API access at `docs/company-api-request.md`
+- Added initial result/chapter/meta rendering:
+  - `renderResults`, `renderChapterScreen`, `renderEndingScreen`, `renderHomeMeta`
+  - hero upgrades now affect derived combat stats via `getHeroBattleProfile`
+- Verified:
+  - `node --check src/main.js`
+  - live Playwright smoke on `http://127.0.0.1:4177`
+  - console is clean after inline favicon was added
+- Remaining follow-up:
+  - refine defeat flow if we want a more authored failure presentation
+  - polish placement of the new home meta block so it feels more intentionally composed
+  - sync this worktree copy back into `C:\Users\marin\Documents\bgme` if the user wants the launch folder updated
+- Added local art setup without API:
+  - installed local `Krita` to `C:\Users\marin\Apps\Krita`
+  - installed `Krita AI Diffusion` plugin into `C:\Users\marin\AppData\Roaming\krita`
+  - created BGME art folders under `C:\Users\marin\Documents\bgme\art`
+  - added one-click launcher `start-bgme-art-studio.bat`
+  - added simple author guide `docs/local-art-setup.md`
+  - added first local prompt files for `Liora`
+- Added a soft world reboot document:
+  - `docs/world-reframe.md` reframes BGME from generic tactical fantasy toward a quieter, stranger, authorial world built on memory, living architecture, and transformed bodies
+- Connected meta-progression into a real material loop:
+  - added persistent shared material inventory in `src/main.js`
+  - route rewards and post-battle rewards can now grant hero materials, not just lumen/fragments
+  - shop purchases now add actual materials to the shared stock
+  - hero upgrades now consume profile-specific materials in addition to lumen and fragments
+  - party and shop screens now reflect live material counts from save state
+- Verified:
+  - `node --check src/main.js`
+  - Playwright smoke on local server: shop purchase -> material gain -> hero upgrade consumption
+- Applied the new tone across docs and in-game writing:
+  - rewrote `docs/character-designs.md` into a fuller character bible
+  - added `docs/visual-laws.md` as a compact visual rule set
+  - updated `docs/game-guide.md` to reflect the new world framing
+  - updated in-game guide sections, readiness text, creator hints, and hero copy inside `src/main.js`
+- Stabilized the Steam-slice entry flow in the real launch folder:
+  - hash-first navigation now respects `#home`, `#quests`, `#party`, `#journal`, `#guide`, and `#menu`
+  - the default root launch returns to `home` instead of reviving an arbitrary saved screen
+  - added a cache-bust on `styles.css` and `src/main.js` so the browser stops showing stale builds
+- Reworked `home` into a real player-facing entry scene:
+  - replaced the abstract spirit placeholder with the canonical Liora portrait
+  - rewrote the intro copy into in-world language
+  - tightened the hero caption so the screen reads like a quiet sanctuary scene instead of a UI mockup
+- Softened player-facing quest copy:
+  - chapter descriptions are now written as route fiction instead of development notes
+  - the completed-route objective no longer talks about showcase screens
+- Cleaned release-facing entry points:
+  - removed `start-bgme-safe.bat`
+  - removed `generate-liora-art.bat`
+  - removed `tmp-actions-idle.json`
+  - kept only the clear launchers for the game, art studio, and optional ComfyUI

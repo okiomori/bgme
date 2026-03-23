@@ -1,0 +1,53 @@
+{
+  "defaults": {
+    "model": "gpt-image-1",
+    "size": "1024x1536",
+    "quality": "high",
+    "format": "png",
+    "styleGuide": "Premium painterly fantasy character concept art for a desktop-first tactical RPG, moss-gothic mood, readable silhouette, restrained palette, no UI, no logos, no direct imitation of existing game IP."
+  },
+  "heroes": [
+    {
+      "id": "mirel",
+      "name": "Mirel",
+      "role": "Bell Warden",
+      "prompt": "Bust portrait of Mirel, an adult woman bell warden from overgrown cathedral ruins. Slim vertical silhouette, heavy bronze neck-bell frame integrated into a layered travel mantle, weathered linen, moss threads, oxidized brass, rain-marked skin, tired but focused gaze. Mood: sacred fatigue, quiet vigilance. Palette: bone ivory, wet bronze, moss green, deep charcoal. Premium painterly fantasy concept art, high silhouette readability, no glamour.",
+      "negative": "text, logo, watermark, frame, UI overlay, generic mobile gacha style, plastic skin, glossy fashion makeup, photorealism, 3d render, nsfw, nudity, childlike face"
+    },
+    {
+      "id": "toren",
+      "name": "Toren",
+      "role": "Root Binder",
+      "prompt": "Bust portrait of Toren, an adult male root binder who stabilizes collapsing paths. Broad shoulders, compressed neck, one arm wrapped in carved bark braces and root-thread bindings, rough stone dust on layered coat, practical ritual harness with old iron hooks. Expression calm and heavy, no bravado. Palette: basalt gray, bark brown, muted lichen, dim gold flecks. Painterly tactical RPG concept portrait.",
+      "negative": "text, logo, watermark, frame, UI overlay, heroic knight armor, shiny fantasy plate, neon, overdesigned ornaments, photorealism, 3d render, nsfw"
+    },
+    {
+      "id": "ysera",
+      "name": "Ysera",
+      "role": "Rain Cartographer",
+      "prompt": "Bust portrait of Ysera, an adult female rain cartographer carrying folded weather maps stitched into her cloak. Asymmetric silhouette with diagonal measuring rod, soaked paper layers, ink scars on fingers, glass bead markers, faint lantern reflection in the eyes. Emotion: concentrated, fragile, precise. Palette: parchment ivory, fog blue, wet slate, muted silver. Premium painterly fantasy portrait for desktop tactical RPG.",
+      "negative": "text, logo, watermark, frame, UI overlay, cute anime school style, bright saturated colors, glossy skin, photorealism, 3d render, nsfw, child"
+    },
+    {
+      "id": "kael",
+      "name": "Kael",
+      "role": "Ash Hunter",
+      "prompt": "Bust portrait of Kael, an adult hunter marked by ash moth swarms. Narrow angular silhouette, charred silk hood, matte bone trinkets, split shoulder mantle that opens like a damaged wing, dry pollen residue across collar and gloves. Expression silent and predatory without posing. Palette: ash black, dry crimson, bone white, soot brown. Painterly premium concept portrait, readable shape, grounded materials.",
+      "negative": "text, logo, watermark, frame, UI overlay, sexy assassin trope, fetish outfit, neon red, glossy latex, photorealism, 3d render, nsfw"
+    },
+    {
+      "id": "elis",
+      "name": "Elis",
+      "role": "Lumen Chorister",
+      "prompt": "Bust portrait of Elis, an adult non-binary lumen chorister from flooded archive halls. Soft but unusual silhouette with layered veil-cloak, cracked ceramic throat plates, pale lumen seams under fabric edges, old silver clasps, damp parchment wraps. Expression serene with underlying strain. Palette: cold ivory, dim teal, oxidized silver, moss shadow. Painterly fantasy concept art for tactical RPG, atmospheric and restrained.",
+      "negative": "text, logo, watermark, frame, UI overlay, sci-fi hologram suit, futuristic clean armor, kawaii face, overexposed glow, photorealism, 3d render, nsfw"
+    },
+    {
+      "id": "draven",
+      "name": "Draven",
+      "role": "Collapsed Gate Sentinel",
+      "prompt": "Bust portrait of Draven, an adult sentinel whose body carries traces of ruined gate architecture. Massive collar silhouette like broken buttress plates, chipped stone-iron pauldrons over cloth, old rope joints, wet moss in fractures, one eye lit by faint amber rune reflection. Emotion: stubborn endurance. Palette: dark stone, rusted iron, muted amber, swamp green. Premium painterly tactical RPG concept portrait.",
+      "negative": "text, logo, watermark, frame, UI overlay, generic paladin, pristine armor, comic-book exaggeration, neon effects, photorealism, 3d render, nsfw"
+    }
+  ]
+}
