@@ -5214,7 +5214,9 @@
   applyUiSettings();
   attachPresenceMotion(homeStageArt, { intensity: 0.72 });
   attachPresenceMotion(portraitShell, { intensity: 0.5 });
-  const initialScreen = getHashScreen() || "home";
+  const requestedScreen = getHashScreen();
+  const startupPlayableScreens = new Set(["home", "quests", "battle", "results", "chapter", "ending", "title"]);
+  const initialScreen = startupPlayableScreens.has(requestedScreen) ? requestedScreen : "home";
   if (initialScreen === "battle") {
     prepareBattleFromQuest();
   }
