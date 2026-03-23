@@ -1,0 +1,6 @@
+node_modules/
+output/
+preview-*.png
+tmp-actions-idle.json
+.codex/
+.qodo/

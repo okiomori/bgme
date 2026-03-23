@@ -48,3 +48,5 @@ Original prompt: отлично теперь заполни все недост�
 - 2026-03-21: added topic-based creator help in simple language, screen-specific author hints, and ready-made prompt examples for a non-technical project owner.
 - 2026-03-21: repaired `index.html` after a temporary UTF-8 / mojibake regression and re-verified the served build in the browser.
 - 2026-03-21: reran the required `develop-web-game` client after the creator/portrait pass.
+- 2026-03-23: expanded the home screen into a live command hub with next-route status, campaign track, archive progress, and quick resume actions.
+- 2026-03-23: cleaned repository artifacts for publishing by removing tracked preview/output files, local tool state, and committed dependencies from git.
