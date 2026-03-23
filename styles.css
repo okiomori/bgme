@@ -10896,6 +10896,106 @@ button:focus-visible,
     radial-gradient(circle at 82% 88%, rgba(196, 171, 124, 0.26), transparent 30%);
 }
 
+.world-panorama-celestial {
+  opacity: 0.85;
+  background:
+    radial-gradient(circle at 72% 24%, rgba(251, 244, 212, 0.58) 0 7%, rgba(251, 244, 212, 0.18) 14%, transparent 30%),
+    radial-gradient(circle at 20% 16%, rgba(255, 255, 255, 0.16), transparent 36%);
+}
+
+.world-panorama-landmark {
+  opacity: 0.72;
+  background:
+    radial-gradient(110% 90% at 50% 112%, rgba(14, 24, 22, 0.94) 44%, transparent 45%),
+    conic-gradient(from 180deg at 52% 84%, rgba(200, 196, 174, 0.18), rgba(16, 23, 21, 0) 42%, rgba(193, 182, 145, 0.16) 70%, rgba(16, 23, 21, 0) 100%);
+}
+
+.world-panorama-path {
+  opacity: 0.66;
+  background:
+    linear-gradient(162deg, transparent 0 58%, rgba(219, 202, 160, 0.16) 63%, rgba(152, 140, 112, 0.18) 72%, transparent 82%),
+    radial-gradient(70% 44% at 50% 100%, rgba(8, 13, 12, 0.68) 20%, transparent 74%);
+}
+
+.world-panorama-flora {
+  opacity: 0.78;
+  background:
+    radial-gradient(30% 44% at 14% 100%, rgba(66, 105, 84, 0.66), transparent 70%),
+    radial-gradient(34% 48% at 84% 100%, rgba(78, 120, 95, 0.62), transparent 70%),
+    radial-gradient(18% 22% at 18% 88%, rgba(235, 220, 164, 0.22), transparent 72%),
+    radial-gradient(16% 20% at 82% 92%, rgba(240, 227, 173, 0.18), transparent 74%);
+}
+
+.world-panorama-fog {
+  opacity: 0.6;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(60% 20% at 22% 72%, rgba(220, 238, 228, 0.24), transparent 72%),
+    radial-gradient(58% 18% at 78% 76%, rgba(212, 228, 220, 0.22), transparent 72%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 38%);
+}
+
+.world-panorama-fireflies {
+  opacity: 0.72;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(250, 243, 188, 0.7) 0 1%, transparent 2%),
+    radial-gradient(circle at 32% 36%, rgba(248, 241, 180, 0.45) 0 0.8%, transparent 1.8%),
+    radial-gradient(circle at 54% 29%, rgba(248, 241, 180, 0.5) 0 0.9%, transparent 2%),
+    radial-gradient(circle at 68% 34%, rgba(248, 241, 180, 0.55) 0 0.9%, transparent 2%),
+    radial-gradient(circle at 84% 22%, rgba(248, 241, 180, 0.42) 0 0.8%, transparent 2%),
+    radial-gradient(circle at 74% 44%, rgba(248, 241, 180, 0.38) 0 0.8%, transparent 2%);
+  animation: worldGlowPulse 6.6s ease-in-out infinite;
+}
+
+.world-panorama-traveler {
+  position: absolute;
+  left: 52%;
+  bottom: 20%;
+  width: 16px;
+  height: 34px;
+  border-radius: 10px 10px 6px 6px;
+  background:
+    linear-gradient(180deg, rgba(243, 235, 213, 0.96), rgba(155, 146, 130, 0.94) 44%, rgba(32, 39, 40, 0.92));
+  box-shadow: 0 0 18px rgba(245, 231, 174, 0.24), 0 16px 26px rgba(0, 0, 0, 0.4);
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.world-panorama-traveler::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: rgba(246, 239, 217, 0.96);
+}
+
+.world-panorama-traveler::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 48px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at center, rgba(8, 12, 13, 0.62), transparent 72%);
+}
+
+@keyframes worldGlowPulse {
+  0%,
+  100% {
+    opacity: 0.48;
+  }
+
+  50% {
+    opacity: 0.78;
+  }
+}
+
 .world-stage-foot {
   margin-top: 12px;
   display: flex;
@@ -10998,12 +11098,102 @@ button:focus-visible,
   background: linear-gradient(180deg, rgba(224, 243, 223, 0.28), rgba(66, 112, 89, 0.42) 42%, rgba(8, 14, 13, 0.9));
 }
 
+.screen[data-screen="world"][data-biome="forest"] .world-panorama-landmark {
+  background:
+    radial-gradient(66% 44% at 52% 104%, rgba(6, 14, 13, 0.92) 28%, transparent 74%),
+    radial-gradient(20% 40% at 44% 76%, rgba(15, 30, 24, 0.84), transparent 76%),
+    radial-gradient(18% 36% at 58% 74%, rgba(17, 32, 26, 0.78), transparent 76%),
+    linear-gradient(90deg, transparent 43%, rgba(227, 210, 169, 0.16) 49%, transparent 54%);
+}
+
+.screen[data-screen="world"][data-biome="forest"] .world-panorama-path {
+  background:
+    linear-gradient(166deg, transparent 0 60%, rgba(203, 186, 139, 0.22) 64%, rgba(134, 123, 94, 0.24) 73%, transparent 82%),
+    radial-gradient(70% 44% at 50% 100%, rgba(8, 13, 12, 0.66) 20%, transparent 74%);
+}
+
+.screen[data-screen="world"][data-biome="forest"] .world-panorama-traveler {
+  left: 53%;
+  bottom: 20%;
+}
+
 .screen[data-screen="world"][data-biome="mountain"] .world-panorama-back {
   background: linear-gradient(180deg, rgba(223, 231, 238, 0.28), rgba(89, 112, 130, 0.4) 42%, rgba(10, 14, 18, 0.92));
 }
 
+.screen[data-screen="world"][data-biome="mountain"] .world-panorama-mid {
+  background:
+    linear-gradient(165deg, transparent 0 42%, rgba(209, 219, 228, 0.32) 50%, transparent 54%),
+    linear-gradient(198deg, transparent 0 52%, rgba(164, 184, 202, 0.26) 60%, transparent 66%),
+    linear-gradient(180deg, rgba(229, 236, 244, 0.06), rgba(21, 31, 40, 0.26));
+  opacity: 0.58;
+}
+
+.screen[data-screen="world"][data-biome="mountain"] .world-panorama-landmark {
+  clip-path: polygon(0 100%, 14% 66%, 24% 72%, 34% 52%, 47% 62%, 58% 40%, 74% 66%, 86% 50%, 100% 70%, 100% 100%);
+  background:
+    linear-gradient(180deg, rgba(220, 231, 243, 0.36), rgba(80, 105, 126, 0.82) 56%, rgba(16, 24, 33, 0.96));
+}
+
+.screen[data-screen="world"][data-biome="mountain"] .world-panorama-path {
+  background:
+    linear-gradient(170deg, transparent 0 62%, rgba(207, 217, 226, 0.22) 67%, rgba(116, 136, 152, 0.28) 75%, transparent 84%),
+    radial-gradient(70% 42% at 50% 100%, rgba(12, 18, 24, 0.72) 22%, transparent 74%);
+}
+
+.screen[data-screen="world"][data-biome="mountain"] .world-panorama-flora {
+  opacity: 0.54;
+  background:
+    radial-gradient(26% 34% at 18% 100%, rgba(116, 146, 160, 0.4), transparent 72%),
+    radial-gradient(28% 36% at 86% 100%, rgba(126, 152, 170, 0.42), transparent 72%);
+}
+
+.screen[data-screen="world"][data-biome="mountain"] .world-panorama-fireflies {
+  opacity: 0.34;
+}
+
+.screen[data-screen="world"][data-biome="mountain"] .world-panorama-traveler {
+  left: 58%;
+  bottom: 23%;
+}
+
 .screen[data-screen="world"][data-biome="ruins"] .world-panorama-back {
   background: linear-gradient(180deg, rgba(237, 225, 198, 0.24), rgba(103, 91, 64, 0.42) 40%, rgba(12, 11, 10, 0.94));
+}
+
+.screen[data-screen="world"][data-biome="ruins"] .world-panorama-celestial {
+  background:
+    radial-gradient(circle at 70% 22%, rgba(255, 222, 164, 0.5) 0 7%, rgba(255, 222, 164, 0.14) 15%, transparent 34%),
+    radial-gradient(circle at 24% 18%, rgba(238, 201, 146, 0.26), transparent 38%);
+}
+
+.screen[data-screen="world"][data-biome="ruins"] .world-panorama-landmark {
+  clip-path: polygon(0 100%, 0 64%, 18% 64%, 18% 50%, 28% 50%, 28% 70%, 38% 70%, 38% 46%, 49% 46%, 49% 72%, 62% 72%, 62% 54%, 74% 54%, 74% 74%, 86% 74%, 86% 64%, 100% 64%, 100% 100%);
+  background:
+    linear-gradient(180deg, rgba(240, 218, 179, 0.26), rgba(127, 101, 66, 0.8) 54%, rgba(23, 20, 16, 0.95));
+}
+
+.screen[data-screen="world"][data-biome="ruins"] .world-panorama-path {
+  background:
+    linear-gradient(158deg, transparent 0 58%, rgba(216, 182, 132, 0.22) 62%, rgba(132, 104, 70, 0.28) 72%, transparent 82%),
+    radial-gradient(72% 44% at 50% 100%, rgba(16, 13, 10, 0.72) 22%, transparent 74%);
+}
+
+.screen[data-screen="world"][data-biome="ruins"] .world-panorama-flora {
+  opacity: 0.48;
+  background:
+    radial-gradient(22% 34% at 14% 100%, rgba(142, 128, 92, 0.38), transparent 72%),
+    radial-gradient(26% 34% at 84% 100%, rgba(150, 130, 90, 0.42), transparent 72%),
+    radial-gradient(12% 16% at 46% 84%, rgba(232, 196, 142, 0.2), transparent 74%);
+}
+
+.screen[data-screen="world"][data-biome="ruins"] .world-panorama-fireflies {
+  opacity: 0.42;
+}
+
+.screen[data-screen="world"][data-biome="ruins"] .world-panorama-traveler {
+  left: 49%;
+  bottom: 19%;
 }
 
 @media (max-width: 1480px) {
