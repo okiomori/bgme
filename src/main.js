@@ -1470,7 +1470,6 @@
   const homeScenePanel = document.getElementById("home-scene-panel");
   const homeCommandGrid = document.getElementById("home-command-grid");
   const homeCommandStrip = document.getElementById("home-command-strip");
-  const homeMetaList = document.getElementById("home-meta-list");
   const homeEncounterPreview = document.getElementById("home-encounter-preview");
   const homePartyStrip = document.getElementById("home-party-strip");
   const chapterKicker = document.getElementById("chapter-kicker");
@@ -2655,10 +2654,6 @@
           }
         });
       });
-    }
-
-    if (homeMetaList) {
-      homeMetaList.innerHTML = "";
     }
 
     renderTopbarHud();

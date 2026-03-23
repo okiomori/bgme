@@ -1,4 +1,12 @@
-FROM alpine:latest
+FROM node:22-alpine
 LABEL Name=bgme Version=0.0.1
-RUN apk add --no-cache fortune
-ENTRYPOINT ["sh", "-c", "fortune -a | cat"]
+
+WORKDIR /app
+
+COPY index.html styles.css server.cjs ./
+COPY src/ ./src/
+COPY art/ ./art/
+
+EXPOSE 4175
+
+CMD ["node", "server.cjs"]
