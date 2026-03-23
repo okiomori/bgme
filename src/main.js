@@ -117,6 +117,84 @@
     },
   ];
 
+  const worldLocations = [
+    {
+      id: "forest-trail",
+      biome: "forest",
+      kicker: "Лесной пояс",
+      title: "Моховая тропа",
+      copy: "Туман стелется между елями, а руинные арки всплывают из зелени как затопленные своды старого храма.",
+      tags: ["Сбор трав", "Тихие тропы", "Старые сигилы"],
+      npc: {
+        name: "Листвянка Ирис",
+        role: "Хранительница лесных проходов",
+        line: "Если тропы не очистить от корневой скверны, караван не дойдёт к горным перевалам.",
+        choices: [
+          { label: "Спросить про безопасный путь", reply: "Идите вдоль белых камней. Там лес дышит тише и не сбивает шаг." },
+          { label: "Взять работу у проводницы", reply: "Хорошо. Сожгите три гнезда шепчущей лозы и путь откроется для всех." },
+        ],
+      },
+      quests: [
+        {
+          id: "forest-nests",
+          title: "Тихие костры",
+          body: "Очистить тропу от шепчущей лозы и зажечь сигнальные чаши на трёх развилках.",
+          reward: { lumen: 28, fragments: 1 },
+        },
+      ],
+    },
+    {
+      id: "mountain-pass",
+      biome: "mountain",
+      kicker: "Горный рубеж",
+      title: "Перевал Эха",
+      copy: "Ледяной ветер режет по бронзе, а над обрывом стоят полуразрушенные башни дозорных эпохи до распада.",
+      tags: ["Каменные мосты", "Высотный ветер", "Сторожевые башни"],
+      npc: {
+        name: "Каменщик Ведар",
+        role: "Старший караванных переходов",
+        line: "Нужно укрепить мост, иначе люди и припасы сорвутся в пропасть до первой метели.",
+        choices: [
+          { label: "Уточнить, где слабое место", reply: "Средняя арка дала трещину. Заклиньте её монолитными штифтами и держитесь правой стены." },
+          { label: "Пообещать помощь каравану", reply: "Если успеете до сумерек, в руины пойдёт полноценная экспедиция с ремесленниками." },
+        ],
+      },
+      quests: [
+        {
+          id: "mountain-bridge",
+          title: "Арка под ветром",
+          body: "Укрепить каменный мост и провести караван через перевал без потерь.",
+          reward: { lumen: 34, fragments: 1 },
+        },
+      ],
+    },
+    {
+      id: "ruin-basin",
+      biome: "ruins",
+      kicker: "Пояс руин",
+      title: "Чаша обелисков",
+      copy: "Сломанные колоннады уходят в землю, а между ними горят бледные огни архивной пыли и забытых голосов.",
+      tags: ["Древние своды", "Архивная пыль", "Ночные сигилы"],
+      npc: {
+        name: "Архивист Ноэль",
+        role: "Проводник по памяти руин",
+        line: "Внизу есть залы с запечатанными картами. Если вернуть питание в обелиски, мы откроем новую линию заданий.",
+        choices: [
+          { label: "Спросить про древние залы", reply: "Слушайте звук воды. Где капли глухие, там под полом скрыт архив." },
+          { label: "Согласиться активировать обелиски", reply: "Тогда запускаем ритуал. Нужны три сердечника и одна чистая печать." },
+        ],
+      },
+      quests: [
+        {
+          id: "ruin-obelisks",
+          title: "Пульс руин",
+          body: "Активировать три обелиска и открыть архивный контур для новой серии вылазок.",
+          reward: { lumen: 42, fragments: 2 },
+        },
+      ],
+    },
+  ];
+
   // Portrait visual profiles — drives the SVG auto-generation for all heroes.
   // Adding a new hero only requires adding its data here; the generator handles the rest.
   const heroPortraitProfiles = {
@@ -979,6 +1057,7 @@
   const screenLabels = {
     home: "Дом",
     quests: "Экспедиции",
+    world: "Мир",
     battle: "Бой",
     results: "Итоги",
     party: "Отряд",
@@ -1127,6 +1206,15 @@
           body: "Здесь можно писать вопросы простыми словами. Ответы приходят сразу локально в проекте и помогают не теряться в приоритетах.",
         },
       ],
+    };
+  }
+
+  function createInitialWorldState() {
+    return {
+      activeLocationId: worldLocations[0].id,
+      activeQuestId: worldLocations[0].quests[0].id,
+      completedQuestIds: {},
+      npcLine: "",
     };
   }
 
@@ -1472,6 +1560,19 @@
   const homeCommandStrip = document.getElementById("home-command-strip");
   const homeEncounterPreview = document.getElementById("home-encounter-preview");
   const homePartyStrip = document.getElementById("home-party-strip");
+  const worldScreen = document.querySelector('.screen[data-screen="world"]');
+  const worldLocationList = document.getElementById("world-location-list");
+  const worldBiomeKicker = document.getElementById("world-biome-kicker");
+  const worldLocationTitle = document.getElementById("world-location-title");
+  const worldLocationCopy = document.getElementById("world-location-copy");
+  const worldPanorama = document.getElementById("world-panorama");
+  const worldStageFoot = document.getElementById("world-stage-foot");
+  const worldNpcName = document.getElementById("world-npc-name");
+  const worldNpcRole = document.getElementById("world-npc-role");
+  const worldNpcLine = document.getElementById("world-npc-line");
+  const worldDialogueOptions = document.getElementById("world-dialogue-options");
+  const worldQuestList = document.getElementById("world-quest-list");
+  const worldQuestComplete = document.getElementById("world-quest-complete");
   const chapterKicker = document.getElementById("chapter-kicker");
   const chapterTitle = document.getElementById("chapter-title");
   const chapterSummary = document.getElementById("chapter-summary");
@@ -1555,6 +1656,7 @@
     selectedChapterBoonId: sanctuaryBoons[0].id,
     heroUpgrades: Object.fromEntries(heroes.map((hero) => [hero.id, 0])),
     routeProgress: Object.fromEntries(questCards.map((quest) => [quest.id, 0])),
+    world: createInitialWorldState(),
     creator: createInitialCreatorState(),
   };
 
@@ -1682,6 +1784,7 @@
       chapterBoons: state.chapterBoons,
       selectedChapterBoonId: state.selectedChapterBoonId,
       heroUpgrades: state.heroUpgrades,
+      world: state.world,
       creator: {
         draftQuestion: state.creator.draftQuestion,
         projectAnswer: state.creator.projectAnswer,
@@ -1724,6 +1827,16 @@
       if (parsed.chapterBoons) state.chapterBoons = { ...parsed.chapterBoons };
       if (parsed.selectedChapterBoonId) state.selectedChapterBoonId = parsed.selectedChapterBoonId;
       if (parsed.heroUpgrades) state.heroUpgrades = { ...state.heroUpgrades, ...parsed.heroUpgrades };
+      if (parsed.world) {
+        state.world = {
+          ...state.world,
+          ...parsed.world,
+          completedQuestIds: {
+            ...state.world.completedQuestIds,
+            ...(parsed.world.completedQuestIds ?? {}),
+          },
+        };
+      }
       if (Array.isArray(parsed.sessionLog) && parsed.sessionLog.length) {
         state.sessionLog = parsed.sessionLog.slice(0, 6);
       }
@@ -2210,6 +2323,7 @@
     const screenLabelMap = {
       home: "Святилище",
       quests: "Экспедиции",
+      world: "Мир",
       party: "Отряд",
       journal: "Архив",
       shop: "Лавка",
@@ -2252,6 +2366,21 @@
           `Фокус: ${activeHero.name}`,
         ];
         break;
+      case "world": {
+        const location = getActiveWorldLocation();
+        const quest = getActiveWorldQuest();
+        const questDone = Boolean(state.world.completedQuestIds[quest.id]);
+        title = `${location.title} · ${location.npc.name}`;
+        copy = questDone
+          ? "Локация очищена. Можно перейти в другой биом и взять новый локальный контракт."
+          : "Говорите с NPC, выбирайте локальный контракт и закрывайте его для награды.";
+        tags = [
+          `Биом: ${location.kicker}`,
+          `Контракт: ${quest.title}`,
+          `Статус: ${questDone ? "выполнено" : "в процессе"}`,
+        ];
+        break;
+      }
       case "party":
         title = `${activeHero.name} · ${activeHero.role}`;
         copy = "Перестройка отряда, ролей и темпа должна читаться как подготовка к выходу, а не как меню персонажа.";
@@ -2307,6 +2436,149 @@
     topbarStatusTags.innerHTML = tags
       .map((tag) => `<span class="topbar-status-tag">${tag}</span>`)
       .join("");
+  }
+
+  function getWorldLocationById(locationId) {
+    return worldLocations.find((location) => location.id === locationId) ?? worldLocations[0];
+  }
+
+  function getActiveWorldLocation() {
+    return getWorldLocationById(state.world.activeLocationId);
+  }
+
+  function ensureWorldSelection() {
+    const location = getActiveWorldLocation();
+    const availableQuestIds = new Set(location.quests.map((quest) => quest.id));
+    if (!availableQuestIds.has(state.world.activeQuestId)) {
+      const nextQuest = location.quests.find((quest) => !state.world.completedQuestIds[quest.id]) ?? location.quests[0];
+      state.world.activeQuestId = nextQuest.id;
+    }
+  }
+
+  function getActiveWorldQuest() {
+    const location = getActiveWorldLocation();
+    ensureWorldSelection();
+    return location.quests.find((quest) => quest.id === state.world.activeQuestId) ?? location.quests[0];
+  }
+
+  function applyWorldDialogue(choice) {
+    const location = getActiveWorldLocation();
+    state.world.npcLine = choice.reply;
+    addSessionLog(`Диалог: ${location.npc.name}`, choice.reply);
+    renderWorld();
+  }
+
+  function travelToWorldLocation(locationId) {
+    const location = getWorldLocationById(locationId);
+    state.world.activeLocationId = location.id;
+    state.world.npcLine = "";
+    const nextQuest = location.quests.find((quest) => !state.world.completedQuestIds[quest.id]) ?? location.quests[0];
+    state.world.activeQuestId = nextQuest.id;
+    renderWorld();
+    renderTopbarHud();
+    syncVisualAtmosphere();
+    saveState();
+  }
+
+  function completeActiveWorldQuest() {
+    const location = getActiveWorldLocation();
+    const quest = getActiveWorldQuest();
+    if (state.world.completedQuestIds[quest.id]) {
+      return;
+    }
+
+    state.world.completedQuestIds[quest.id] = true;
+    state.resources.lumen += quest.reward.lumen;
+    state.resources.fragments += quest.reward.fragments;
+    state.world.npcLine = `${location.npc.name}: Отличная работа. Место стало безопаснее, а тропа открыта для новых людей.`;
+
+    renderResources();
+    renderWorld();
+    renderTopbarHud();
+    addSessionLog(`Задание закрыто: ${quest.title}`, `Награда: +${quest.reward.lumen} люмена, +${quest.reward.fragments} фрагм.`);
+    saveState();
+  }
+
+  function renderWorld() {
+    if (
+      !worldLocationList ||
+      !worldBiomeKicker ||
+      !worldLocationTitle ||
+      !worldLocationCopy ||
+      !worldStageFoot ||
+      !worldNpcName ||
+      !worldNpcRole ||
+      !worldNpcLine ||
+      !worldDialogueOptions ||
+      !worldQuestList ||
+      !worldQuestComplete
+    ) {
+      return;
+    }
+
+    const location = getActiveWorldLocation();
+    const quest = getActiveWorldQuest();
+    const questDone = Boolean(state.world.completedQuestIds[quest.id]);
+
+    if (worldScreen) {
+      worldScreen.dataset.biome = location.biome;
+    }
+
+    worldBiomeKicker.textContent = location.kicker;
+    worldLocationTitle.textContent = location.title;
+    worldLocationCopy.textContent = location.copy;
+
+    if (worldPanorama) {
+      worldPanorama.dataset.biome = location.biome;
+    }
+
+    worldStageFoot.innerHTML = location.tags
+      .map((tag) => `<span class="world-stage-tag">◈ ${tag}</span>`)
+      .join("");
+
+    worldLocationList.innerHTML = worldLocations
+      .map((item) => {
+        const activeClass = item.id === location.id ? " is-active" : "";
+        const completedCount = item.quests.filter((questItem) => state.world.completedQuestIds[questItem.id]).length;
+        return `
+          <button class="world-location-card${activeClass}" type="button" data-world-location="${item.id}">
+            <span>${item.kicker}</span>
+            <strong>${item.title}</strong>
+            <p>${item.copy}</p>
+            <p>Задания: ${completedCount}/${item.quests.length}</p>
+          </button>
+        `;
+      })
+      .join("");
+
+    worldNpcName.textContent = location.npc.name;
+    worldNpcRole.textContent = location.npc.role;
+    worldNpcLine.textContent = state.world.npcLine || location.npc.line;
+
+    worldDialogueOptions.innerHTML = location.npc.choices
+      .map(
+        (choice, index) =>
+          `<button class="world-dialogue-option" type="button" data-world-choice="${index}">${choice.label}</button>`,
+      )
+      .join("");
+
+    worldQuestList.innerHTML = location.quests
+      .map((questItem) => {
+        const done = Boolean(state.world.completedQuestIds[questItem.id]);
+        const activeClass = questItem.id === quest.id ? " is-active" : "";
+        const doneClass = done ? " is-done" : "";
+        return `
+          <button class="world-quest-item${activeClass}${doneClass}" type="button" data-world-quest="${questItem.id}">
+            <h4>${questItem.title}</h4>
+            <p>${questItem.body}</p>
+            <p>Награда: +${questItem.reward.lumen} люмена, +${questItem.reward.fragments} фрагм.${done ? " · выполнено" : ""}</p>
+          </button>
+        `;
+      })
+      .join("");
+
+    worldQuestComplete.disabled = questDone;
+    worldQuestComplete.textContent = questDone ? "Задание уже выполнено" : `Завершить: ${quest.title}`;
   }
 
   function renderHomeMeta() {
@@ -3010,6 +3282,7 @@
   function syncVisualAtmosphere() {
     const activeHero = getActiveHero();
     const activeQuest = getActiveQuest();
+    const activeWorldLocation = getActiveWorldLocation();
     const questHueMap = {
       azure: 162,
       sage: 108,
@@ -3017,10 +3290,16 @@
       ember: 24,
       night: 266,
     };
+    const worldBiomeHueMap = {
+      forest: 126,
+      mountain: 198,
+      ruins: 36,
+    };
     const baseHeroHue = hexToApproxHue(activeHero.accent);
     const screenHueMap = {
       home: baseHeroHue,
       quests: questHueMap[activeQuest.accent] ?? baseHeroHue,
+      world: worldBiomeHueMap[activeWorldLocation.biome] ?? 126,
       party: baseHeroHue,
       journal: 146,
       shop: 42,
@@ -3034,6 +3313,7 @@
     const screenStrengthMap = {
       home: 0.22,
       quests: 0.2,
+      world: 0.2,
       party: 0.16,
       journal: 0.14,
       shop: 0.14,
@@ -4673,6 +4953,57 @@
     prepareBattleFromQuest();
   });
 
+  if (worldLocationList) {
+    worldLocationList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-world-location]");
+      if (!button) {
+        return;
+      }
+      travelToWorldLocation(button.dataset.worldLocation);
+    });
+  }
+
+  if (worldDialogueOptions) {
+    worldDialogueOptions.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-world-choice]");
+      if (!button) {
+        return;
+      }
+      const location = getActiveWorldLocation();
+      const index = Number(button.dataset.worldChoice);
+      const choice = location.npc.choices[index];
+      if (!choice) {
+        return;
+      }
+      applyWorldDialogue(choice);
+      saveState();
+    });
+  }
+
+  if (worldQuestList) {
+    worldQuestList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-world-quest]");
+      if (!button) {
+        return;
+      }
+      const location = getActiveWorldLocation();
+      const nextQuest = location.quests.find((quest) => quest.id === button.dataset.worldQuest);
+      if (!nextQuest) {
+        return;
+      }
+      state.world.activeQuestId = nextQuest.id;
+      renderWorld();
+      renderTopbarHud();
+      saveState();
+    });
+  }
+
+  if (worldQuestComplete) {
+    worldQuestComplete.addEventListener("click", () => {
+      completeActiveWorldQuest();
+    });
+  }
+
   resultPrimary.addEventListener("click", () => {
     if (!state.lastResult || state.lastResult.status === "defeat") {
       prepareBattleFromQuest();
@@ -4819,6 +5150,9 @@
     }
     if (event.key === "8") {
       setActiveScreen("guide");
+    }
+    if (event.key === "9") {
+      setActiveScreen("world");
     }
 
     if (state.activeScreen === "party" && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
@@ -5206,6 +5540,7 @@
   renderSessionLog();
   renderGuideSections();
   updateGuidePanel();
+  renderWorld();
   renderBattle();
   renderResults();
   renderChapterScreen();

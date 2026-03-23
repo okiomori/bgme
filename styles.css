@@ -10772,3 +10772,256 @@ button:focus-visible,
     justify-self: start;
   }
 }
+
+/* World exploration layer */
+.world-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(560px, 1.6fr) minmax(300px, 1fr);
+  gap: clamp(12px, 0.9vw, 18px);
+  height: 100%;
+}
+
+.world-atlas,
+.world-stage,
+.world-quest-panel {
+  border: 1px solid rgba(240, 221, 172, 0.22);
+  background: linear-gradient(158deg, rgba(244, 236, 214, 0.08), rgba(87, 125, 106, 0.07) 34%, rgba(7, 12, 11, 0.72));
+  padding: 16px;
+  border-radius: var(--radius-lg);
+}
+
+.world-atlas,
+.world-quest-panel {
+  overflow: auto;
+}
+
+.world-lead {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 8px 0 14px;
+}
+
+.world-location-list {
+  display: grid;
+  gap: 10px;
+}
+
+.world-location-card {
+  border: 1px solid rgba(240, 221, 172, 0.2);
+  background: rgba(8, 14, 13, 0.7);
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.world-location-card.is-active {
+  border-color: rgba(245, 230, 186, 0.65);
+  box-shadow: 0 0 0 1px rgba(245, 230, 186, 0.2);
+}
+
+.world-location-card span {
+  display: block;
+  color: var(--gold-soft);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.world-location-card strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 1rem;
+}
+
+.world-location-card p {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.world-stage-head p,
+.world-stage-head h3 {
+  margin: 0;
+}
+
+.world-stage-head p {
+  color: var(--gold-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.world-stage-head h3 {
+  margin-top: 4px;
+  font-size: 1.55rem;
+}
+
+.world-stage-head > p + h3 + p {
+  margin-top: 8px;
+  color: var(--text-soft);
+  line-height: 1.55;
+}
+
+.world-panorama {
+  position: relative;
+  height: min(46vh, 430px);
+  margin-top: 12px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(240, 221, 172, 0.24);
+  background: radial-gradient(circle at 50% 20%, rgba(244, 241, 220, 0.2), rgba(12, 20, 18, 0.9));
+}
+
+.world-panorama-layer {
+  position: absolute;
+  inset: 0;
+  transition: opacity 220ms ease;
+}
+
+.world-panorama-back {
+  background: linear-gradient(180deg, rgba(228, 236, 228, 0.26), rgba(48, 78, 70, 0.36) 42%, rgba(8, 14, 13, 0.88));
+}
+
+.world-panorama-mid {
+  background: repeating-linear-gradient(100deg, rgba(240, 221, 172, 0.08) 0 7%, transparent 7% 13%);
+  mix-blend-mode: screen;
+  opacity: 0.48;
+}
+
+.world-panorama-front {
+  background: radial-gradient(circle at 24% 76%, rgba(182, 218, 190, 0.24), transparent 36%),
+    radial-gradient(circle at 82% 88%, rgba(196, 171, 124, 0.26), transparent 30%);
+}
+
+.world-stage-foot {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.world-stage-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 221, 172, 0.18);
+  background: rgba(8, 14, 13, 0.72);
+  color: var(--text-soft);
+  padding: 6px 10px;
+  font-size: 0.74rem;
+}
+
+.world-npc-card,
+.world-quest-item {
+  border: 1px solid rgba(240, 221, 172, 0.2);
+  border-radius: 12px;
+  background: rgba(8, 14, 13, 0.7);
+  padding: 12px;
+}
+
+.world-npc-card h3,
+.world-npc-card p {
+  margin: 0;
+}
+
+.world-npc-card h3 {
+  font-size: 1.05rem;
+}
+
+.world-npc-card #world-npc-role {
+  margin-top: 4px;
+  color: var(--gold-soft);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.world-npc-card #world-npc-line {
+  margin-top: 8px;
+  color: var(--text-soft);
+  line-height: 1.5;
+  font-size: 0.88rem;
+}
+
+.world-dialogue-options {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.world-dialogue-option {
+  border: 1px solid rgba(240, 221, 172, 0.18);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: rgba(16, 26, 24, 0.82);
+  color: var(--text-main);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.84rem;
+}
+
+.world-quest-list {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.world-quest-item h4,
+.world-quest-item p {
+  margin: 0;
+}
+
+.world-quest-item h4 {
+  font-size: 0.95rem;
+}
+
+.world-quest-item p {
+  margin-top: 6px;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+}
+
+.world-quest-item.is-done {
+  opacity: 0.72;
+}
+
+#world-quest-complete {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.screen[data-screen="world"][data-biome="forest"] .world-panorama-back {
+  background: linear-gradient(180deg, rgba(224, 243, 223, 0.28), rgba(66, 112, 89, 0.42) 42%, rgba(8, 14, 13, 0.9));
+}
+
+.screen[data-screen="world"][data-biome="mountain"] .world-panorama-back {
+  background: linear-gradient(180deg, rgba(223, 231, 238, 0.28), rgba(89, 112, 130, 0.4) 42%, rgba(10, 14, 18, 0.92));
+}
+
+.screen[data-screen="world"][data-biome="ruins"] .world-panorama-back {
+  background: linear-gradient(180deg, rgba(237, 225, 198, 0.24), rgba(103, 91, 64, 0.42) 40%, rgba(12, 11, 10, 0.94));
+}
+
+@media (max-width: 1480px) {
+  .world-layout {
+    grid-template-columns: minmax(240px, 0.85fr) minmax(460px, 1.2fr);
+  }
+
+  .world-quest-panel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 980px) {
+  .world-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .world-panorama {
+    height: 280px;
+  }
+}

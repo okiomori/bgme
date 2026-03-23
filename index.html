@@ -62,6 +62,10 @@
           <span class="rail-icon">⌘</span>
           <span>Экспедиции</span>
         </button>
+        <button class="rail-button" data-screen-target="world">
+          <span class="rail-icon">◍</span>
+          <span>Мир</span>
+        </button>
         <button class="rail-button" data-screen-target="party">
           <span class="rail-icon">✦</span>
           <span>Отряд</span>
@@ -224,6 +228,50 @@
           <section class="quest-carousel" aria-label="Выбор главы">
             <div class="quest-cards" id="quest-cards"></div>
           </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="world">
+        <div class="screen-scape world-scape" aria-hidden="true">
+          <div class="world-sky"></div>
+          <div class="world-haze"></div>
+          <div class="world-ridge world-ridge-back"></div>
+          <div class="world-ridge world-ridge-front"></div>
+        </div>
+
+        <div class="world-layout">
+          <aside class="world-atlas ornate-panel">
+            <p class="eyebrow">Окрестности святилища</p>
+            <h2>Живой мир</h2>
+            <p class="world-lead">Ходите по тропам, говорите с жителями и закрывайте задания, чтобы мир отвечал вам новыми сценами.</p>
+            <div class="world-location-list" id="world-location-list"></div>
+          </aside>
+
+          <section class="world-stage ornate-panel" aria-label="Сцена локации">
+            <div class="world-stage-head">
+              <p class="eyebrow" id="world-biome-kicker">Лесной пояс</p>
+              <h3 id="world-location-title">Моховая тропа</h3>
+              <p id="world-location-copy">Туман стелется между стволами, а руинные арки едва видны через золотую пыльцу.</p>
+            </div>
+            <div class="world-panorama" id="world-panorama">
+              <div class="world-panorama-layer world-panorama-back"></div>
+              <div class="world-panorama-layer world-panorama-mid"></div>
+              <div class="world-panorama-layer world-panorama-front"></div>
+            </div>
+            <div class="world-stage-foot" id="world-stage-foot"></div>
+          </section>
+
+          <aside class="world-quest-panel ornate-panel">
+            <p class="eyebrow">NPC и задания</p>
+            <article class="world-npc-card">
+              <h3 id="world-npc-name">Лесной проводник</h3>
+              <p id="world-npc-role">Хранитель тропы</p>
+              <p id="world-npc-line">В горах слышны обвалы. Если закроешь тропу каменными клиньями, караван пройдёт к руинам.</p>
+              <div class="world-dialogue-options" id="world-dialogue-options"></div>
+            </article>
+            <div class="world-quest-list" id="world-quest-list"></div>
+            <button class="primary-button" id="world-quest-complete" type="button">Завершить активное задание</button>
+          </aside>
         </div>
       </section>
 
@@ -682,6 +730,7 @@
     <nav class="bottom-dock ornate-panel" aria-label="Основная навигация">
       <button class="dock-button is-active" data-screen-target="home"><span class="dock-glyph">⌂</span><span class="dock-label">Святилище</span></button>
       <button class="dock-button" data-screen-target="quests"><span class="dock-glyph">⌘</span><span class="dock-label">Квесты</span></button>
+      <button class="dock-button" data-screen-target="world"><span class="dock-glyph">◍</span><span class="dock-label">Мир</span></button>
       <button class="dock-button" data-screen-target="party"><span class="dock-glyph">✦</span><span class="dock-label">Состав</span></button>
       <button class="dock-button" data-screen-target="journal"><span class="dock-glyph">☷</span><span class="dock-label">Дневник</span></button>
       <button class="dock-button" data-screen-target="shop"><span class="dock-glyph">⬢</span><span class="dock-label">Лавка</span></button>
