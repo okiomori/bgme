@@ -195,6 +195,45 @@
     },
   ];
 
+  const sanctuaryHotspots = [
+    {
+      id: "gate",
+      label: "Врата",
+      title: "Врата святилища",
+      subtitle: "Точка сбора караванов и брифинга вылазок.",
+      copy: "Здесь партия получает маршрут, сверяет состав и выбирает, в какой биом идти дальше.",
+      targetScreen: "quests",
+      icon: "◈",
+    },
+    {
+      id: "forge",
+      label: "Кузня",
+      title: "Кузня корневого металла",
+      subtitle: "Укрепление брони и тактических модулей перед боем.",
+      copy: "Зона подготовки фронта: усиление, ремонт и сборка связок для следующей стычки.",
+      targetScreen: "party",
+      icon: "⬢",
+    },
+    {
+      id: "archive",
+      label: "Архив",
+      title: "Зал мокрых карт",
+      subtitle: "Архив маршрутов, сигилов и следов экспедиций.",
+      copy: "Здесь хранятся записи руин и подсказки по узлам, которые уже откликнулись партии.",
+      targetScreen: "journal",
+      icon: "☷",
+    },
+    {
+      id: "market",
+      label: "Лавка",
+      title: "Тихий ряд поставок",
+      subtitle: "Редкие материалы и обмен перед выходом.",
+      copy: "Поставка расходников и редких фрагментов для тех, кто готов к следующему риску.",
+      targetScreen: "shop",
+      icon: "✶",
+    },
+  ];
+
   // Portrait visual profiles — drives the SVG auto-generation for all heroes.
   // Adding a new hero only requires adding its data here; the generator handles the rest.
   const heroPortraitProfiles = {
@@ -1560,6 +1599,11 @@
   const homeCommandStrip = document.getElementById("home-command-strip");
   const homeEncounterPreview = document.getElementById("home-encounter-preview");
   const homePartyStrip = document.getElementById("home-party-strip");
+  const sanctuaryPoiMap = document.getElementById("sanctuary-poi-map");
+  const sanctuaryPoiTitle = document.getElementById("sanctuary-poi-title");
+  const sanctuaryPoiSubtitle = document.getElementById("sanctuary-poi-subtitle");
+  const sanctuaryPoiCopy = document.getElementById("sanctuary-poi-copy");
+  const sanctuaryPoiAction = document.getElementById("sanctuary-poi-action");
   const worldScreen = document.querySelector('.screen[data-screen="world"]');
   const worldLocationList = document.getElementById("world-location-list");
   const worldBiomeKicker = document.getElementById("world-biome-kicker");
@@ -1656,6 +1700,9 @@
     selectedChapterBoonId: sanctuaryBoons[0].id,
     heroUpgrades: Object.fromEntries(heroes.map((hero) => [hero.id, 0])),
     routeProgress: Object.fromEntries(questCards.map((quest) => [quest.id, 0])),
+    home: {
+      activePoiId: sanctuaryHotspots[0].id,
+    },
     world: createInitialWorldState(),
     creator: createInitialCreatorState(),
   };
@@ -1784,6 +1831,7 @@
       chapterBoons: state.chapterBoons,
       selectedChapterBoonId: state.selectedChapterBoonId,
       heroUpgrades: state.heroUpgrades,
+      home: state.home,
       world: state.world,
       creator: {
         draftQuestion: state.creator.draftQuestion,
@@ -1827,6 +1875,12 @@
       if (parsed.chapterBoons) state.chapterBoons = { ...parsed.chapterBoons };
       if (parsed.selectedChapterBoonId) state.selectedChapterBoonId = parsed.selectedChapterBoonId;
       if (parsed.heroUpgrades) state.heroUpgrades = { ...state.heroUpgrades, ...parsed.heroUpgrades };
+      if (parsed.home) {
+        state.home = {
+          ...state.home,
+          ...parsed.home,
+        };
+      }
       if (parsed.world) {
         state.world = {
           ...state.world,
@@ -2928,7 +2982,42 @@
       });
     }
 
+    renderSanctuaryHub();
+
     renderTopbarHud();
+  }
+
+  function getActiveSanctuaryPoi() {
+    return sanctuaryHotspots.find((poi) => poi.id === state.home.activePoiId) ?? sanctuaryHotspots[0];
+  }
+
+  function renderSanctuaryHub() {
+    if (!sanctuaryPoiMap || !sanctuaryPoiTitle || !sanctuaryPoiSubtitle || !sanctuaryPoiCopy || !sanctuaryPoiAction) {
+      return;
+    }
+
+    const activePoi = getActiveSanctuaryPoi();
+
+    sanctuaryPoiMap.innerHTML = sanctuaryHotspots
+      .map((poi) => {
+        const isActive = poi.id === activePoi.id;
+        return `
+          <button class="home-sanctuary-point${isActive ? " is-active" : ""}" type="button" data-sanctuary-poi="${poi.id}">
+            <span class="home-sanctuary-point-icon">${poi.icon}</span>
+            <span class="home-sanctuary-point-copy">
+              <strong>${poi.title}</strong>
+              <small>${poi.label}</small>
+            </span>
+          </button>
+        `;
+      })
+      .join("");
+
+    sanctuaryPoiTitle.textContent = activePoi.title;
+    sanctuaryPoiSubtitle.textContent = activePoi.subtitle;
+    sanctuaryPoiCopy.textContent = activePoi.copy;
+    sanctuaryPoiAction.textContent = `Открыть: ${screenLabels[activePoi.targetScreen] ?? activePoi.targetScreen}`;
+    sanctuaryPoiAction.dataset.targetScreen = activePoi.targetScreen;
   }
 
   function resetPresenceMotion(root) {
@@ -4952,6 +5041,27 @@
   openBattleButton.addEventListener("click", () => {
     prepareBattleFromQuest();
   });
+
+  if (sanctuaryPoiMap) {
+    sanctuaryPoiMap.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-sanctuary-poi]");
+      if (!button) {
+        return;
+      }
+      state.home.activePoiId = button.dataset.sanctuaryPoi;
+      renderSanctuaryHub();
+      saveState();
+    });
+  }
+
+  if (sanctuaryPoiAction) {
+    sanctuaryPoiAction.addEventListener("click", () => {
+      const target = sanctuaryPoiAction.dataset.targetScreen;
+      if (target) {
+        setActiveScreen(target);
+      }
+    });
+  }
 
   if (worldLocationList) {
     worldLocationList.addEventListener("click", (event) => {

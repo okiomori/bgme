@@ -11583,3 +11583,141 @@ button:focus-visible,
     width: min(100%, 320px);
   }
 }
+
+.screen[data-screen="home"] .home-command-copy-block h2,
+.screen[data-screen="home"] .hero-caption h3,
+.screen[data-screen="home"] .home-scene-head strong,
+.screen[data-screen="home"] .home-sanctuary-focus h3 {
+  font-family: "Cinzel", "Palatino Linotype", serif;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.screen[data-screen="home"] .home-sanctuary-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: 10px;
+}
+
+.screen[data-screen="home"] .home-sanctuary-map,
+.screen[data-screen="home"] .home-sanctuary-focus {
+  border-radius: 14px;
+  border: 1px solid rgba(240, 221, 172, 0.14);
+  background:
+    radial-gradient(circle at top left, rgba(173, 214, 188, 0.07), transparent 24%),
+    linear-gradient(180deg, rgba(15, 23, 21, 0.86), rgba(8, 12, 12, 0.76));
+}
+
+.screen[data-screen="home"] .home-sanctuary-map {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 10px;
+  min-height: 146px;
+  align-content: start;
+}
+
+.screen[data-screen="home"] .home-sanctuary-point {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  min-height: 54px;
+  padding: 8px;
+  text-align: left;
+  border-radius: 10px;
+  appearance: none;
+  border: 1px solid rgba(240, 221, 172, 0.1);
+  background: rgba(8, 13, 12, 0.66);
+  color: var(--text-main);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.screen[data-screen="home"] .home-sanctuary-point:hover,
+.screen[data-screen="home"] .home-sanctuary-point:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(240, 221, 172, 0.26);
+}
+
+.screen[data-screen="home"] .home-sanctuary-point.is-active {
+  border-color: rgba(245, 230, 186, 0.46);
+  background:
+    linear-gradient(160deg, rgba(245, 233, 203, 0.12), rgba(98, 138, 116, 0.1) 40%, rgba(8, 13, 12, 0.72));
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+}
+
+.screen[data-screen="home"] .home-sanctuary-point-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(240, 221, 172, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--gold-soft);
+  font-size: 0.78rem;
+}
+
+.screen[data-screen="home"] .home-sanctuary-point-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.screen[data-screen="home"] .home-sanctuary-point-copy strong {
+  font-size: 0.78rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.screen[data-screen="home"] .home-sanctuary-point-copy small {
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(238, 227, 198, 0.72);
+}
+
+.screen[data-screen="home"] .home-sanctuary-focus {
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.screen[data-screen="home"] .home-sanctuary-focus .eyebrow {
+  margin: 0;
+}
+
+.screen[data-screen="home"] .home-sanctuary-focus h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.1;
+}
+
+.screen[data-screen="home"] .home-sanctuary-subtitle,
+.screen[data-screen="home"] .home-sanctuary-copy {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.screen[data-screen="home"] .home-sanctuary-action {
+  margin-top: 4px;
+  min-height: 44px;
+  font-size: 0.76rem;
+}
+
+@media (max-width: 1360px) {
+  .screen[data-screen="home"] .home-sanctuary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .screen[data-screen="home"] .home-sanctuary-map {
+    grid-template-columns: 1fr;
+  }
+}
