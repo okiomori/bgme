@@ -198,6 +198,10 @@
     noel: "archivist",
   };
 
+  // Base guard values per hero for battle calculations
+  const heroBaseGuard = { liora: 18, rian: 32, saya: 12, noel: 14 };
+  const DEFAULT_HERO_HP = 1400;
+
   // Skin tones — consistent across all heroes for a unified art style
   const SKIN_1 = "#f3ece3";
   const SKIN_2 = "#d2c2b4";
@@ -1370,6 +1374,57 @@
 
   const STORAGE_KEY = "bgme-state-v4";
 
+  function makeEnemy(template) {
+    return { ...template, marked: false, vulnerable: false };
+  }
+
+  const enemyCatalog = {
+    colossus: {
+      id: "colossus",
+      name: "Немой колосс",
+      role: "Босс главы",
+      hp: 4680,
+      maxHp: 4680,
+      armor: 3,
+      intent: "Удар аркой через два такта",
+      description: "Монументальный страж, медленно наращивающий давление по передней линии.",
+      form: "colossus",
+    },
+    cantor: {
+      id: "cantor",
+      name: "Хор корней",
+      role: "Поддержка",
+      hp: 1240,
+      maxHp: 1240,
+      armor: 1,
+      intent: "Сцепление корней",
+      description: "Поддерживает босса и стягивает поле узкими коридорами.",
+      form: "cantor",
+    },
+    cantorElite: {
+      id: "cantor",
+      name: "Хор корней",
+      role: "Элитная поддержка",
+      hp: 1680,
+      maxHp: 1680,
+      armor: 1,
+      intent: "Сцепление корней",
+      description: "Стягивает поле узким ритмом и мешает развороту задней линии.",
+      form: "cantor",
+    },
+    rootling: {
+      id: "rootling",
+      name: "Корнеед",
+      role: "Налётчик",
+      hp: 980,
+      maxHp: 980,
+      armor: 0,
+      intent: "Бросок в заднюю линию",
+      description: "Мелкая нечисть, которая быстро ломает мягкие построения.",
+      form: "cantor",
+    },
+  };
+
   const battleSkillSets = {
     liora: [
       {
@@ -1454,6 +1509,20 @@
   };
 
   function createBattleState() {
+    const allies = heroes.map((hero) => {
+      const hpStat = hero.stats.find((s) => s[0] === "HP");
+      const hp = hpStat ? parseInt(hpStat[1], 10) : DEFAULT_HERO_HP;
+      return {
+        id: hero.id,
+        name: hero.name,
+        role: hero.role,
+        hp,
+        maxHp: hp,
+        guard: heroBaseGuard[hero.id] ?? 14,
+        form: heroFormMap[hero.id] ?? "guide",
+      };
+    });
+    const enemies = [makeEnemy(enemyCatalog.colossus), makeEnemy(enemyCatalog.cantor)];
     return {
       title: "Немой колосс",
       subtitle: "Глава 1 · Сад немого стража",
@@ -1467,40 +1536,8 @@
       selectedTargetId: "colossus",
       sourceQuestId: "story",
       sourceNodeIndex: 0,
-      allies: [
-        { id: "liora", name: "Лиора", role: "Проводница мха", hp: 1583, maxHp: 1583, guard: 18, form: "guide" },
-        { id: "rian", name: "Риан", role: "Камнерез", hp: 1924, maxHp: 1924, guard: 32, form: "vanguard" },
-        { id: "saya", name: "Сайя", role: "Охотница", hp: 1326, maxHp: 1326, guard: 12, form: "hunter" },
-        { id: "noel", name: "Ноэль", role: "Архивистка", hp: 1418, maxHp: 1418, guard: 14, form: "archivist" },
-      ],
-      enemies: [
-        {
-          id: "colossus",
-          name: "Немой колосс",
-          role: "Босс главы",
-          hp: 4680,
-          maxHp: 4680,
-          armor: 3,
-          intent: "Удар аркой через два такта",
-          description: "Монументальный страж, медленно наращивающий давление по передней линии.",
-          form: "colossus",
-          marked: false,
-          vulnerable: false,
-        },
-        {
-          id: "cantor",
-          name: "Хор корней",
-          role: "Поддержка",
-          hp: 1240,
-          maxHp: 1240,
-          armor: 1,
-          intent: "Сцепление корней",
-          description: "Поддерживает босса и стягивает поле узкими коридорами.",
-          form: "cantor",
-          marked: false,
-          vulnerable: false,
-        },
-      ],
+      allies,
+      enemies,
       queue: ["liora", "noel", "colossus", "saya", "cantor", "rian"],
       log: [
         {
@@ -2467,18 +2504,6 @@
         `;
       })
       .join("");
-
-    questCardsContainer.querySelectorAll("[data-quest-id]").forEach((button) => {
-      button.addEventListener("click", () => {
-        if (button.dataset.locked === "true") {
-          return;
-        }
-        state.activeQuestId = button.dataset.questId;
-        renderQuestCards();
-        updateQuestOverview();
-        saveState();
-      });
-    });
   }
 
   function updateQuestOverview() {
@@ -2597,14 +2622,6 @@
         `,
       )
       .join("");
-
-    heroList.querySelectorAll("[data-hero-id]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.activeHeroId = button.dataset.heroId;
-        renderHeroList();
-        updateHeroPanel();
-      });
-    });
   }
 
   function renderHeroStats(hero) {
@@ -3203,23 +3220,37 @@
   function refreshProgressionUi() {
     ensureValidJournalSelection();
     renderResources();
-    renderQuestCards();
-    updateQuestOverview();
-    renderHeroList();
-    updateHeroPanel();
-    renderJournalTabs();
-    renderJournalList();
-    updateJournalPanel();
-    renderShopGrid();
-    updateShopPanel();
-    renderMenuChecklist();
-    renderSessionLog();
-    renderGuideSections();
-    updateGuidePanel();
-    renderTitleScreen();
-    renderResults();
-    renderChapterScreen();
-    renderEndingScreen();
+    const screen = state.activeScreen;
+    if (screen === "quests") {
+      renderQuestCards();
+      updateQuestOverview();
+      renderHeroList();
+      updateHeroPanel();
+      renderJournalTabs();
+      renderJournalList();
+      updateJournalPanel();
+      renderShopGrid();
+      updateShopPanel();
+    } else if (screen === "battle") {
+      renderBattle();
+    } else if (screen === "home") {
+      renderHeroList();
+      updateHeroPanel();
+    } else if (screen === "menu") {
+      renderMenuChecklist();
+      renderSessionLog();
+    } else if (screen === "guide") {
+      renderGuideSections();
+      updateGuidePanel();
+    } else if (screen === "title") {
+      renderTitleScreen();
+    } else if (screen === "results") {
+      renderResults();
+    } else if (screen === "chapter") {
+      renderChapterScreen();
+    } else if (screen === "ending") {
+      renderEndingScreen();
+    }
   }
 
   function finalizeVictoryProgression() {
@@ -3303,17 +3334,6 @@
         `;
       })
       .join("");
-
-    journalTabsContainer.querySelectorAll("[data-journal-tab]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.activeJournalTab = button.dataset.journalTab;
-        ensureValidJournalSelection();
-        renderJournalTabs();
-        renderJournalList();
-        updateJournalPanel();
-        saveState();
-      });
-    });
   }
 
   function renderJournalList() {
@@ -3335,18 +3355,6 @@
         `;
       })
       .join("");
-
-    journalList.querySelectorAll("[data-journal-entry]").forEach((button) => {
-      button.addEventListener("click", () => {
-        if (button.dataset.entryLocked === "true") {
-          return;
-        }
-        state.activeJournalEntryId = button.dataset.journalEntry;
-        renderJournalList();
-        updateJournalPanel();
-        saveState();
-      });
-    });
   }
 
   function renderJournalHighlights() {
@@ -3410,15 +3418,6 @@
         `,
       )
       .join("");
-
-    guideSectionList.querySelectorAll("[data-guide-section]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.activeGuideSectionId = button.dataset.guideSection;
-        renderGuideSections();
-        updateGuidePanel();
-        saveState();
-      });
-    });
   }
 
   function updateGuidePanel() {
@@ -3504,15 +3503,6 @@
         `,
       )
       .join("");
-
-    creatorTopicList.querySelectorAll("[data-creator-topic]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.creator.activeTopicId = button.dataset.creatorTopic;
-        renderCreatorTopics();
-        updateCreatorCabin();
-        saveState();
-      });
-    });
   }
 
   function renderCreatorGlossary() {
@@ -3734,14 +3724,6 @@
         `;
       })
       .join("");
-
-    shopGrid.querySelectorAll("[data-shop-item]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.activeShopItemId = button.dataset.shopItem;
-        renderShopGrid();
-        updateShopPanel();
-      });
-    });
   }
 
   function updateShopPanel() {
@@ -3807,15 +3789,6 @@
         `,
       )
       .join("");
-
-    uiScaleOptionsContainer.querySelectorAll("[data-ui-scale]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.settings.uiScaleId = button.dataset.uiScale;
-        applyUiSettings();
-        renderUiScaleOptions();
-        addSessionLog("UI обновлён", `Масштаб интерфейса переключён на ${button.textContent.trim()}.`);
-      });
-    });
   }
 
   function renderMenuChecklist() {
@@ -3942,64 +3915,10 @@
     }
 
     if (currentNode.label === "Boss") {
-      nextBattle.enemies = [
-        {
-          id: "colossus",
-          name: "Немой колосс",
-          role: "Босс главы",
-          hp: 4680,
-          maxHp: 4680,
-          armor: 3,
-          intent: "Удар аркой через два такта",
-          description: "Монументальный страж, медленно наращивающий давление по передней линии.",
-          form: "colossus",
-          marked: false,
-          vulnerable: false,
-        },
-        {
-          id: "cantor",
-          name: "Хор корней",
-          role: "Поддержка",
-          hp: 1240,
-          maxHp: 1240,
-          armor: 1,
-          intent: "Сцепление корней",
-          description: "Поддерживает босса и стягивает поле узкими коридорами.",
-          form: "cantor",
-          marked: false,
-          vulnerable: false,
-        },
-      ];
+      nextBattle.enemies = [makeEnemy(enemyCatalog.colossus), makeEnemy(enemyCatalog.cantor)];
       nextBattle.queue = ["liora", "noel", "colossus", "saya", "cantor", "rian"];
     } else {
-      nextBattle.enemies = [
-        {
-          id: "cantor",
-          name: "Хор корней",
-          role: "Элитная поддержка",
-          hp: 1680,
-          maxHp: 1680,
-          armor: 1,
-          intent: "Сцепление корней",
-          description: "Стягивает поле узким ритмом и мешает развороту задней линии.",
-          form: "cantor",
-          marked: false,
-          vulnerable: false,
-        },
-        {
-          id: "rootling",
-          name: "Корнеед",
-          role: "Налётчик",
-          hp: 980,
-          maxHp: 980,
-          armor: 0,
-          intent: "Бросок в заднюю линию",
-          description: "Мелкая нечисть, которая быстро ломает мягкие построения.",
-          form: "cantor",
-          marked: false,
-          vulnerable: false,
-        },
-      ];
+      nextBattle.enemies = [makeEnemy(enemyCatalog.cantorElite), makeEnemy(enemyCatalog.rootling)];
       nextBattle.queue = ["liora", "rootling", "saya", "cantor", "rian", "noel"];
     }
 
@@ -4083,12 +4002,6 @@
       })
       .join("");
 
-    battleEnemies.querySelectorAll("[data-battle-target]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.battle.selectedTargetId = button.dataset.battleTarget;
-        renderBattle();
-      });
-    });
   }
 
   function renderBattleIntents() {
@@ -4129,13 +4042,6 @@
         `,
       )
       .join("");
-
-    battleSkillGrid.querySelectorAll("[data-battle-skill]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.battle.selectedSkillId = button.dataset.battleSkill;
-        renderBattleSkills();
-      });
-    });
   }
 
   function renderBattleLog() {
@@ -4403,6 +4309,7 @@
       button.classList.toggle("is-active", button.dataset.screenTarget === navScreen);
     });
     updateCreatorHint();
+    refreshProgressionUi();
     saveState();
   }
 
@@ -4417,6 +4324,112 @@
         setActiveScreen(screenTarget);
       }
     });
+  });
+
+  battleSkillGrid.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-battle-skill]");
+    if (!button) {
+      return;
+    }
+    state.battle.selectedSkillId = button.dataset.battleSkill;
+    renderBattleSkills();
+  });
+
+  battleEnemies.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-battle-target]");
+    if (!button) {
+      return;
+    }
+    state.battle.selectedTargetId = button.dataset.battleTarget;
+    renderBattle();
+  });
+
+  questCardsContainer.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-quest-id]");
+    if (!button || button.dataset.locked === "true") {
+      return;
+    }
+    state.activeQuestId = button.dataset.questId;
+    renderQuestCards();
+    updateQuestOverview();
+    saveState();
+  });
+
+  heroList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-hero-id]");
+    if (!button) {
+      return;
+    }
+    state.activeHeroId = button.dataset.heroId;
+    renderHeroList();
+    updateHeroPanel();
+  });
+
+  journalTabsContainer.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-journal-tab]");
+    if (!button) {
+      return;
+    }
+    state.activeJournalTab = button.dataset.journalTab;
+    ensureValidJournalSelection();
+    renderJournalTabs();
+    renderJournalList();
+    updateJournalPanel();
+    saveState();
+  });
+
+  journalList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-journal-entry]");
+    if (!button || button.dataset.entryLocked === "true") {
+      return;
+    }
+    state.activeJournalEntryId = button.dataset.journalEntry;
+    renderJournalList();
+    updateJournalPanel();
+    saveState();
+  });
+
+  guideSectionList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-guide-section]");
+    if (!button) {
+      return;
+    }
+    state.activeGuideSectionId = button.dataset.guideSection;
+    renderGuideSections();
+    updateGuidePanel();
+    saveState();
+  });
+
+  creatorTopicList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-creator-topic]");
+    if (!button) {
+      return;
+    }
+    state.creator.activeTopicId = button.dataset.creatorTopic;
+    renderCreatorTopics();
+    updateCreatorCabin();
+    saveState();
+  });
+
+  shopGrid.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-shop-item]");
+    if (!button) {
+      return;
+    }
+    state.activeShopItemId = button.dataset.shopItem;
+    renderShopGrid();
+    updateShopPanel();
+  });
+
+  uiScaleOptionsContainer.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-ui-scale]");
+    if (!button) {
+      return;
+    }
+    state.settings.uiScaleId = button.dataset.uiScale;
+    applyUiSettings();
+    renderUiScaleOptions();
+    addSessionLog("UI обновлён", `Масштаб интерфейса переключён на ${button.textContent.trim()}.`);
   });
 
   routeAdvanceButton.addEventListener("click", () => {
