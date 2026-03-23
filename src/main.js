@@ -117,6 +117,214 @@
     },
   ];
 
+  // Portrait visual profiles — drives the SVG auto-generation for all heroes.
+  // Adding a new hero only requires adding its data here; the generator handles the rest.
+  const heroPortraitProfiles = {
+    guide: {
+      // Liora: tall, slim, long flowing hair, thin staff, navigation ring
+      bodyClip: "M42 54 L40 148 Q50 156 60 148 L58 54 Q54 49 50 47 Q46 49 42 54Z",
+      cloakClip: "M26 58 Q18 94 20 184 Q50 194 80 184 Q82 94 74 58 Q63 51 50 49 Q37 51 26 58Z",
+      hairFront: "M38 24 Q32 34 32 50 L37 50 Q39 37 42 28 Q50 22 58 28 Q61 37 63 50 L68 50 Q68 34 62 24 Q56 14 50 14 Q44 14 38 24Z",
+      hairBack: "M32 48 Q26 84 28 135 Q34 133 38 135 Q38 84 36 50Z M62 50 Q62 84 62 135 Q66 133 72 135 Q74 84 68 48Z",
+      headCy: 28, headRx: 9, headRy: 11,
+      crown: "M42 20 L46 13 L50 18 L54 13 L58 20",
+      weaponD: "M68 16 L73 178",
+      weaponW: 1.5, weaponOrb: true,
+      trailLx1: 30, trailLy1: 122, trailLx2: 24, trailLy2: 188,
+      trailRx1: 70, trailRy1: 122, trailRx2: 76, trailRy2: 188,
+      trailW: 11, trailO: 0.42,
+      specialRing: true,
+      armL: "M42 58 Q36 70 34 94 Q38 95 40 92 Q42 72 44 62Z",
+      armR: "M58 58 Q64 70 66 94 Q62 95 60 92 Q58 72 56 62Z",
+    },
+    vanguard: {
+      // Rian: wide, armored, short hair, broad hammer
+      bodyClip: "M34 54 L30 148 Q50 158 70 148 L66 54 Q60 47 50 45 Q40 47 34 54Z",
+      cloakClip: "M20 58 Q12 92 14 184 Q50 196 86 184 Q88 92 80 58 Q67 49 50 47 Q33 49 20 58Z",
+      hairFront: "M34 20 Q30 28 32 42 L38 42 Q40 30 42 24 Q50 18 58 24 Q60 30 62 42 L68 42 Q70 28 66 20 Q58 11 50 11 Q42 11 34 20Z",
+      hairBack: "M32 40 Q30 55 32 72 L38 70 Q36 55 34 42Z M62 42 Q64 55 62 70 L68 72 Q70 55 68 40Z",
+      headCy: 23, headRx: 11, headRy: 13,
+      crown: null,
+      weaponD: "M74 58 L82 178",
+      weaponW: 5.5, weaponOrb: false,
+      trailLx1: 32, trailLy1: 130, trailLx2: 28, trailLy2: 188,
+      trailRx1: 68, trailRy1: 130, trailRx2: 72, trailRy2: 188,
+      trailW: 7, trailO: 0.18,
+      specialRing: false,
+      armL: "M34 58 Q26 72 24 98 Q30 100 32 96 Q34 76 38 64Z",
+      armR: "M66 58 Q74 72 76 98 Q70 100 68 96 Q66 76 62 64Z",
+    },
+    hunter: {
+      // Saya: slim, wing cloak, dark asymmetric hair, curved blade
+      bodyClip: "M42 58 L40 148 Q50 154 60 148 L58 58 Q54 52 50 50 Q46 52 42 58Z",
+      cloakClip: "M24 62 Q6 88 8 164 Q30 184 50 168 Q70 184 92 164 Q94 88 76 62 Q64 53 50 51 Q36 53 24 62Z",
+      hairFront: "M36 24 Q28 36 30 52 L36 50 Q36 38 40 28 Q50 20 60 28 Q64 38 64 50 L70 52 Q72 36 64 24 Q57 13 50 13 Q43 13 36 24Z",
+      hairBack: "M28 50 Q18 82 22 144 Q28 140 34 144 Q34 82 30 52Z M66 52 Q66 82 66 144 Q72 140 78 144 Q82 82 72 50Z",
+      headCy: 28, headRx: 9, headRy: 11,
+      crown: "M38 18 L43 10 L50 16 L57 10 L62 18",
+      weaponD: "M66 54 L76 158",
+      weaponW: 1.8, weaponOrb: false,
+      trailLx1: 28, trailLy1: 120, trailLx2: 18, trailLy2: 188,
+      trailRx1: 72, trailRy1: 120, trailRx2: 82, trailRy2: 188,
+      trailW: 17, trailO: 0.5,
+      specialRing: false,
+      armL: "M42 62 Q34 72 30 96 Q36 98 38 94 Q40 76 44 66Z",
+      armR: "M58 62 Q66 72 70 96 Q64 98 62 94 Q60 76 56 66Z",
+    },
+    archivist: {
+      // Noel: medium, scholarly, blue hair with ribbons, diagonal staff
+      bodyClip: "M40 54 L38 148 Q50 154 62 148 L60 54 Q55 48 50 46 Q45 48 40 54Z",
+      cloakClip: "M28 58 Q20 90 22 182 Q50 190 78 182 Q80 90 72 58 Q62 50 50 48 Q38 50 28 58Z",
+      hairFront: "M36 22 Q30 32 32 50 L38 48 Q40 34 42 26 Q50 18 58 26 Q60 34 62 48 L68 50 Q70 32 64 22 Q57 12 50 12 Q43 12 36 22Z",
+      hairBack: "M30 48 Q24 82 26 128 Q32 126 38 128 Q38 82 34 50Z M60 50 Q62 82 62 128 Q66 126 72 128 Q74 82 66 48Z",
+      headCy: 27, headRx: 9, headRy: 11,
+      crown: "M42 18 L46 11 L50 16 L54 11 L58 18",
+      weaponD: "M26 40 L76 178",
+      weaponW: 1.4, weaponOrb: false,
+      trailLx1: 32, trailLy1: 122, trailLx2: 26, trailLy2: 188,
+      trailRx1: 68, trailRy1: 122, trailRx2: 74, trailRy2: 188,
+      trailW: 10, trailO: 0.38,
+      specialRing: false,
+      armL: "M40 58 Q32 70 30 94 Q36 96 38 92 Q40 74 42 62Z",
+      armR: "M60 58 Q68 70 70 94 Q64 96 62 92 Q60 74 58 62Z",
+    },
+  };
+
+  // Map hero IDs to portrait profiles
+  const heroFormMap = {
+    liora: "guide",
+    rian: "vanguard",
+    saya: "hunter",
+    noel: "archivist",
+  };
+
+  // Skin tones — consistent across all heroes for a unified art style
+  const SKIN_1 = "#f3ece3";
+  const SKIN_2 = "#d2c2b4";
+
+  function generateHeroPortraitSVG(hero) {
+    const form = heroFormMap[hero.id] ?? "guide";
+    const prof = heroPortraitProfiles[form];
+    const id = `ph-${hero.id}`;
+
+    const lightColor = hero.palette[0]?.[1] ?? "#f0ece4";
+    const midColor   = hero.palette[1]?.[1] ?? "#b0c8c0";
+    const deepColor  = hero.palette[2]?.[1] ?? "#6e9d88";
+    const darkColor  = hero.palette[3]?.[1] ?? "#1a2020";
+    const accent     = hero.accent;
+
+    // Hair colors vary by hero
+    const hairColors = {
+      liora:    ["#fafaf6", "#b8d8d5", "#6e9d88"],
+      rian:     ["#503f33", "#2f251f", "#181414"],
+      saya:     ["#2f2a30", "#70303e", "#140f17"],
+      noel:     ["#d8e8f4", "#7ea0be", "#2d4358"],
+    };
+    const [hc1, hc2, hc3] = hairColors[hero.id] ?? hairColors.liora;
+
+    const crown = prof.crown
+      ? `<path d="${prof.crown}" fill="none" stroke="${lightColor}" stroke-width="1.2" stroke-opacity="0.82" stroke-linecap="round"/>`
+      : "";
+
+    const weaponOrb = prof.weaponOrb
+      ? `<circle cx="73" cy="14" r="5" fill="${accent}" fill-opacity="0.72"/><circle cx="73" cy="14" r="3" fill="${lightColor}" fill-opacity="0.6"/>`
+      : "";
+
+    const ring = prof.specialRing
+      ? `<circle cx="50" cy="105" r="44" fill="none" stroke="${accent}" stroke-width="0.6" stroke-opacity="0.34"/>
+         <circle cx="50" cy="105" r="36" fill="none" stroke="${accent}" stroke-width="0.3" stroke-opacity="0.18"/>`
+      : "";
+
+    const mapRibbon = form === "archivist"
+      ? `<path d="M70 62 Q80 74 84 90 Q80 100 72 98 Q66 90 70 78" fill="none" stroke="${lightColor}" stroke-width="1.2" stroke-opacity="0.44" stroke-linecap="round"/>
+         <path d="M72 104 Q82 112 80 124 Q74 130 68 124" fill="none" stroke="${accent}" stroke-width="1" stroke-opacity="0.36" stroke-linecap="round"/>`
+      : "";
+
+    const hammerHead = form === "vanguard"
+      ? `<rect x="76" y="46" width="14" height="20" rx="4" fill="${midColor}" fill-opacity="0.88" stroke="${lightColor}" stroke-width="0.6" stroke-opacity="0.4"/>`
+      : "";
+
+    const wingDetails = form === "hunter"
+      ? `<path d="M8 164 Q14 130 24 110 Q18 140 20 168Z" fill="${midColor}" fill-opacity="0.28"/>
+         <path d="M92 164 Q86 130 76 110 Q82 140 80 168Z" fill="${midColor}" fill-opacity="0.28"/>`
+      : "";
+
+    return `<svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="hero-portrait-svg">
+  <defs>
+    <radialGradient id="${id}-aura" cx="50%" cy="45%" r="52%">
+      <stop offset="0%" stop-color="${accent}" stop-opacity="0.46"/>
+      <stop offset="100%" stop-color="${accent}" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="${id}-body" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="${lightColor}"/>
+      <stop offset="42%" stop-color="${midColor}"/>
+      <stop offset="100%" stop-color="${darkColor}" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="${id}-cloak" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="${midColor}" stop-opacity="0.58"/>
+      <stop offset="55%" stop-color="${deepColor}" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="${darkColor}" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="${id}-hair" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="${hc1}"/>
+      <stop offset="38%" stop-color="${hc2}"/>
+      <stop offset="100%" stop-color="${hc3}" stop-opacity="0.88"/>
+    </linearGradient>
+    <radialGradient id="${id}-skin" cx="48%" cy="28%" r="60%">
+      <stop offset="0%" stop-color="${SKIN_1}"/>
+      <stop offset="100%" stop-color="${SKIN_2}"/>
+    </radialGradient>
+    <linearGradient id="${id}-weapon" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="${lightColor}" stop-opacity="0.96"/>
+      <stop offset="100%" stop-color="${deepColor}" stop-opacity="0.18"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background atmospheric glow -->
+  <ellipse cx="50" cy="100" rx="52" ry="90" fill="url(#${id}-aura)"/>
+
+  ${ring}
+
+  <!-- Cloak / coat -->
+  <path d="${prof.cloakClip}" fill="url(#${id}-cloak)"/>
+  ${wingDetails}
+
+  <!-- Back hair -->
+  <path d="${prof.hairBack}" fill="url(#${id}-hair)" opacity="0.64"/>
+
+  <!-- Arms -->
+  <path d="${prof.armL}" fill="url(#${id}-body)" opacity="0.82"/>
+  <path d="${prof.armR}" fill="url(#${id}-body)" opacity="0.82"/>
+
+  <!-- Body -->
+  <path d="${prof.bodyClip}" fill="url(#${id}-body)"/>
+
+  <!-- Weapon -->
+  ${hammerHead}
+  <path d="${prof.weaponD}" stroke="url(#${id}-weapon)" stroke-width="${prof.weaponW}" stroke-linecap="round" fill="none"/>
+  ${weaponOrb}
+
+  <!-- Emblem -->
+  <rect x="44" y="90" width="12" height="12" rx="3" transform="rotate(45 50 96)"
+        fill="${accent}" fill-opacity="0.24" stroke="${lightColor}" stroke-width="0.5" stroke-opacity="0.44"/>
+
+  <!-- Head (face) -->
+  <ellipse cx="50" cy="${prof.headCy}" rx="${prof.headRx}" ry="${prof.headRy}" fill="url(#${id}-skin)"/>
+
+  <!-- Hair (front) -->
+  <path d="${prof.hairFront}" fill="url(#${id}-hair)"/>
+  ${crown}
+
+  ${mapRibbon}
+
+  <!-- Atmospheric trails -->
+  <line x1="${prof.trailLx1}" y1="${prof.trailLy1}" x2="${prof.trailLx2}" y2="${prof.trailLy2}"
+        stroke="${accent}" stroke-width="${prof.trailW}" stroke-opacity="${prof.trailO}" stroke-linecap="round"/>
+  <line x1="${prof.trailRx1}" y1="${prof.trailRy1}" x2="${prof.trailRx2}" y2="${prof.trailRy2}"
+        stroke="${accent}" stroke-width="${prof.trailW}" stroke-opacity="${prof.trailO}" stroke-linecap="round"/>
+</svg>`;
+  }
+
   const heroes = [
     {
       id: "liora",
@@ -2578,6 +2786,13 @@
     const activeHero = getActiveHero();
 
     portraitShell.dataset.hero = activeHero.id;
+
+    // Inject auto-generated SVG portrait into the portrait figure layer
+    const svgLayer = portraitShell.querySelector(".portrait-svg-layer");
+    if (svgLayer) {
+      svgLayer.innerHTML = generateHeroPortraitSVG(activeHero);
+    }
+
     heroName.textContent = activeHero.name;
     heroRole.textContent = activeHero.role;
     heroEpithet.textContent = activeHero.epithet;
